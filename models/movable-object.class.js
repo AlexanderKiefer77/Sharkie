@@ -1,7 +1,7 @@
 
 class MovableObject extends DrawableObject {
     speed = 0.15;
-    otherDirektion = false;
+    otherDirection = false;
 
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -27,13 +27,13 @@ class MovableObject extends DrawableObject {
         this.y += this.speed;
     }
 
-      drawFrame(ctx) { // in drawable-object.class.js verschoben
+    drawFrame(ctx) { // in drawable-object.class.js verschoben
         // Zeichnet Rechteck um die Elemente
         if (this instanceof Character) { //  || this instanceof Chicken || this instanceof Endboss
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';
-              ctx.rect(
+            ctx.rect(
                 this.x + this.offset.left,
                 this.y + this.offset.top,
                 this.width - this.offset.left - this.offset.right,
