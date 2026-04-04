@@ -1,8 +1,12 @@
 let canvas;
+let world;
+// let keyboard;
 
 function init() {
     canvas = document.getElementById('canvas');
-    showStartScreen();
+    // showStartScreen();
+    let currentLevel = initLevel();
+    world = new World(canvas, currentLevel); //keyboard, 
 }
 
 function showStartScreen() {

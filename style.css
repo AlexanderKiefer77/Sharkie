@@ -5,8 +5,8 @@
 }
 
 @font-face {
-    font-family: 'cookie';
-    src: url('./assets/fonts/cookie.ttf');
+    font-family: 'luckiestGuy';
+    src: url('./assets/fonts/LuckiestGuy-Regular.ttf');
 }
 
 body {
@@ -22,7 +22,7 @@ body {
             #5CADBD 40%,
             #2F318D 80%,
             #1B1464 100%);
-    font-family: 'cookie', Calibri;
+    font-family: 'luckiestGuy', Calibri;
     font-size: 16px;
 
 }
