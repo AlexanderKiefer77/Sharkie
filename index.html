@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,31 @@
     <link rel="shortcut icon" href="./assets/img/1.Sharkie/1.IDLE/1.png" type="image/x-icon">
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="./js/game.js"></script>
 </head>
-<body>
-    
+
+<body onload="init()">
+
+    <h1 id="title">Sharkie</h1>
+
+    <div id="gameWrapper" class="gameWrapper">
+        <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
+        <!-- <div id="description" class="description">
+            <span>How To Play: </span>
+            <div class="descriptionLine">
+                <div class="singleDescription"><img src="./assets/icons/arrow_left.png" alt="Arrow Left">Walk Left</div>
+                <div class="singleDescription"><img src="./assets/icons/arrow_right.png" alt="Arrow Right">Walk Right
+                </div>
+                <div class="singleDescription"><img src="./assets/icons/arrow_drop_up.png" alt="Arrow Up">Jump</div>
+                <div class="singleDescription"><img src="./assets/img/6_salsa_bottle/salsa_bottle.png"
+                        alt="Bottle">Throw Bottle
+                    (space)</div>
+                <div class="singleDescription"><img src="./assets/icons/break.png" alt="Break">Break (ESC)</div>
+            </div>
+        </div> -->
+    </div>
+
 </body>
+
 </html>
