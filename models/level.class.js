@@ -6,7 +6,7 @@ class Level {
     // bottlesToCollect;
     // clouds;
     backgroundObjects;
-    // level_end_x = 2200; // End of the game
+    level_end_x = 2200;
 
 
     constructor (backgroundObjects) { // enemies, coins, bottlesToCollect, clouds,
