@@ -1,20 +1,23 @@
 
 class Character extends MovableObject {
-    height = 270;
+    width = 150;
     y = 0;
     speed = 10;
     otherDirection = false;
-    // hurtAnimationPlayed = false;
-    // deadAnimationPlayed = false;
+    currentImage = 0;
     world;
-    // intervalsStopped = false;
 
     offset = {
-        top: 130,
-        bottom: 65,
-        left: 15,
-        right: 15
+        top: 85,
+        bottom: 40,
+        left: 25,
+        right: 25
     };
+
+    state = 'IDLE'; // IDLE | IDLE_LONG | SLEEP
+    idleStartTime = null;
+    animationFrameCount = 0;
+
 
     IMAGES_IDLE = [
         './assets/img/1.Sharkie/1.IDLE/1.png',
@@ -37,7 +40,7 @@ class Character extends MovableObject {
         './assets/img/1.Sharkie/1.IDLE/18.png'
     ];
 
-    IMAGES_SLEEP = [
+    IMAGES_IDLE_LONG = [
         './assets/img/1.Sharkie/2.Long_IDLE/i1.png',
         './assets/img/1.Sharkie/2.Long_IDLE/i2.png',
         './assets/img/1.Sharkie/2.Long_IDLE/i3.png',
@@ -52,6 +55,12 @@ class Character extends MovableObject {
         './assets/img/1.Sharkie/2.Long_IDLE/i12.png',
         './assets/img/1.Sharkie/2.Long_IDLE/i13.png',
         './assets/img/1.Sharkie/2.Long_IDLE/i14.png'
+    ];
+
+    IMAGES_SLEEP = [
+        './assets/img/1.Sharkie/2.Long_IDLE/i11.png',
+        './assets/img/1.Sharkie/2.Long_IDLE/i12.png',
+        './assets/img/1.Sharkie/2.Long_IDLE/i13.png'
     ];
 
     IMAGES_SWIMM = [
@@ -121,6 +130,7 @@ class Character extends MovableObject {
         super();
         this.loadImage(this.IMAGES_SLEEP[2]);
         this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_IDLE_LONG);
         this.loadImages(this.IMAGES_SLEEP);
         this.loadImages(this.IMAGES_SWIMM);
         this.loadImages(this.IMAGES_HURT_POISONEND);
@@ -139,21 +149,19 @@ class Character extends MovableObject {
                 // this.walking_sound.play();
             }
 
-            if (this.world.keyboard.LEFT && this.x > 0) {
+            if (this.world.keyboard.LEFT && this.x > this.world.level.level_start_x) {
                 this.moveLeft();
                 this.otherDirection = true;
                 // this.walking_sound.play();
             }
 
-            if (this.world.keyboard.UP && this.y > 0 - this.offset.top) { // 
+            if (this.world.keyboard.UP && this.y > 0 - this.offset.top) {
                 this.moveUp();
-                // this.otherDirection = true;
                 // this.walking_sound.play();
             }
 
             if (this.world.keyboard.DOWN && this.y + this.height < canvas.height + this.offset.bottom) {
                 this.moveDown();
-                // this.otherDirection = true;
                 // this.walking_sound.play();
             }
 
@@ -165,22 +173,51 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {
+            const isMoving =
+                this.world.keyboard.RIGHT ||
+                this.world.keyboard.LEFT ||
+                this.world.keyboard.UP ||
+                this.world.keyboard.DOWN;
 
-            // if (this.isDead()) {
-            //     this.playAnimation(this.IMAGES_DEAD);
-            // }
-            // else if (this.isHurt()) {
-            //     this.playAnimation(this.IMAGES_HURT);
-            // }
-            // else if (this.isAboveGround()) {
-            //     this.playAnimation(this.IMAGES_JUMPING);
-            // }
-            // else {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+            this.animationFrameCount++;
+
+            if (isMoving) {
                 this.playAnimation(this.IMAGES_SWIMM);
+                this.idleStartTime = null;
+                return;
             }
-            // }
-        }, 50);
+
+            if (!this.idleStartTime) {
+                this.idleStartTime = Date.now();
+                this.state = 'IDLE';
+                this.currentImage = 0;
+            }
+
+            let elapsed = Date.now() - this.idleStartTime;
+
+            if (this.state === 'IDLE') {
+                this.playAnimation(this.IMAGES_IDLE);
+
+                if (elapsed > 3000) {
+                    this.state = 'IDLE_LONG';
+                    this.currentImage = 0;
+                }
+            }
+
+            else if (this.state === 'IDLE_LONG') {
+                this.playAnimation(this.IMAGES_IDLE_LONG);
+                if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
+                    this.state = 'SLEEP';
+                    this.currentImage = 0;
+                }
+            }
+
+            else if (this.state === 'SLEEP') {
+                this.playAnimation(this.IMAGES_SLEEP);
+            }
+
+        }, 150);
+
 
     }
 }
