@@ -7,7 +7,7 @@ class Level {
     // clouds;
     backgroundObjects;
     level_start_x = -600;
-    level_end_x = 3650;
+    level_end_x = 3600;
 
 
     constructor (backgroundObjects) { // enemies, coins, bottlesToCollect, clouds,

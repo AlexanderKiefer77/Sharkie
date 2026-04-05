@@ -2,6 +2,27 @@
 class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
+    speedY = 0; // for Gravity
+    acceleration = 0.4;
+    sharkie_start_animation = true;
+
+    applyGravity() {
+        setInterval(() => {
+            // if (this.sharkie_start_animation && this.isAboveGround() || this.speedY > 0) {  // "this.speedY > 0" wird verwendet, zum springen vom Boden aus für den Character+
+             if (this.sharkie_start_animation && this.y < 200) { 
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
+            }, 1000 / 25);
+    }
+
+    isAboveGround() { // Subfunktion für applyGravity
+        // if (this instanceof ThrowableObject) { // damit die Flasche weiter nach unten fällt
+        //     return true;
+        // } else {
+            return this.y < 200; // fällt nur bis zu dem Punkt
+        // }
+    }
 
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -20,6 +41,7 @@ class MovableObject extends DrawableObject {
     }
 
     moveUp() {
+        this.sharkie_start_animation = false;
         this.y -= this.speed;
     }
 

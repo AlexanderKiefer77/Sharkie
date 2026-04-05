@@ -1,7 +1,7 @@
 
 class Character extends MovableObject {
     width = 150;
-    y = 0;
+    y = -140; // start-position for start_animation
     speed = 10;
     otherDirection = false;
     currentImage = 0;
@@ -137,6 +137,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT_ELECTRIC);
         this.loadImages(this.IMAGES_DEAD_POISONEND);
         this.loadImages(this.IMAGES_DEAD_ELECTRIC);
+        this.applyGravity();
         this.animate();
     }
 
