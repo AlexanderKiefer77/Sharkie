@@ -4,7 +4,11 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     speedY = 0; // for Gravity
     acceleration = 0.4;
+
+    state = 'IDLE'; // IDLE | IDLE_LONG | SLEEP
+    
     sharkie_start_animation = true;
+    endboss_start_animation = true;
 
     applyGravity() {
         setInterval(() => {
@@ -51,7 +55,7 @@ class MovableObject extends DrawableObject {
 
     drawFrame(ctx) { // in drawable-object.class.js verschoben
         // Zeichnet Rechteck um die Elemente
-        if (this instanceof Character) { //  || this instanceof Chicken || this instanceof Endboss
+        if (this instanceof Character || this instanceof Endboss) { //  || this instanceof Chicken || this instanceof Endboss
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';

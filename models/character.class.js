@@ -14,7 +14,7 @@ class Character extends MovableObject {
         right: 25
     };
 
-    state = 'IDLE'; // IDLE | IDLE_LONG | SLEEP
+    
     idleStartTime = null;
     animationFrameCount = 0;
 

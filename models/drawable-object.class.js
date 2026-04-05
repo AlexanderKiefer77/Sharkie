@@ -27,28 +27,6 @@ class DrawableObject {
         */
     }
 
-    // drawFrame(ctx) {
-    //     // Draws rectangle frames around the elements to setup collisions
-    //     if (this instanceof Character ||
-    //         this instanceof Chicken ||
-    //         this instanceof SmallChicken ||
-    //         this instanceof Endboss ||
-    //         this instanceof Coin ||
-    //         this instanceof ThrowableObject ||
-    //         this instanceof BottleOnGround) {
-    //         ctx.beginPath();
-    //         ctx.lineWidth = '1';
-    //         ctx.strokeStyle = 'blue';
-    //         ctx.rect(
-    //             this.x + this.offset.left,
-    //             this.y + this.offset.top,
-    //             this.width - this.offset.left - this.offset.right,
-    //             this.height - this.offset.top - this.offset.bottom
-    //         );
-    //         ctx.stroke();
-    //     }
-    // }
-
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();

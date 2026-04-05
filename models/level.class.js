@@ -5,6 +5,7 @@ class Level {
     // coins;
     // bottlesToCollect;
     // clouds;
+    endboss;
     backgroundObjects;
     level_start_x = -600;
     level_end_x = 3600;
@@ -15,6 +16,7 @@ class Level {
         // this.coins = coins;
         // this.bottlesToCollect = bottlesToCollect;
         // this.clouds = clouds;
+        // this.endboss = endboss;
         this.backgroundObjects = backgroundObjects;
     }
 }
