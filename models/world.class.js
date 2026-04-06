@@ -1,8 +1,11 @@
 
 class World {
     character = new Character();
+    // greenPufferFish = new GreenPufferFishes();
+    // orangePufferFish = new OrangePufferFishes();
+    // redPufferFish = new RedPufferFishes();
     endboss = new Endboss(this);
-
+    fishes;
     level;
     canvas;
     ctx;
@@ -14,6 +17,7 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.level = level;
+        this.initFishes();
         this.gameStopped = false;
 
         this.draw();
@@ -25,13 +29,24 @@ class World {
         this.endboss.world = this;
     }
 
+    initFishes() {
+        this.level.fishes.forEach(fishes => {
+            if (this.fishes) {
+                this.fishes.world = this;
+                if (this.fishes.animate) fishes.animate();
+            }
+        });
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
-
+        this.addObjectsToMap(this.level.fishes);
         this.addObjectsToMap(this.level.backgroundObjects);
+
         this.addToMap(this.character);
+
         this.addToMap(this.endboss);
 
         this.ctx.translate(-this.camera_x, 0);
@@ -41,6 +56,13 @@ class World {
 
     addObjectsToMap(objects) {
         objects.forEach(o => this.addToMap(o));
+    }
+
+    // Subfunktion wenn es mehrer Objekte vom gleichen Typ gibt, z.B. fishes
+    addObjectsToMap(objects) {
+        objects.forEach(o => {
+            this.addToMap(o);
+        })
     }
 
     addToMap(mo) {

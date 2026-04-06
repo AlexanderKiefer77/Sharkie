@@ -1,14 +1,21 @@
 function initLevel() {
-    
+    let numberOfGreenPufferFishes = 10;
+    let numberOfOrangePufferFishes = 10;
+    let numberOfRedPufferFishes = 10;
+
+    const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () => new GreenPufferFishes());
+    const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () => new OrangePufferFishes());
+    const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () => new RedPufferFishes());
+
+    const fishes = [
+        ...pufferFishesGreen,
+        ...pufferFishesOrange,
+        ...pufferFishesRed
+    ];
+
     // Return of the level
     return new Level(
-        // enemies,
-        // coins,
-        // bottlesToCollect,
-        // [
-        //     new Cloud(),
-        //     new Cloud()
-        // ],
+        fishes,
         [
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
             new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', -719),
@@ -21,36 +28,36 @@ function initLevel() {
             new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 0),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 0),
             new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 0),
-           
+
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719),
             new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719),
             new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719),
             new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719),
-            
+
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 2),
             new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 2),
             new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 2),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 2),
             new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 2),
-           
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719*3),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719*3),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719*3),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719*3),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719*3),
+
+            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 3),
+            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 3),
+            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 3),
+            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 3),
+            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 3),
 
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 4),
             new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 4),
             new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 4),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 4),
             new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 4),
-           
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719*5),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719*5),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719*5),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719*5),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719*5),
+
+            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 5),
+            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 5),
+            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 5),
+            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 5),
+            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 5),
         ],
         [
             new Endboss()
