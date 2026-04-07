@@ -48,7 +48,7 @@ class GreenPufferFishes extends MovableObject {
         this.loadImages(this.IMAGES_TRANSITION_GREEN);
         this.loadImages(this.IMAGES_DEAD_GREEN);
 
-        this.x = 300 + Math.random() * 3500;
+        this.x = 300 + Math.random() * 3600;
         this.y = 50 + Math.random() * 400;
         this.speed = 0.15 + Math.random() * 0.25;
 

@@ -14,9 +14,12 @@ class Character extends MovableObject {
         right: 25
     };
 
-    
+
     idleStartTime = null;
     animationFrameCount = 0;
+
+    state = 'IDLE';
+    isAttacking = false;
 
 
     IMAGES_IDLE = [
@@ -72,17 +75,16 @@ class Character extends MovableObject {
         './assets/img/1.Sharkie/3.Swim/6.png'
     ];
 
-    // IMAGES_ATTACK = [
-    //     './assets/img/2_character_pepe/3_jump/J-31.png',
-    //     './assets/img/2_character_pepe/3_jump/J-32.png',
-    //     './assets/img/2_character_pepe/3_jump/J-33.png',
-    //     './assets/img/2_character_pepe/3_jump/J-34.png',
-    //     './assets/img/2_character_pepe/3_jump/J-35.png',
-    //     './assets/img/2_character_pepe/3_jump/J-36.png',
-    //     './assets/img/2_character_pepe/3_jump/J-37.png',
-    //     './assets/img/2_character_pepe/3_jump/J-38.png',
-    //     './assets/img/2_character_pepe/3_jump/J-39.png'
-    // ];
+    IMAGES_ATTACK_FINSLAP = [
+        './assets/img/1.Sharkie/4.Attack/Fin slap/1.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/2.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/3.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/4.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/5.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/6.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/7.png',
+        './assets/img/1.Sharkie/4.Attack/Fin slap/8.png'
+    ];
 
     IMAGES_HURT_POISONEND = [
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
@@ -133,6 +135,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_IDLE_LONG);
         this.loadImages(this.IMAGES_SLEEP);
         this.loadImages(this.IMAGES_SWIMM);
+        this.loadImages(this.IMAGES_ATTACK_FINSLAP);
         this.loadImages(this.IMAGES_HURT_POISONEND);
         this.loadImages(this.IMAGES_HURT_ELECTRIC);
         this.loadImages(this.IMAGES_DEAD_POISONEND);
@@ -166,14 +169,18 @@ class Character extends MovableObject {
                 // this.walking_sound.play();
             }
 
-            // if (this.world.keyboard.SPACE && !this.isAboveGround()) { // zum springen vom charakter, nur wenn er auf dem Boden ist
-            //     this.jump();
-            // }
+            if (this.world.keyboard.SPACE && !this.isAttacking) {
+                this.finSlap();
+            }
 
-            this.world.camera_x = -this.x + 100; // "+ 100" Positioniert den Character in der x-Achse
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
+            if (this.isAttacking) {
+                return;
+            }
+
             const isMoving =
                 this.world.keyboard.RIGHT ||
                 this.world.keyboard.LEFT ||
@@ -218,7 +225,25 @@ class Character extends MovableObject {
             }
 
         }, 150);
+    }
 
+    finSlap() {
+        if (this.isAttacking) return;
 
+        this.isAttacking = true;
+        this.state = 'ATTACK';
+        this.currentImage = 0;
+
+        let interval = setInterval(() => {
+            this.playAnimation(this.IMAGES_ATTACK_FINSLAP, false);
+
+            if (this.currentImage >= this.IMAGES_ATTACK_FINSLAP.length) {
+                clearInterval(interval);
+                this.isAttacking = false;
+                this.state = 'IDLE';
+                this.currentImage = 0;
+                this.idleStartTime = Date.now();
+            }
+        }, 40);
     }
 }

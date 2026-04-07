@@ -8,23 +8,23 @@ class Level {
     // greenPufferFish;
     // orangePufferFish;
     // redPufferFish;
-    // endboss;
-    fishes;
+
+
     backgroundObjects;
+    fishes;
+    // endboss;
     level_start_x = -600;
     level_end_x = 3600;
 
 
-    constructor (backgroundObjects, fishes) {
+    constructor(backgroundObjects, fishes) {
         // this.enemies = enemies;
         // this.coins = coins;
         // this.bottlesToCollect = bottlesToCollect;
         // this.clouds = clouds;
-        // this.greenPufferFish = greenPufferFish;
-        // this.orangePufferFish = orangePufferFish;
-        // this.redPufferFish = redPufferFish;
-        // this.endboss = endboss;
-        this.fishes = fishes;
+
         this.backgroundObjects = backgroundObjects;
+        this.fishes = fishes;
+        // this.endboss = endboss;
     }
 }

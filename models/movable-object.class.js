@@ -28,11 +28,22 @@ class MovableObject extends DrawableObject {
         // }
     }
 
-    playAnimation(images) {
-        let i = this.currentImage % images.length;
+    playAnimation(images, loop = true) {
+        let i = this.currentImage;
+
+        // ❗ Schutz vor undefined
+        if (i >= images.length) {
+            if (loop) {
+                this.currentImage = 0;
+                i = 0;
+            } else {
+                return; // stoppt Animation sauber
+            }
+        }
+
         let path = images[i];
         this.img = this.imageCache[path];
-        // this.currentImage = (this.currentImage + 1) % images.length;
+
         this.currentImage++;
     }
 
