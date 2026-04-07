@@ -31,13 +31,12 @@ class MovableObject extends DrawableObject {
     playAnimation(images, loop = true) {
         let i = this.currentImage;
 
-        // ❗ Schutz vor undefined
         if (i >= images.length) {
             if (loop) {
                 this.currentImage = 0;
                 i = 0;
             } else {
-                return; // stoppt Animation sauber
+                return;
             }
         }
 
@@ -70,6 +69,8 @@ class MovableObject extends DrawableObject {
             this instanceof GreenPufferFishes ||
             this instanceof OrangePufferFishes ||
             this instanceof RedPufferFishes ||
+            this instanceof YellowJellyFishes ||
+            this instanceof LilaJellyFishes ||
             this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = '1';

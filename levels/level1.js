@@ -2,15 +2,21 @@ function initLevel() {
     let numberOfGreenPufferFishes = 10;
     let numberOfOrangePufferFishes = 10;
     let numberOfRedPufferFishes = 10;
+    let numberOfYellowJellyFishes = 5;
+    let numberOfLilaJellyFishes = 5;
 
     const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () => new GreenPufferFishes());
     const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () => new OrangePufferFishes());
     const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () => new RedPufferFishes());
+    const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () => new YellowJellyFishes());
+    const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () => new LilaJellyFishes());
 
     const fishes = [
         ...pufferFishesGreen,
         ...pufferFishesOrange,
-        ...pufferFishesRed
+        ...pufferFishesRed,
+        ...jellyFishesYellow,
+        ...jellyFishesLila
     ];
 
     // Return of the level
