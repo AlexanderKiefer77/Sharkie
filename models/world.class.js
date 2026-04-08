@@ -1,11 +1,9 @@
 
 class World {
     character = new Character();
-    // greenPufferFish = new GreenPufferFishes();
-    // orangePufferFish = new OrangePufferFishes();
-    // redPufferFish = new RedPufferFishes();
     endboss = new Endboss(this);
     fishes;
+    bubbles = [];
     level;
     canvas;
     ctx;
@@ -44,6 +42,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.fishes);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.bubbles);
 
         this.addToMap(this.character);
 
@@ -85,4 +84,17 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+    checkCollisions() {
+    this.bubbles.forEach((bubble) => {
+        // Nutze hier das Array, in dem deine Quallen wirklich gespeichert sind
+        this.level.fishes.forEach((enemy) => { 
+            if (bubble.isColliding(enemy) && !bubble.hasHit) {
+                // Prüfen, ob es ein Jellyfish ist (optional, falls es auch andere Fische gibt)
+                bubble.onHit();
+                enemy.energy = 0; 
+            }
+        });
+    });
+}
 }

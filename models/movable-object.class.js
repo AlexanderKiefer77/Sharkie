@@ -10,6 +10,14 @@ class MovableObject extends DrawableObject {
     sharkie_start_animation = true;
     endboss_start_animation = true;
 
+    // Standardwerte für alle beweglichen Objekte
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
+
     applyGravity() {
         setInterval(() => {
             // if (this.sharkie_start_animation && this.isAboveGround() || this.speedY > 0) {  // "this.speedY > 0" wird verwendet, zum springen vom Boden aus für den Character+
@@ -71,6 +79,7 @@ class MovableObject extends DrawableObject {
             this instanceof RedPufferFishes ||
             this instanceof YellowJellyFishes ||
             this instanceof LilaJellyFishes ||
+            this instanceof Bubble ||
             this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = '1';

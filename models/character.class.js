@@ -86,6 +86,17 @@ class Character extends MovableObject {
         './assets/img/1.Sharkie/4.Attack/Fin slap/8.png'
     ];
 
+    IMAGES_ATTACK_BUBBLETRAP = [
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
+        './assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png'
+    ]
+
     IMAGES_HURT_POISONEND = [
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
@@ -136,6 +147,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SLEEP);
         this.loadImages(this.IMAGES_SWIMM);
         this.loadImages(this.IMAGES_ATTACK_FINSLAP);
+        this.loadImages(this.IMAGES_ATTACK_BUBBLETRAP);
         this.loadImages(this.IMAGES_HURT_POISONEND);
         this.loadImages(this.IMAGES_HURT_ELECTRIC);
         this.loadImages(this.IMAGES_DEAD_POISONEND);
@@ -171,6 +183,10 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.SPACE && !this.isAttacking) {
                 this.finSlap();
+            }
+
+            if (this.world.keyboard.D && !this.isAttacking) {
+                this.bubbleTrap();
             }
 
             this.world.camera_x = -this.x + 100;
@@ -237,7 +253,7 @@ class Character extends MovableObject {
         this.offset = {
             top: 70,
             bottom: 40,
-            left:  30,
+            left: 30,
             right: 10
         };
 
@@ -248,7 +264,7 @@ class Character extends MovableObject {
                 clearInterval(interval);
                 this.isAttacking = false;
                 this.state = 'IDLE';
-                this.currentImage = 0;    
+                this.currentImage = 0;
                 this.idleStartTime = Date.now();
 
                 this.offset = {
@@ -260,4 +276,36 @@ class Character extends MovableObject {
             }
         }, 40);
     }
+
+    bubbleTrap() {
+        if (this.isAttacking) return;
+
+        this.isAttacking = true;
+        this.currentImage = 0;
+
+        let interval = setInterval(() => {
+            this.playAnimation(this.IMAGES_ATTACK_BUBBLETRAP);
+
+            if (this.currentImage >= this.IMAGES_ATTACK_BUBBLETRAP.length) {
+                clearInterval(interval);
+
+                this.createBubble();
+
+                this.isAttacking = false;
+                this.state = 'IDLE';
+                this.idleStartTime = Date.now();
+            };
+
+        }, 40);
+    }
+
+    createBubble() {
+        if (this.world && this.world.bubbles) {
+            let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
+            let bubbleY = this.y + this.height / 2;
+
+            this.world.bubbles.push(new Bubble(bubbleX, bubbleY));
+        }
+    }
 }
+
