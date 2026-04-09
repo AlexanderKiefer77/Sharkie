@@ -6,6 +6,9 @@ class Character extends MovableObject {
     otherDirection = false;
     currentImage = 0;
     world;
+    energy = 100;
+    collectCoins = 0;
+    collectBottles = 0;
 
     offset = {
         top: 80,

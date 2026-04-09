@@ -78,25 +78,5 @@ class MovableObject extends DrawableObject {
         this.y += this.speed;
     }
 
-    drawFrame(ctx) { // in drawable-object.class.js verschoben
-        // Zeichnet Rechteck um die Elemente
-        // if (this instanceof Character ||
-        //     this instanceof PufferFish ||
-        //     this instanceof JellyFishes ||
-        //     this instanceof Bubble ||
-        //     this instanceof Endboss) {
-        // draw Frames around all Elements except background
-        if (!(this instanceof BackgroundObject)) { 
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = this.isHit ? 'red' : 'blue';
-            ctx.rect(
-                this.x + this.offset.left,
-                this.y + this.offset.top,
-                this.width - this.offset.left - this.offset.right,
-                this.height - this.offset.top - this.offset.bottom
-            );
-            ctx.stroke();
-        }
-    }
+   
 }
