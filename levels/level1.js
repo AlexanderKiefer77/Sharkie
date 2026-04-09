@@ -46,52 +46,7 @@ function initLevel() {
     return new Level(
         fishes,
         createBackgroundObjects(),
-        // [
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', -719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', -719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', -719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', -719),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 0),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 0),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 0),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 0),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 0),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 2),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 2),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 2),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 2),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 2),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 3),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 3),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 3),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 3),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 3),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 4),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 4),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 4),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 4),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 4),
-
-        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 5),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 5),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 5),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 5),
-        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 5),
-        // ],
-        [
-            new Endboss()
-        ]
+        new Endboss()
     );
 
     function createBackgroundObjects() {
@@ -99,7 +54,7 @@ function initLevel() {
         let layerOffsets = [-719, 0, 719, 719 * 2, 719 * 3, 719 * 4, 719 * 5];
 
         layerOffsets.forEach((offset, index) => {
-            let suffix = index % 2 === 0 ? '2' : '1'; // Wechselt zwischen L2 und L1
+            let suffix = index % 2 === 0 ? '2' : '1'; // change between L2 and L1
             backgroundObjects.push(
                 new BackgroundObject(`./assets/img/3. Background/Layers/5. Water/L${suffix}.png`, offset),
                 new BackgroundObject(`./assets/img/3. Background/Layers/1. Light/${suffix === '2' ? '2' : '1'}.png`, offset),

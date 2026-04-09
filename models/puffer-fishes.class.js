@@ -1,14 +1,16 @@
 
 class PufferFish extends MovableObject {
     height = 40;
-    width = 50;    
-    
+    width = 50;
+
     IMAGES_SWIMMING = [];
     IMAGES_BUBBLESWIMM = [];
     IMAGES_TRANSITION = [];
     IMAGES_DEAD = [];
 
     offset = { top: 0, bottom: 10, left: 2, right: 2 };
+
+    isDead = false;
 
     /**
      * @param {string} color - 'Green', 'Orange' or 'Red'
@@ -17,8 +19,8 @@ class PufferFish extends MovableObject {
      */
     constructor(color, x, y) {
         super();
-        this.setImages(color); 
-        
+        this.setImages(color);
+
         this.loadImage(this.IMAGES_SWIMMING[0]);
         this.loadAllImages();
 
@@ -32,7 +34,7 @@ class PufferFish extends MovableObject {
     setImages(color) {
         // We use template literals (``) to build the paths dynamically
         const basePath = `./assets/img/2.Enemy/puffer-fish/${color}`;
-        
+
         this.IMAGES_SWIMMING = [
             `${basePath}/swim/1.png`, `${basePath}/swim/2.png`, `${basePath}/swim/3.png`,
             `${basePath}/swim/4.png`, `${basePath}/swim/5.png`
@@ -48,7 +50,7 @@ class PufferFish extends MovableObject {
             `${basePath}/transition/4.png`, `${basePath}/transition/5.png`
         ];
 
-        this.IMAGES_DEAD = [`${basePath}/die/1.png`];
+        this.IMAGES_DEAD = [`${basePath}/die/1.png`, `${basePath}/die/2.png`, `${basePath}/die/3.png`];
     }
 
     loadAllImages() {
@@ -59,12 +61,51 @@ class PufferFish extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
-            this.moveLeft();
+        this.movementInterval = setInterval(() => {
+            if (!this.isDead) {
+                this.moveLeft();
+            }
         }, 1000 / 60);
 
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_SWIMMING);
+        this.animationInterval = setInterval(() => {
+            if (!this.isDead) {
+                this.playAnimation(this.IMAGES_SWIMMING);
+            }
         }, 250);
+    }
+
+    die() {
+        if (this.isDead) return;
+        this.isDead = true;
+
+        // 1. Normale Bewegungen stoppen
+        clearInterval(this.movementInterval);
+        clearInterval(this.animationInterval);
+
+        // 2. Sterbe-Animation starten (Transition-Bilder nutzen)
+        this.currentImage = 0; // Animation von vorne starten
+        let deathAnimationInterval = setInterval(() => {
+            // Wir spielen die Transition-Bilder ab
+            this.playAnimation(this.IMAGES_TRANSITION);
+
+            // PRÜFUNG: Sind wir beim letzten Bild angekommen?
+            if (this.currentImage >= this.IMAGES_TRANSITION.length) {
+                clearInterval(deathAnimationInterval); // Animation stoppen
+                // Festlegen auf das letzte Bild der Transition (aufgeblähter Fisch)
+                this.playAnimation(this.IMAGES_DEAD);
+                this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+            }
+        }, 60);
+
+        // 3. Nach oben treiben (startet sofort)
+        this.deathMovementInterval = setInterval(() => {
+            this.y -= 3;
+            this.x += 2; // Leichtes Taumeln nach oben
+        }, 1000 / 60);
+
+        // 4. Cleanup nach 2 Sekunden
+        setTimeout(() => {
+            clearInterval(this.deathMovementInterval);
+        }, 7000);
     }
 }

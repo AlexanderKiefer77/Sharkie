@@ -86,26 +86,49 @@ class World {
         }, 50);
     }
 
-
     checkCollisions() {
         this.level.fishes.forEach((fish) => {
-            // Wir prüfen, ob der Charakter den Fisch berührt
-            if (this.character.isColliding(fish)) {
-                // console.log('Kollision mit:', fish);
+            if (this.character.isColliding(fish) && !fish.isDead) {
 
-                // Hier kannst du entscheiden:
-                // 1. Schlägt Sharkie gerade? (Fin Slap)
-                if (this.character.isAttacking) {
+                if (this.character.isAttacking && fish instanceof PufferFish) {
                     // console.log('Fisch besiegt!');
-                    // fish.hit(); // Falls Fische Leben haben
+                    fish.die(); // Fisch-Animation starten
+
+                    // Nach 2 Sekunden aus dem Array löschen
+                    setTimeout(() => {
+                        let index = this.level.fishes.indexOf(fish);
+                        if (index > -1) {
+                            this.level.fishes.splice(index, 1);
+                        }
+                    }, 2000);
+
                 } else {
+                    // Sharkie wird getroffen, falls er nicht gerade angreift
                     this.character.hit();
-                    // 2. Sharkie wird getroffen
-                    // console.log('Sharkie verletzt!');
-                    // this.character.hit(); 
                 }
             }
         });
     }
+
+    // checkCollisions() {
+    //     this.level.fishes.forEach((fish) => {
+    //         // Wir prüfen, ob der Charakter den Fisch berührt
+    //         if (this.character.isColliding(fish)) {
+    //             // console.log('Kollision mit:', fish);
+
+    //             // Hier kannst du entscheiden:
+    //             // 1. Schlägt Sharkie gerade? (Fin Slap)
+    //             if (this.character.isAttacking) {
+    //                 // console.log('Fisch besiegt!');
+    //                 // fish.hit(); // Falls Fische Leben haben
+    //             } else {
+    //                 this.character.hit();
+    //                 // 2. Sharkie wird getroffen
+    //                 // console.log('Sharkie verletzt!');
+    //                 // this.character.hit(); 
+    //             }
+    //         }
+    //     });
+    // }
 }
 
