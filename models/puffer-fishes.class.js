@@ -1,9 +1,8 @@
 
 class PufferFish extends MovableObject {
     height = 40;
-    width = 50;
+    width = 50;    
     
-    // Wir definieren die Arrays leer und füllen sie im Constructor
     IMAGES_SWIMMING = [];
     IMAGES_BUBBLESWIMM = [];
     IMAGES_TRANSITION = [];
@@ -12,13 +11,13 @@ class PufferFish extends MovableObject {
     offset = { top: 0, bottom: 10, left: 2, right: 2 };
 
     /**
-     * @param {string} color - 'Green', 'Orange' oder 'Red'
+     * @param {string} color - 'Green', 'Orange' or 'Red'
      * @param {number} x - Startposition X
      * @param {number} y - Startposition Y
      */
     constructor(color, x, y) {
         super();
-        this.setImages(color); // Pfade basierend auf der Farbe generieren
+        this.setImages(color); 
         
         this.loadImage(this.IMAGES_SWIMMING[0]);
         this.loadAllImages();
@@ -31,7 +30,7 @@ class PufferFish extends MovableObject {
     }
 
     setImages(color) {
-        // Wir nutzen Template Literals (``), um die Pfade dynamisch zu bauen
+        // We use template literals (``) to build the paths dynamically
         const basePath = `./assets/img/2.Enemy/puffer-fish/${color}`;
         
         this.IMAGES_SWIMMING = [

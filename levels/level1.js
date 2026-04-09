@@ -5,17 +5,17 @@ function initLevel() {
     let numberOfYellowJellyFishes = 5;
     let numberOfLilaJellyFishes = 5;
 
-    // Helper-Funktion für zufällige x-Position
+    // Helper-Function for random x-Position
     function randomPositionX() {
-        return 300 + Math.random() * 3600; // x zwischen 300 und 3900
+        return 300 + Math.random() * 3600; // x between 300 and 3900
     }
 
-    // Helper-Funktion für zufällige y-Position der Pufferfische
+    // Helper-Function for random y-Position
     function randomPositionY() {
-        return 20 + Math.random() * 400; // y zwischen 50 und 450
+        return 20 + Math.random() * 400; // y between 50 and 450
     }
 
-    // Pufferfische
+    // Pufferfishes
     const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () =>
         new PufferFish('Green', randomPositionX(), randomPositionY())
     );
@@ -26,7 +26,7 @@ function initLevel() {
         new PufferFish('Red', randomPositionX(), randomPositionY())
     );
 
-    // Jellyfische (fix y = 400)
+    // Jellyfishes (fix y = 400)
     const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () =>
         new JellyFish('Yellow', randomPositionX(), 400)
     );
@@ -34,24 +34,6 @@ function initLevel() {
         new JellyFish('Lila', randomPositionX(), 400)
     );
 
-    // const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () =>
-    //     new GreenPufferFishes(randomPositionX(), randomPositionY())
-    // );
-    // const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () =>
-    //     new OrangePufferFishes(randomPositionX(), randomPositionY())
-    // );
-    // const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () =>
-    //     new RedPufferFishes(randomPositionX(), randomPositionY())
-    // );
-
-    // Jellyfische (fix y = 400)
-    // const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () =>
-    //     new YellowJellyFishes(randomPositionX(), 400)
-    // );
-    // const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () =>
-    //     new LilaJellyFishes(randomPositionX(), 400)
-    // );
-    
     const fishes = [
         ...pufferFishesGreen,
         ...pufferFishesOrange,
@@ -63,53 +45,71 @@ function initLevel() {
     // Return of the level
     return new Level(
         fishes,
-        [
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', -719),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', -719),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', -719),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', -719),
+        createBackgroundObjects(),
+        // [
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', -719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', -719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', -719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', -719),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 0),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 0),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 0),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 0),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 0),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 0),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 0),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 0),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 0),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 0),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 2),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 2),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 2),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 2),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 2),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 2),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 2),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 2),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 2),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 2),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 3),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 3),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 3),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 3),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 3),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 3),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 3),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 3),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 3),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 3),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 4),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 4),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 4),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 4),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 4),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L1.png', 719 * 4),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/1.png', 719 * 4),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L1.png', 719 * 4),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L1.png', 719 * 4),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L1.png', 719 * 4),
 
-            new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 5),
-            new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 5),
-            new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 5),
-            new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 5),
-            new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 5),
-        ],
+        //     new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', 719 * 5),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/1. Light/2.png', 719 * 5),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 5),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', 719 * 5),
+        //     new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 5),
+        // ],
         [
             new Endboss()
         ]
     );
+
+    function createBackgroundObjects() {
+        let backgroundObjects = [];
+        let layerOffsets = [-719, 0, 719, 719 * 2, 719 * 3, 719 * 4, 719 * 5];
+
+        layerOffsets.forEach((offset, index) => {
+            let suffix = index % 2 === 0 ? '2' : '1'; // Wechselt zwischen L2 und L1
+            backgroundObjects.push(
+                new BackgroundObject(`./assets/img/3. Background/Layers/5. Water/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/3. Background/Layers/1. Light/${suffix === '2' ? '2' : '1'}.png`, offset),
+                new BackgroundObject(`./assets/img/3. Background/Layers/3.Fondo 1/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/3. Background/Layers/4.Fondo 2/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/3. Background/Layers/2. Floor/L${suffix}.png`, offset)
+            );
+        });
+        return backgroundObjects;
+    }
 }
 
 
