@@ -274,47 +274,12 @@ class Character extends MovableObject {
                 this.isAttacking = false;
                 this.idleStartTime = Date.now();
                 this.state = 'IDLE';
-                this.currentImage = 0; 
+                this.currentImage = 0;
 
                 this.offset = { top: 85, bottom: 40, left: 25, right: 25 };
             }
         }, 50);
     }
-
-    // finSlap() {
-    //     if (this.isAttacking) return;
-
-    //     this.isAttacking = true;
-    //     this.state = 'ATTACK';
-    //     this.currentImage = 0;
-
-    //     this.offset = {
-    //         top: 70,
-    //         bottom: 40,
-    //         left: 30,
-    //         right: 10
-    //     };
-
-    //     let interval = setInterval(() => {
-    //         this.playAnimation(this.IMAGES_ATTACK_FINSLAP, false);
-
-    //         if (this.currentImage >= this.IMAGES_ATTACK_FINSLAP.length) {
-    //             clearInterval(interval);
-    //             this.isAttacking = false;
-    //             // this.state = 'IDLE';
-
-    //             this.currentImage = 0;
-    //             this.idleStartTime = Date.now();
-
-    //             this.offset = {
-    //                 top: 85,
-    //                 bottom: 40,
-    //                 left: 25,
-    //                 right: 25
-    //             };
-    //         }
-    //     }, 40);
-    // }
 
     bubbleTrap() {
         if (this.isAttacking) return;

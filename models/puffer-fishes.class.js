@@ -82,17 +82,25 @@ class PufferFish extends MovableObject {
         clearInterval(this.animationInterval);
 
         this.currentImage = 0;
+        let loopCount = 0;
+
         let deathAnimationInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_TRANSITION);
 
             if (this.currentImage >= this.IMAGES_TRANSITION.length) {
-                clearInterval(deathAnimationInterval);
-                this.playAnimation(this.IMAGES_DEAD);
-                this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+                loopCount++;
+
+                if (loopCount < 4) {
+                    this.currentImage = 0;
+                } else {
+                    clearInterval(deathAnimationInterval);
+                    this.playAnimation(this.IMAGES_DEAD);
+                    this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+                }
             }
         }, 60);
 
-        let horizontalFlight = hitFromLeft ? 3 : -3;
+        let horizontalFlight = hitFromLeft ? 2 : -2;
         this.deathMovementInterval = setInterval(() => {
             this.y -= 3;
             this.x += horizontalFlight;
