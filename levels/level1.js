@@ -5,9 +5,12 @@ function initLevel() {
     let numberOfYellowJellyFishes = 5;
     let numberOfLilaJellyFishes = 5;
 
-    const numberOfBottles = 5;
+    const numberOfBottles = 8;
     const startX = 400;
     const maxX = 3500;
+
+    let coins = [];
+    const coinRadius = 80;
 
     // Helper-Function for random x-Position
     function randomPositionX() {
@@ -46,12 +49,34 @@ function initLevel() {
         ...jellyFishesLila
     ];
 
+    // 1. Place bottles evenly with a minimum distance between them
     const availableSpace = maxX - startX;
     const interval = availableSpace / (numberOfBottles - 1);
+
     const bottles = Array.from({ length: numberOfBottles }, (_, i) => {
         let xPos = startX + (i * interval) + (Math.random() * (interval / 2) - (interval / 4));
         xPos = Math.min(xPos, maxX);
-        return new Bottle(xPos);
+        let yPos = 420 - Math.random() * 80;
+        return new Bottle(xPos, yPos);
+    });
+
+    // 2. Place coins in an even radius around each bottle
+    bottles.forEach(bottle => {
+        const numberOfCoinsPerBottle = 5;
+        const startAngle =  (200 * Math.PI) / 180;
+        const endAngle = (340 * Math.PI) / 180;
+
+        for (let i = 0; i < numberOfCoinsPerBottle; i++) {
+            let angle = startAngle + (i * (endAngle - startAngle) / (numberOfCoinsPerBottle - 1));
+
+            let centerX = (bottle.x + bottle.width / 2);
+            let centerY = bottle.y + 20;
+
+            let coinX = centerX + Math.cos(angle) * coinRadius;
+            let coinY = centerY + Math.sin(angle) * coinRadius;
+
+            coins.push(new Coin(coinX, coinY));
+        }
     });
 
     // Return of the level
@@ -59,6 +84,7 @@ function initLevel() {
         fishes,
         createBackgroundObjects(),
         bottles,
+        coins,
         new Endboss()
     );
 

@@ -1,6 +1,6 @@
 class Bottle extends MovableObject {
 
-    y = 370;
+    y = 370; // default
     width = 50;
     height = 60;
 
@@ -16,13 +16,14 @@ class Bottle extends MovableObject {
         './assets/img/Sonstiges/Bottle-Right.png'
     ];
 
-    constructor(x) {
+    constructor(x, y) {
         super();
         this.loadImage(this.IMAGES_BOTTLE[0]);
         this.loadImages(this.IMAGES_BOTTLE);
 
         this.x = x || 300 + Math.random() * 3000;
-
+        this.y = y !== undefined ? y : 370;
+        
         this.animate();
     }
 
