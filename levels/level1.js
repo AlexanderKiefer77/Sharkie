@@ -1,7 +1,7 @@
 function initLevel() {
-    let numberOfGreenPufferFishes = 3;
-    let numberOfOrangePufferFishes = 3;
-    let numberOfRedPufferFishes = 3;
+    let numberOfGreenPufferFishes = 5;
+    let numberOfOrangePufferFishes = 5;
+    let numberOfRedPufferFishes = 5;
     let numberOfYellowJellyFishes = 5;
     let numberOfLilaJellyFishes = 5;
 
@@ -17,22 +17,41 @@ function initLevel() {
 
     // Pufferfische
     const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () =>
-        new GreenPufferFishes(randomPositionX(), randomPositionY())
+        new PufferFish('Green', randomPositionX(), randomPositionY())
     );
     const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () =>
-        new OrangePufferFishes(randomPositionX(), randomPositionY())
+        new PufferFish('Orange', randomPositionX(), randomPositionY())
     );
     const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () =>
-        new RedPufferFishes(randomPositionX(), randomPositionY())
+        new PufferFish('Red', randomPositionX(), randomPositionY())
     );
 
     // Jellyfische (fix y = 400)
     const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () =>
-        new YellowJellyFishes(randomPositionX(), 400)
+        new JellyFish('Yellow', randomPositionX(), 400)
     );
     const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () =>
-        new LilaJellyFishes(randomPositionX(), 400)
+        new JellyFish('Lila', randomPositionX(), 400)
     );
+
+    // const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () =>
+    //     new GreenPufferFishes(randomPositionX(), randomPositionY())
+    // );
+    // const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () =>
+    //     new OrangePufferFishes(randomPositionX(), randomPositionY())
+    // );
+    // const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () =>
+    //     new RedPufferFishes(randomPositionX(), randomPositionY())
+    // );
+
+    // Jellyfische (fix y = 400)
+    // const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () =>
+    //     new YellowJellyFishes(randomPositionX(), 400)
+    // );
+    // const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () =>
+    //     new LilaJellyFishes(randomPositionX(), 400)
+    // );
+    
     const fishes = [
         ...pufferFishesGreen,
         ...pufferFishesOrange,

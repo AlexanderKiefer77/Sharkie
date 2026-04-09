@@ -1,0 +1,71 @@
+
+class PufferFish extends MovableObject {
+    height = 40;
+    width = 50;
+    
+    // Wir definieren die Arrays leer und füllen sie im Constructor
+    IMAGES_SWIMMING = [];
+    IMAGES_BUBBLESWIMM = [];
+    IMAGES_TRANSITION = [];
+    IMAGES_DEAD = [];
+
+    offset = { top: 0, bottom: 10, left: 2, right: 2 };
+
+    /**
+     * @param {string} color - 'Green', 'Orange' oder 'Red'
+     * @param {number} x - Startposition X
+     * @param {number} y - Startposition Y
+     */
+    constructor(color, x, y) {
+        super();
+        this.setImages(color); // Pfade basierend auf der Farbe generieren
+        
+        this.loadImage(this.IMAGES_SWIMMING[0]);
+        this.loadAllImages();
+
+        this.x = x;
+        this.y = y;
+        this.speed = 0.15 + Math.random() * 0.25;
+
+        this.animate();
+    }
+
+    setImages(color) {
+        // Wir nutzen Template Literals (``), um die Pfade dynamisch zu bauen
+        const basePath = `./assets/img/2.Enemy/puffer-fish/${color}`;
+        
+        this.IMAGES_SWIMMING = [
+            `${basePath}/swim/1.png`, `${basePath}/swim/2.png`, `${basePath}/swim/3.png`,
+            `${basePath}/swim/4.png`, `${basePath}/swim/5.png`
+        ];
+
+        this.IMAGES_BUBBLESWIMM = [
+            `${basePath}/bubbleeswim/1.png`, `${basePath}/bubbleeswim/2.png`, `${basePath}/bubbleeswim/3.png`,
+            `${basePath}/bubbleeswim/4.png`, `${basePath}/bubbleeswim/5.png`
+        ];
+
+        this.IMAGES_TRANSITION = [
+            `${basePath}/transition/1.png`, `${basePath}/transition/2.png`, `${basePath}/transition/3.png`,
+            `${basePath}/transition/4.png`, `${basePath}/transition/5.png`
+        ];
+
+        this.IMAGES_DEAD = [`${basePath}/die/1.png`];
+    }
+
+    loadAllImages() {
+        this.loadImages(this.IMAGES_SWIMMING);
+        this.loadImages(this.IMAGES_BUBBLESWIMM);
+        this.loadImages(this.IMAGES_TRANSITION);
+        this.loadImages(this.IMAGES_DEAD);
+    }
+
+    animate() {
+        setInterval(() => {
+            this.moveLeft();
+        }, 1000 / 60);
+
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_SWIMMING);
+        }, 250);
+    }
+}
