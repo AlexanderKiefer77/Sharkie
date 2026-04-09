@@ -74,36 +74,31 @@ class PufferFish extends MovableObject {
         }, 250);
     }
 
-    die() {
+    die(hitFromLeft) {
         if (this.isDead) return;
         this.isDead = true;
 
-        // 1. Normale Bewegungen stoppen
         clearInterval(this.movementInterval);
         clearInterval(this.animationInterval);
 
-        // 2. Sterbe-Animation starten (Transition-Bilder nutzen)
-        this.currentImage = 0; // Animation von vorne starten
+        this.currentImage = 0;
         let deathAnimationInterval = setInterval(() => {
-            // Wir spielen die Transition-Bilder ab
             this.playAnimation(this.IMAGES_TRANSITION);
 
-            // PRÜFUNG: Sind wir beim letzten Bild angekommen?
             if (this.currentImage >= this.IMAGES_TRANSITION.length) {
-                clearInterval(deathAnimationInterval); // Animation stoppen
-                // Festlegen auf das letzte Bild der Transition (aufgeblähter Fisch)
+                clearInterval(deathAnimationInterval);
                 this.playAnimation(this.IMAGES_DEAD);
                 this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
             }
         }, 60);
 
-        // 3. Nach oben treiben (startet sofort)
+        let horizontalFlight = hitFromLeft ? 3 : -3;
         this.deathMovementInterval = setInterval(() => {
             this.y -= 3;
-            this.x += 2; // Leichtes Taumeln nach oben
+            this.x += horizontalFlight;
+            horizontalFlight *= 0.98;
         }, 1000 / 60);
 
-        // 4. Cleanup nach 2 Sekunden
         setTimeout(() => {
             clearInterval(this.deathMovementInterval);
         }, 7000);

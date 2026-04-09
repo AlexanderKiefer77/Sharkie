@@ -92,7 +92,7 @@ class World {
 
                 if (this.character.isAttacking && fish instanceof PufferFish) {
                     // console.log('Fisch besiegt!');
-                    fish.die(); // Fisch-Animation starten
+                    fish.die(!this.character.otherDirection); 
 
                     // Nach 2 Sekunden aus dem Array löschen
                     setTimeout(() => {
