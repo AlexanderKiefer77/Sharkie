@@ -5,6 +5,10 @@ function initLevel() {
     let numberOfYellowJellyFishes = 5;
     let numberOfLilaJellyFishes = 5;
 
+    const numberOfBottles = 5;
+    const startX = 400;
+    const maxX = 3500;
+
     // Helper-Function for random x-Position
     function randomPositionX() {
         return 300 + Math.random() * 3600; // x between 300 and 3900
@@ -42,10 +46,19 @@ function initLevel() {
         ...jellyFishesLila
     ];
 
+    const availableSpace = maxX - startX;
+    const interval = availableSpace / (numberOfBottles - 1);
+    const bottles = Array.from({ length: numberOfBottles }, (_, i) => {
+        let xPos = startX + (i * interval) + (Math.random() * (interval / 2) - (interval / 4));
+        xPos = Math.min(xPos, maxX);
+        return new Bottle(xPos);
+    });
+
     // Return of the level
     return new Level(
         fishes,
         createBackgroundObjects(),
+        bottles,
         new Endboss()
     );
 

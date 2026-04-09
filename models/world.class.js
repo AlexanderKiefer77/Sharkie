@@ -3,6 +3,7 @@ class World {
     endboss = new Endboss(this);
     bubbles = [];
     level;
+    // bottle;
     canvas;
     ctx;
     keyboard;
@@ -13,14 +14,13 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.level = level;
-
+        // this.bottle = bottle;
         this.initFishes();
         this.gameStopped = false;
 
         this.setWorld();
         this.draw();
 
-        // kleine Verzögerung verhindert Start-Bugs
         setTimeout(() => {
             this.run();
         }, 200);
@@ -45,6 +45,7 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.fishes);
+        this.addObjectsToMap(this.level.bottles);
 
         this.addToMap(this.character);
         this.addToMap(this.endboss);

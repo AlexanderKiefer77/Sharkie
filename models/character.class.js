@@ -8,7 +8,7 @@ class Character extends MovableObject {
     world;
 
     offset = {
-        top: 85,
+        top: 80,
         bottom: 40,
         left: 25,
         right: 25
@@ -282,7 +282,7 @@ class Character extends MovableObject {
                 this.state = 'IDLE';
                 this.currentImage = 0;
 
-                this.offset = { top: 85, bottom: 40, left: 25, right: 25 };
+                this.offset = { top: 80, bottom: 40, left: 25, right: 25 };
             }
         }, 50);
     }
