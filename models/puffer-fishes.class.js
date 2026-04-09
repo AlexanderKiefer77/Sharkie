@@ -33,7 +33,7 @@ class PufferFish extends MovableObject {
 
     setImages(color) {
         // We use template literals (``) to build the paths dynamically
-        const basePath = `./assets/img/2.Enemy/puffer-fish/${color}`;
+        const basePath = `./assets/img/Fishes/puffer-fish/${color}`;
 
         this.IMAGES_SWIMMING = [
             `${basePath}/swim/1.png`, `${basePath}/swim/2.png`, `${basePath}/swim/3.png`,

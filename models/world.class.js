@@ -83,6 +83,7 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
+            this.checkBubbleCollisions();
         }, 50);
     }
 
@@ -90,9 +91,9 @@ class World {
         this.level.fishes.forEach((fish) => {
             if (this.character.isColliding(fish) && !fish.isDead) {
 
-                if (this.character.isAttacking && fish instanceof PufferFish) {
-                    // console.log('Fisch besiegt!');
-                    fish.die(!this.character.otherDirection); 
+                if (this.character.isAttacking && this.character.attackType === 'FINSLAP' && fish instanceof PufferFish) {
+                    
+                    fish.die(!this.character.otherDirection);
 
                     // Nach 2 Sekunden aus dem Array löschen
                     setTimeout(() => {
@@ -102,7 +103,7 @@ class World {
                         }
                     }, 2000);
 
-                } else {
+                } else if (!fish.isDead) {
                     // Sharkie wird getroffen, falls er nicht gerade angreift
                     this.character.hit();
                 }
@@ -110,6 +111,35 @@ class World {
         });
     }
 
+    checkBubbleCollisions() {
+        this.bubbles.forEach((bubble) => {
+            this.level.fishes.forEach((fish) => {
+                // Wir prüfen: Kollidiert Blase mit Gegner UND ist der Gegner eine Qualle?
+                if (bubble.isColliding(fish) && fish instanceof JellyFish && !fish.isDead) {
+
+                    fish.beTrapped(); // Qualle einfangen
+
+                    // Die Blase selbst entfernen, da sie "verbraucht" wurde
+                    let bIndex = this.bubbles.indexOf(bubble);
+                    this.bubbles.splice(bIndex, 1);
+
+                    // Die Qualle nach 2 Sekunden aus der Welt löschen
+                    setTimeout(() => {
+                        let eIndex = this.level.fishes.indexOf(fish);
+                        if (eIndex > -1) {
+                            this.level.fishes.splice(eIndex, 1);
+                        }
+                    }, 2000);
+                }
+            });
+        });
+    }
+
+}
+
+
+
+    // ############## für Zwischenabfrage ###########
     // checkCollisions() {
     //     this.level.fishes.forEach((fish) => {
     //         // Wir prüfen, ob der Charakter den Fisch berührt
@@ -130,5 +160,5 @@ class World {
     //         }
     //     });
     // }
-}
+
 

@@ -10,7 +10,7 @@ class MovableObject extends DrawableObject {
     sharkie_start_animation = true;
     endboss_start_animation = true;
 
-    // Standardwerte für alle beweglichen Objekte
+    // Default values ​​for all moving objects
     offset = {
         top: 0,
         bottom: 0,
@@ -20,18 +20,12 @@ class MovableObject extends DrawableObject {
 
     applyGravity() {
         setInterval(() => {
-            // if (this.sharkie_start_animation && this.isAboveGround() || this.speedY > 0) {  // "this.speedY > 0" wird verwendet, zum springen vom Boden aus für den Character+
-            if (this.sharkie_start_animation && this.y < 200) {
+            if (this.sharkie_start_animation && this.y < 180) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
         }, 1000 / 25);
     }
-
-    isAboveGround() {
-        return this.y < 200; // fällt nur bis zu dem Punkt
-    }
-
 
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -88,8 +82,7 @@ class MovableObject extends DrawableObject {
         // Zeichnet Rechteck um die Elemente
         // if (this instanceof Character ||
         //     this instanceof PufferFish ||
-        //     this instanceof YellowJellyFishes ||
-        //     this instanceof LilaJellyFishes ||
+        //     this instanceof JellyFishes ||
         //     this instanceof Bubble ||
         //     this instanceof Endboss) {
         // draw Frames around all Elements except background

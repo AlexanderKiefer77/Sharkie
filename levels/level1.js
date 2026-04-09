@@ -56,11 +56,11 @@ function initLevel() {
         layerOffsets.forEach((offset, index) => {
             let suffix = index % 2 === 0 ? '2' : '1'; // change between L2 and L1
             backgroundObjects.push(
-                new BackgroundObject(`./assets/img/3. Background/Layers/5. Water/L${suffix}.png`, offset),
-                new BackgroundObject(`./assets/img/3. Background/Layers/1. Light/${suffix === '2' ? '2' : '1'}.png`, offset),
-                new BackgroundObject(`./assets/img/3. Background/Layers/3.Fondo 1/L${suffix}.png`, offset),
-                new BackgroundObject(`./assets/img/3. Background/Layers/4.Fondo 2/L${suffix}.png`, offset),
-                new BackgroundObject(`./assets/img/3. Background/Layers/2. Floor/L${suffix}.png`, offset)
+                new BackgroundObject(`./assets/img/Background/Water/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Light/${suffix === '2' ? '2' : '1'}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Fondo 2/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Fondo 1/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Floor/L${suffix}.png`, offset)
             );
         });
         return backgroundObjects;
