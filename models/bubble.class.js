@@ -12,7 +12,7 @@ class Bubble extends MovableObject {
         './assets/img/2.Enemy/jelly-fish/dead/yellow/y2.png',
         './assets/img/2.Enemy/jelly-fish/dead/yellow/y3.png',
         './assets/img/2.Enemy/jelly-fish/dead/yellow/y4.png'
-    ]; 
+    ];
 
     constructor(x, y) {
         super();
@@ -34,10 +34,10 @@ class Bubble extends MovableObject {
     }
 
     onHit() {
-    this.hasHit = true;
-    // Damit die Animation der gefangenen Qualle geloopt wird:
-    setInterval(() => {
-        this.playAnimation(this.IMAGES_TRAPPED);
-    }, 150);
-}
+        this.hasHit = true;
+        // Damit die Animation der gefangenen Qualle geloopt wird:
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_TRAPPED);
+        }, 150);
+    }
 }

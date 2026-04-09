@@ -34,15 +34,18 @@ class LilaJellyFishes extends MovableObject {
     ];
 
 
-    constructor() {
+    constructor(x, y) {
         super();
         this.loadImage(this.IMAGES_SWIMMING_LILA[0]);
         this.loadImages(this.IMAGES_SWIMMING_LILA);
         this.loadImages(this.IMAGES_DANGEROUS_GREEN);
         this.loadImages(this.IMAGES_DEAD_LILA);
 
-        this.x = 300 + Math.random() * 3600;
-        this.y = 450;
+        this.x = x;
+        this.y = y;
+
+        // this.x = 300 + Math.random() * 3600;
+        // this.y = 450;
         this.speed = 0.15 + Math.random() * 0.15;
 
         this.animate();

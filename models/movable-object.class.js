@@ -28,13 +28,26 @@ class MovableObject extends DrawableObject {
         }, 1000 / 25);
     }
 
-    isAboveGround() { // Subfunktion für applyGravity
-        // if (this instanceof ThrowableObject) { // damit die Flasche weiter nach unten fällt
-        //     return true;
-        // } else {
+    isAboveGround() {
         return this.y < 200; // fällt nur bis zu dem Punkt
-        // }
     }
+
+
+    isColliding(mo) {
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+    }
+
+    // hit() { // für Gesundheitsstatus
+    //     this.energy -= 5;
+    //     if (this.energy <= 0) {
+    //         this.energy = 0;
+    //     } else {
+    //         this.lastHit = new Date().getTime();
+    //     }
+    // }
 
     playAnimation(images, loop = true) {
         let i = this.currentImage;
@@ -83,7 +96,7 @@ class MovableObject extends DrawableObject {
             this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = '1';
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = this.isHit ? 'red' : 'blue';
             ctx.rect(
                 this.x + this.offset.left,
                 this.y + this.offset.top,

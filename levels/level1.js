@@ -1,16 +1,38 @@
 function initLevel() {
-    let numberOfGreenPufferFishes = 10;
-    let numberOfOrangePufferFishes = 10;
-    let numberOfRedPufferFishes = 10;
+    let numberOfGreenPufferFishes = 3;
+    let numberOfOrangePufferFishes = 3;
+    let numberOfRedPufferFishes = 3;
     let numberOfYellowJellyFishes = 5;
     let numberOfLilaJellyFishes = 5;
 
-    const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () => new GreenPufferFishes());
-    const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () => new OrangePufferFishes());
-    const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () => new RedPufferFishes());
-    const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () => new YellowJellyFishes());
-    const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () => new LilaJellyFishes());
+    // Helper-Funktion für zufällige x-Position
+    function randomPositionX() {
+        return 300 + Math.random() * 3600; // x zwischen 300 und 3900
+    }
 
+    // Helper-Funktion für zufällige y-Position der Pufferfische
+    function randomPositionY() {
+        return 20 + Math.random() * 400; // y zwischen 50 und 450
+    }
+
+    // Pufferfische
+    const pufferFishesGreen = Array.from({ length: numberOfGreenPufferFishes }, () =>
+        new GreenPufferFishes(randomPositionX(), randomPositionY())
+    );
+    const pufferFishesOrange = Array.from({ length: numberOfOrangePufferFishes }, () =>
+        new OrangePufferFishes(randomPositionX(), randomPositionY())
+    );
+    const pufferFishesRed = Array.from({ length: numberOfRedPufferFishes }, () =>
+        new RedPufferFishes(randomPositionX(), randomPositionY())
+    );
+
+    // Jellyfische (fix y = 400)
+    const jellyFishesYellow = Array.from({ length: numberOfYellowJellyFishes }, () =>
+        new YellowJellyFishes(randomPositionX(), 400)
+    );
+    const jellyFishesLila = Array.from({ length: numberOfLilaJellyFishes }, () =>
+        new LilaJellyFishes(randomPositionX(), 400)
+    );
     const fishes = [
         ...pufferFishesGreen,
         ...pufferFishesOrange,

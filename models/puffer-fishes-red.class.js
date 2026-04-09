@@ -41,7 +41,7 @@ class RedPufferFishes extends MovableObject {
     ];
 
 
-    constructor() {
+    constructor(x, y) {
         super();
         this.loadImage(this.IMAGES_SWIMMING_RED[0]);
         this.loadImages(this.IMAGES_SWIMMING_RED);
@@ -49,8 +49,11 @@ class RedPufferFishes extends MovableObject {
         this.loadImages(this.IMAGES_TRANSITION_RED);
         this.loadImages(this.IMAGES_DEAD_RED);
 
-        this.x = 300 + Math.random() * 3600;
-        this.y = 50 + Math.random() * 400;
+        this.x = x;
+        this.y = y;
+
+        // this.x = 300 + Math.random() * 3600;
+        // this.y = 50 + Math.random() * 400;
         this.speed = 0.15 + Math.random() * 0.35;
 
         this.animate();

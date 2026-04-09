@@ -22,7 +22,7 @@ body {
             #5CADBD 40%,
             #2F318D 80%,
             #1B1464 100%);
-    font-family: 'luckiestGuy', Calibri;
+    font-family: Calibri; /*'luckiestGuy', */
     font-size: 16px;
 
 }

@@ -1,7 +1,7 @@
 
 class Character extends MovableObject {
     width = 150;
-    y = -140; // start-position for start_animation
+    y = 0; // start-position for start_animation
     speed = 10;
     otherDirection = false;
     currentImage = 0;
@@ -14,13 +14,14 @@ class Character extends MovableObject {
         right: 25
     };
 
-
     idleStartTime = null;
     animationFrameCount = 0;
 
     state = 'IDLE';
     isAttacking = false;
+    canAttack = true;
 
+    isHurt = false;
 
     IMAGES_IDLE = [
         './assets/img/1.Sharkie/1.IDLE/1.png',
@@ -101,8 +102,7 @@ class Character extends MovableObject {
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
         './assets/img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
-        './assets/img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
-        './assets/img/1.Sharkie/5.Hurt/1.Poisoned/5.png'
+        './assets/img/1.Sharkie/5.Hurt/1.Poisoned/4.png'
     ];
 
     IMAGES_HURT_ELECTRIC = [
@@ -157,7 +157,7 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        setInterval(() => { // Intervall für Bewegungen
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 // "&& this.x < this.world.level.level_end_x" verhindert, das der Character nach rechts aus dem Bild laufen kann
                 this.moveRight();
@@ -181,18 +181,29 @@ class Character extends MovableObject {
                 // this.walking_sound.play();
             }
 
-            if (this.world.keyboard.SPACE && !this.isAttacking) {
+            if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot) {
                 this.finSlap();
+                this.canShoot = false;
             }
 
-            if (this.world.keyboard.D && !this.isAttacking) {
+            if (this.world.keyboard.D && !this.isAttacking && this.canShoot) {
                 this.bubbleTrap();
+                this.canShoot = false;
+            }
+
+            if (!this.world.keyboard.D && !this.world.keyboard.SPACE) {
+                this.canShoot = true;
             }
 
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {
+        setInterval(() => {// Intervall für Animationen
+            if (this.isHurt) {
+                this.playAnimation(this.IMAGES_HURT_POISONEND);
+                return;
+            }
+
             if (this.isAttacking) {
                 return;
             }
@@ -305,6 +316,18 @@ class Character extends MovableObject {
             let bubbleY = this.y + this.height / 2;
 
             this.world.bubbles.push(new Bubble(bubbleX, bubbleY));
+        }
+    }
+
+    hit() {
+        if (!this.isHurt) { // Verhindert Dauer-Hurt bei Mehrfachkollision
+            this.isHurt = true;
+            this.currentImage = 0; // Animation von vorne starten
+            
+            // Nach 1 Sekunde ist Sharkie nicht mehr "verletzt"
+            setTimeout(() => {
+                this.isHurt = false;
+            }, 1000);
         }
     }
 }
