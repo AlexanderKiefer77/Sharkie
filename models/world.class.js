@@ -7,6 +7,15 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+
+    collectCoins = 0;
+    pointsCollectCoins = 10; // points per coin
+
+    collectBottles = 0;
+    pointsCollectBottle = 10; // points per bottle
+
+    points = 0;
+
     statusHealth = new StatusHealth();
     statusCoin = new StatusCoin();
     statusBottle = new StatusBottle();
@@ -17,6 +26,7 @@ class World {
         this.keyboard = keyboard;
         this.level = level;
         this.initFishes();
+        this.initWorldStats();
         this.gameStopped = false;
 
         this.setWorld();
@@ -27,10 +37,31 @@ class World {
         }, 200);
     }
 
+    initWorldStats() {
+        this.totalCoins = this.level.coins.length;
+        // this.totalBottles = this.level.bottles ? this.level.bottles.length : 0;
+        // this.maxBottleCount = this.availableBottles + this.totalBottles;
+    }
+
     setWorld() {
         this.character.world = this;
-        this.endboss.world = this;
+        // this.endboss.world = this;
+
+        // Set world for coins
+        if (this.level.coins) {
+            this.level.coins.forEach(coin => {
+                if (coin) coin.world = this;
+            });
+        }
+
+        // Set world for bottles on ground
+        if (this.level.bottles) {
+            this.level.bottles.forEach(bottle => {
+                if (bottle) bottle.world = this;
+            });
+        }
     }
+
 
     initFishes() {
         this.level.fishes.forEach(fish => {
@@ -57,9 +88,9 @@ class World {
 
         // Dynamic
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.fishes);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.fishes);
         this.addToMap(this.character);
         this.addToMap(this.endboss);
         this.addObjectsToMap(this.bubbles);
@@ -94,6 +125,8 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkBubbleCollisions();
+            this.checkCoinCollisions();
+            this.checkBottleCollisions();
         }, 50);
     }
 
@@ -133,6 +166,31 @@ class World {
         });
     }
 
+    checkCoinCollisions() {
+        this.level.coins = this.level.coins.filter(coin => {
+            if (this.character.isColliding(coin)) {
+                this.collectCoins++;
+                // this.playCoinSound();
+                this.addPoints(this.pointsCollectCoins);
+                return false;
+            }
+            return true;
+        });
+    }
+
+     checkBottleCollisions() {
+        if (!this.level.bottles) return;
+        this.level.bottles = this.level.bottles.filter(bottle => {
+            if (this.character.isColliding(bottle)) {
+                this.collectBottles++;
+                // this.playBottleSound();
+                this.addPoints(this.pointsCollectBottles);
+                return false;
+            }
+            return true;
+        });
+    }
+
     drawHealth(x, y) {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.2rem Calibri';
@@ -145,7 +203,7 @@ class World {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.2rem Calibri';
         this.ctx.textAlign = 'left';
-        let coins = this.character.collectCoins;
+        let coins = this.collectCoins;
         this.ctx.fillText(`${coins}`, x, y);
     }
 
@@ -153,8 +211,13 @@ class World {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.2rem Calibri';
         this.ctx.textAlign = 'left';
-        let bottles = this.character.collectBottles;
+        let bottles = this.collectBottles;
         this.ctx.fillText(`${bottles}`, x, y);
+    }
+
+    addPoints(amount) {
+        if (!this.points) this.points = 0;
+        this.points += amount;
     }
 
     // drawPoints() {

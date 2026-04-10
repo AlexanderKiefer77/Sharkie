@@ -12,7 +12,7 @@ class StatusCoin extends DrawableObject {
         this.loadImage(this.IMAGES_STATUS_COIN[0]);
         this.loadImages(this.IMAGES_STATUS_COIN);        
         this.x = 100;
-        this.y = 15;
+        this.y = 18;
         this.width = 40;
         this.height = 40;
         // this.setPercentageHealth(100);  // initial value of the status bar health

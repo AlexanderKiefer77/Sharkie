@@ -12,9 +12,9 @@ class StatusBottle extends DrawableObject {
         this.loadImage(this.IMAGES_STATUS_BOTTLE[0]);
         this.loadImages(this.IMAGES_STATUS_BOTTLE);        
         this.x = 185;
-        this.y = 15;
-        this.width = 40;
-        this.height = 40;
+        this.y = 5;
+        this.width = 50;
+        this.height = 50;
         // this.setPercentageHealth(100);  // initial value of the status bar health
     }
 
