@@ -63,7 +63,7 @@ class Endboss extends MovableObject {
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 8.png',
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 9.png',
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 10.png',
-    ]  
+    ]
 
     constructor(world) {
         super();
@@ -78,7 +78,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
 
         this.x = 3900;
-
+        this.speed = 15;
         this.state = 'WAITING';
         this.currentImage = 0;
         this.triggered = false;
@@ -88,11 +88,9 @@ class Endboss extends MovableObject {
 
     animate() {
         setInterval(() => {
-
-            if (!this.world) return;
+            if (!this.world || !this.world.character) return;
 
             let cameraRight = -this.world.camera_x + this.world.canvas.width;
-            
             if (!this.triggered && this.x < cameraRight) {
                 this.triggered = true;
                 this.state = 'INTRODUCE';
@@ -101,17 +99,59 @@ class Endboss extends MovableObject {
 
             if (this.state === 'INTRODUCE') {
                 this.playAnimation(this.IMAGES_INTRODUCE);
-
                 if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
                     this.state = 'FLOATING';
                     this.currentImage = 0;
                 }
             }
-
-            else if (this.state === 'FLOATING') {
-                this.playAnimation(this.IMAGES_FLOATING);
+            else if (this.state === 'FLOATING' || this.state === 'ATTACK') {
+                this.checkAttackDistance();
             }
 
-        }, 200);
+        }, 100);
     }
+
+    checkAttackDistance() {
+        let distance = Math.abs(this.x - this.world.character.x);
+
+        if (distance < 450) {
+            this.state = 'ATTACK';
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.moveTowardsCharacter();
+        } else {
+            this.state = 'FLOATING';
+            this.playAnimation(this.IMAGES_FLOATING);
+        }
+    }
+
+    moveTowardsCharacter() {
+        let character = this.world.character;
+
+        if (this.x > character.x) {
+            this.moveLeft();
+            this.otherDirection = false;
+        } else if (this.x < character.x) {
+            this.x += this.speed;
+            this.otherDirection = true;
+        }
+
+        // We use an offset (e.g. -150) so that the boss with the head/mouth 
+        // aims at Sharkie instead of just the top edge
+        if (this.y > character.y - 150) {
+            this.y -= this.speed;
+        } else if (this.y < character.y - 50) {
+            this.y += this.speed;
+        }
+
+        // so that final boss can swim further up
+        if (this.y < -200) {
+            this.y = -200;
+        }
+
+        // so that final boss can swim further down
+        if (this.y > 200) {
+            this.y = 200;
+        }
+    }
+
 }
