@@ -4,20 +4,38 @@ class Bubble extends MovableObject {
     height = 40;
     speedY = 1.2;
     hasHit = false;
+    type;
 
-    IMAGES_NORMAL = ['./assets/img/Sharkie/Attack/Bubble trap/Bubble.png'];
+    IMAGES_BUBBLE_JELLYFISH = ['./assets/img/Sharkie/Attack/Bubble trap/Bubble.png'];
+    IMAGES_BUBBLE_WHALE = ['./assets/img/Sharkie/Attack/Bubble trap/Poisoned Bubble.png'];
 
-    constructor(x, y) {
+    constructor(x, y, type) {
         super();
-        this.loadImage(this.IMAGES_NORMAL[0]);
         this.x = x;
         this.y = y;
+        this.type = type;
+
+        if (type === 'poison') {
+            this.loadImage(this.IMAGES_BUBBLE_WHALE[0]);
+            this.width = 60;
+            this.height = 60;
+            this.speedY = 3;
+        } else {
+            this.loadImage(this.IMAGES_BUBBLE_JELLYFISH[0]);
+        }
+
         this.rise();
     }
 
     rise() {
         setInterval(() => {
             this.y -= this.speedY;
+
+            if (this.type === 'poison' && this.width < 200) {
+                this.width += 3;  // width grows per frame
+                this.height += 3; // height grows per frame
+            }
+
         }, 1000 / 60);
     }
 

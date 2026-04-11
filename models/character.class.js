@@ -314,7 +314,19 @@ class Character extends MovableObject {
             let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
             let bubbleY = this.y + this.height / 2;
 
-            this.world.bubbles.push(new Bubble(bubbleX, bubbleY));
+            // Standardmäßig eine normale Bubble
+            let type = 'normal';
+
+            // Prüfen, ob der Endboss existiert und nah genug ist (z.B. 500 Pixel)
+            if (this.world.endboss) {
+                let distance = Math.abs(this.x - this.world.endboss.x);
+                if (distance < 300) { // Du kannst den Wert 600 anpassen
+                    type = 'poison';
+                }
+            }
+
+            // Wir übergeben den Typ an den Constructor der Bubble-Klasse
+            this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
         }
     }
 
