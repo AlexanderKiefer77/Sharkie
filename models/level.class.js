@@ -3,13 +3,15 @@ class Level {
     fishes;
     bottles;
     coins;
+    endboss;
     level_start_x = -600;
     level_end_x = 3600;
 
-    constructor(fishes, backgroundObjects, bottles, coins) { 
+    constructor(fishes, backgroundObjects, bottles, coins, endboss) { 
         this.fishes = fishes;
         this.backgroundObjects = backgroundObjects;
         this.bottles = bottles;
         this.coins = coins;
+        this.endboss = endboss;
     }
 }

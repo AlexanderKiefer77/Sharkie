@@ -9,10 +9,10 @@ class World {
     camera_x = 0;
 
     // status display
-    healthCharacter = 100;    
+    healthCharacter = 100;
     collectCoins = 0;
-    collectBottles = 0; 
-    healthEndboss = 100;    
+    collectBottles = 0;
+    healthEndboss = 100;
 
     // point-system
     points = 0;
@@ -21,7 +21,7 @@ class World {
     pointsCollectBottle = 10; // points per bottle
     pointsHitPufferFish = 100; // points when hitting a puffer fish with finslap
     pointsHitJellyFish = 150; // points when hitting a jelly fish with bubble
- 
+
 
     statusHealth = new StatusHealth();
     statusCoin = new StatusCoin();
@@ -151,11 +151,15 @@ class World {
                             this.level.fishes.splice(index, 1);
                         }
                     }, 2000);
-                } else if (!fish.isDead) {                    
+                } else if (!fish.isDead) {
                     this.character.hit();
                 }
             }
         });
+
+        if (this.endboss && this.character.isColliding(this.endboss)) {
+            this.character.hit();
+        }
     }
 
     checkBubbleCollisions() {
@@ -189,7 +193,7 @@ class World {
         });
     }
 
-     checkBottleCollisions() {
+    checkBottleCollisions() {
         if (!this.level.bottles) return;
         this.level.bottles = this.level.bottles.filter(bottle => {
             if (this.character.isColliding(bottle)) {
@@ -228,7 +232,7 @@ class World {
 
     addPoints(amount) {
         if (!this.points) this.points = 0;
-        this.points += amount;
+        this.points = Math.max(0, this.points + amount);
     }
 
     drawPoints() {
