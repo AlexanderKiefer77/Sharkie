@@ -1,9 +1,14 @@
-
 class Endboss extends MovableObject {
-
     height = 400;
     width = 300;
     y = 0;
+    x = 3900;
+    speed = 7; // Harmonisierte Geschwindigkeit (nicht zu schnell)
+
+    state = 'WAITING';
+    currentImage = 0;
+    triggered = false;
+    animationFrameThrottle = 0; // Zähler für harmonische Animation
 
     offset = {
         top: 135,
@@ -62,12 +67,11 @@ class Endboss extends MovableObject {
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 7.png',
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 8.png',
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 9.png',
-        './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 10.png',
-    ]
+        './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 10.png'
+    ];
 
     constructor(world) {
         super();
-
         this.world = world;
 
         this.loadImage(this.IMAGES_INTRODUCE[0]);
@@ -77,12 +81,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
 
-        this.x = 3900;
-        this.speed = 15;
-        this.state = 'WAITING';
-        this.currentImage = 0;
-        this.triggered = false;
-
         this.animate();
     }
 
@@ -90,68 +88,92 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (!this.world || !this.world.character) return;
 
-            let cameraRight = -this.world.camera_x + this.world.canvas.width;
-            if (!this.triggered && this.x < cameraRight) {
-                this.triggered = true;
-                this.state = 'INTRODUCE';
+            // 1. Logik & Bewegung (immer ausführen für flüssige Bewegung)
+            this.handleStateLogic();
+
+            // 2. Animation drosseln (Bilder wechseln nur jeden 2. Durchlauf = alle 140ms)
+            // Das macht die Flossenbewegungen und das Beißen harmonischer
+            this.animationFrameThrottle++;
+            if (this.animationFrameThrottle % 2 === 0) {
+                this.updateAnimationImages();
+            }
+        }, 70);
+    }
+
+    handleStateLogic() {
+        let cameraRight = -this.world.camera_x + this.world.canvas.width;
+
+        if (!this.triggered && this.x < cameraRight) {
+            this.triggered = true;
+            this.state = 'INTRODUCE';
+            this.currentImage = 0;
+        }
+        
+        if (this.state === 'FLOATING' || this.state === 'ATTACK') {
+            this.checkAttackDistance();
+            if (this.state === 'ATTACK') {
+                this.moveTowardsCharacter();
+            }
+        }
+    }
+
+    updateAnimationImages() {
+        if (this.state === 'INTRODUCE') {
+            this.playAnimation(this.IMAGES_INTRODUCE);
+            if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
+                this.state = 'FLOATING';
                 this.currentImage = 0;
             }
-
-            if (this.state === 'INTRODUCE') {
-                this.playAnimation(this.IMAGES_INTRODUCE);
-                if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
-                    this.state = 'FLOATING';
-                    this.currentImage = 0;
-                }
-            }
-            else if (this.state === 'FLOATING' || this.state === 'ATTACK') {
-                this.checkAttackDistance();
-            }
-
-        }, 100);
+        } else if (this.state === 'ATTACK') {
+            this.playAnimation(this.IMAGES_ATTACK);
+        } else if (this.state === 'FLOATING') {
+            this.playAnimation(this.IMAGES_FLOATING);
+        }
     }
 
     checkAttackDistance() {
         let distance = Math.abs(this.x - this.world.character.x);
-
         if (distance < 450) {
             this.state = 'ATTACK';
-            this.playAnimation(this.IMAGES_ATTACK);
-            this.moveTowardsCharacter();
         } else {
             this.state = 'FLOATING';
-            this.playAnimation(this.IMAGES_FLOATING);
         }
     }
 
     moveTowardsCharacter() {
         let character = this.world.character;
+        let diffX = Math.abs(this.x - character.x);
+        let targetY = character.y - 150;
 
-        if (this.x > character.x) {
-            this.moveLeft();
-            this.otherDirection = false;
-        } else if (this.x < character.x) {
-            this.x += this.speed;
-            this.otherDirection = true;
+        if (diffX > 10) {
+            if (this.x > character.x) {
+                this.moveLeft();
+                this.otherDirection = false;
+            } else if (this.x < character.x) {
+                this.x += this.speed;
+                this.otherDirection = true;
+            }
+        }
+  
+        if (Math.abs(this.y - targetY) > 10) {
+            if (this.y > targetY) {
+                this.y -= this.speed;
+            } else {
+                this.y += this.speed;
+            }
         }
 
-        // We use an offset (e.g. -150) so that the boss with the head/mouth 
-        // aims at Sharkie instead of just the top edge
-        if (this.y > character.y - 150) {
-            this.y -= this.speed;
-        } else if (this.y < character.y - 50) {
-            this.y += this.speed;
-        }
+        this.applyBoundaries();
+    }
 
-        // so that final boss can swim further up
+    applyBoundaries() {
+        // move upper limit
         if (this.y < -200) {
             this.y = -200;
         }
-
-        // so that final boss can swim further down
+        // move lower limit
         if (this.y > 200) {
             this.y = 200;
         }
     }
-
 }
