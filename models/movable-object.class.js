@@ -4,7 +4,7 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     speedY = 0; // for Gravity
     acceleration = 0.4;
-
+    lastHit = 0;
     state = 'IDLE'; // IDLE | IDLE_LONG | SLEEP
 
     sharkie_start_animation = true;
@@ -34,14 +34,28 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-    // hit() { // für Gesundheitsstatus
-    //     this.energy -= 5;
-    //     if (this.energy <= 0) {
-    //         this.energy = 0;
-    //     } else {
-    //         this.lastHit = new Date().getTime();
-    //     }
-    // }
+    hit(enemy) {
+        if (this.isHurt()) return;
+
+        if (this.world) {
+            this.world.healthCharacter -= 10;
+            this.world.addPoints(-this.world.pointsHurtsCharacter);
+
+            if (this.world.healthCharacter < 0) {
+                this.world.healthCharacter = 0;
+            }
+
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit;
+        return timepassed < 4000;
+    }
+
+ 
 
     playAnimation(images, loop = true) {
         let i = this.currentImage;
@@ -78,5 +92,5 @@ class MovableObject extends DrawableObject {
         this.y += this.speed;
     }
 
-   
+
 }

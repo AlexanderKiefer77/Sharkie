@@ -6,7 +6,6 @@ class Character extends MovableObject {
     otherDirection = false;
     currentImage = 0;
     world;
-    energy = 100;
 
     offset = {
         top: 80,
@@ -22,7 +21,6 @@ class Character extends MovableObject {
     isAttacking = false;
     canAttack = true;
 
-    isHurt = false;
     attackType = null; // Speichert 'FINSLAP' oder 'BUBBLE'
 
     IMAGES_IDLE = [
@@ -183,12 +181,12 @@ class Character extends MovableObject {
                 // this.walking_sound.play();
             }
 
-            if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot && !this.isHurt) {
+            if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot && !this.isHurt()) {
                 this.finSlap();
                 this.canShoot = false;
             }
 
-            if (this.world.keyboard.D && !this.isAttacking && this.canShoot && !this.isHurt) {
+            if (this.world.keyboard.D && !this.isAttacking && this.canShoot && !this.isHurt()) {
                 this.bubbleTrap();
                 this.canShoot = false;
             }
@@ -201,7 +199,7 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {// Intervall für Animationen
-            if (this.isHurt) {
+            if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT_POISONEND);
                 return;
             }
@@ -259,7 +257,7 @@ class Character extends MovableObject {
 
 
 
-    
+
     finSlap() {
         if (this.isAttacking) return;
 
@@ -320,16 +318,5 @@ class Character extends MovableObject {
         }
     }
 
-    hit() {
-        if (!this.isHurt) { // Verhindert Dauer-Hurt bei Mehrfachkollision
-            this.isHurt = true;
-            this.currentImage = 0; // Animation von vorne starten
-
-            // Nach 1 Sekunde ist Sharkie nicht mehr "verletzt"
-            setTimeout(() => {
-                this.isHurt = false;
-            }, 1000);
-        }
-    }
 }
 

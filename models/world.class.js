@@ -8,13 +8,20 @@ class World {
     keyboard;
     camera_x = 0;
 
+    // status display
+    healthCharacter = 100;    
     collectCoins = 0;
-    pointsCollectCoins = 10; // points per coin
+    collectBottles = 0; 
+    healthEndboss = 100;    
 
-    collectBottles = 0;
-    pointsCollectBottle = 10; // points per bottle
-
+    // point-system
     points = 0;
+    pointsHurtsCharacter = 30; // points loose per hurt
+    pointsCollectCoins = 10; // points per coin
+    pointsCollectBottle = 10; // points per bottle
+    pointsHitPufferFish = 100; // points when hitting a puffer fish with finslap
+    pointsHitJellyFish = 150; // points when hitting a jelly fish with bubble
+ 
 
     statusHealth = new StatusHealth();
     statusCoin = new StatusCoin();
@@ -85,6 +92,8 @@ class World {
         this.drawCoins(140, 45);
         this.addToMap(this.statusBottle);
         this.drawBottles(225, 45);
+        this.drawPoints();
+        this.drawHealthEndboss(620, 45);
 
         // Dynamic
         this.ctx.translate(this.camera_x, 0);
@@ -106,7 +115,7 @@ class World {
     addToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo.otherDirection) this.flipImageBack();
     }
 
@@ -135,13 +144,14 @@ class World {
             if (this.character.isColliding(fish) && !fish.isDead) {
                 if (this.character.isAttacking && this.character.attackType === 'FINSLAP' && fish instanceof PufferFish) {
                     fish.die(!this.character.otherDirection);
+                    this.addPoints(this.pointsHitPufferFish);
                     setTimeout(() => {
                         let index = this.level.fishes.indexOf(fish);
                         if (index > -1) {
                             this.level.fishes.splice(index, 1);
                         }
                     }, 2000);
-                } else if (!fish.isDead) {
+                } else if (!fish.isDead) {                    
                     this.character.hit();
                 }
             }
@@ -153,6 +163,7 @@ class World {
             this.level.fishes.forEach((fish) => {
                 if (bubble.isColliding(fish) && fish instanceof JellyFish && !fish.isDead) {
                     fish.beTrapped();
+                    this.addPoints(this.pointsHitJellyFish);
                     let bIndex = this.bubbles.indexOf(bubble);
                     this.bubbles.splice(bIndex, 1);
                     setTimeout(() => {
@@ -184,7 +195,7 @@ class World {
             if (this.character.isColliding(bottle)) {
                 this.collectBottles++;
                 // this.playBottleSound();
-                this.addPoints(this.pointsCollectBottles);
+                this.addPoints(this.pointsCollectBottle);
                 return false;
             }
             return true;
@@ -195,7 +206,7 @@ class World {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.2rem Calibri';
         this.ctx.textAlign = 'left';
-        let health = this.character.energy;
+        let health = this.healthCharacter;
         this.ctx.fillText(`${health}`, x, y);
     }
 
@@ -220,12 +231,20 @@ class World {
         this.points += amount;
     }
 
-    // drawPoints() {
-    //     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    //     this.ctx.font = 'bold 2rem cookie';
-    //     this.ctx.textAlign = 'center';
-    //     this.ctx.fillText(`${this.points} Punkte`, this.canvas.width / 2, 50);
-    // }
+    drawPoints() {
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        this.ctx.font = 'bold 1.5rem Calibri';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText(`${this.points} Punkte`, this.canvas.width / 2, 45);
+    }
+
+    drawHealthEndboss(x, y) {
+        this.ctx.fillStyle = 'rgba(54, 3, 3, 0.98)';
+        this.ctx.font = 'bold 1.5rem Calibri';
+        this.ctx.textAlign = 'center';
+        let energy = this.healthEndboss;
+        this.ctx.fillText(`Endboss ${energy} %`, x, y);
+    }
 
 
     // ############## für Zwischenabfrage ###########
