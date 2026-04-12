@@ -116,19 +116,31 @@ class World {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
-        if (mo.otherDirection) this.flipImageBack();
+        if (mo.otherDirection) this.flipImageBack(mo);
     }
 
-    flipImage(mo) {
-        this.ctx.save();
-        this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+    flipImage(mo) { // mo steht für MovableObject
+        this.ctx.save(); // Nutze 'this.ctx', nicht nur 'ctx'
+        this.ctx.translate(mo.width, 0);
         this.ctx.scale(-1, 1);
-        this.ctx.translate(-(mo.x + mo.width / 2), -(mo.y + mo.height / 2));
+        mo.x = mo.x * -1;
     }
 
-    flipImageBack() {
+    flipImageBack(mo) {
+        mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+    // flipImage(mo) {
+    //     this.ctx.save();
+    //     this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+    //     this.ctx.scale(-1, 1);
+    //     this.ctx.translate(-(mo.x + mo.width / 2), -(mo.y + mo.height / 2));
+    // }
+
+    // flipImageBack() {
+    //     this.ctx.restore();
+    // }
 
     run() {
         setInterval(() => {

@@ -7,6 +7,9 @@ class Character extends MovableObject {
     currentImage = 0;
     world;
 
+    cameraOffset = 100;
+    targetOffset = 100;
+
     offset = {
         top: 80,
         bottom: 40,
@@ -158,32 +161,94 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    // animate() {
+    //     setInterval(() => { // Intervall for movements
+    //         if (this.isDead()) return;
+
+    //         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+    //             this.moveRight();
+    //             this.otherDirection = false;
+    //             // this.walking_sound.play();
+    //         }
+
+    //         if (this.world.keyboard.LEFT && this.x > this.world.level.level_start_x) {
+    //             this.moveLeft();
+    //             this.otherDirection = true;
+    //             // this.walking_sound.play();
+    //         }
+
+    //         if (this.world.keyboard.UP && this.y > 0 - this.offset.top) {
+    //             this.moveUp();
+    //             // this.walking_sound.play();
+    //         }
+
+    //         if (this.world.keyboard.DOWN && this.y + this.height < canvas.height + this.offset.bottom) {
+    //             this.moveDown();
+    //             // this.walking_sound.play();
+    //         }
+
+    //         if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot && !this.isHurt()) {
+    //             this.finSlap();
+    //             this.canShoot = false;
+    //         }
+
+    //         if (this.world.keyboard.D && !this.isAttacking && this.canShoot && !this.isHurt()) {
+    //             this.bubbleTrap();
+    //             this.canShoot = false;
+    //         }
+
+    //         if (!this.world.keyboard.D && !this.world.keyboard.SPACE) {
+    //             this.canShoot = true;
+    //         }
+
+    //         if (this.isMoving()) {
+    //             if (this.world.keyboard.RIGHT) {
+    //                 this.targetOffset = 100;   // Charakter links im Bild
+    //             }
+
+    //             if (this.world.keyboard.LEFT) {
+    //                 this.targetOffset = 450;   // Charakter rechts im Bild
+    //             }
+    //         }
+
+    //         // Smooth interpolation
+    //         let diff = this.targetOffset - this.cameraOffset;
+    //         this.cameraOffset += diff * 0.05;
+
+
+    //         this.world.camera_x = -this.x + this.cameraOffset;
+    //     }, 1000 / 60);
+
     animate() {
-        setInterval(() => { // Intervall for movements
+        this.lastDirection = null; // merkt sich letzte Richtung
+
+        setInterval(() => {
             if (this.isDead()) return;
+
+            let movingRight = false;
+            let movingLeft = false;
 
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
-                // this.walking_sound.play();
+                movingRight = true;
             }
 
             if (this.world.keyboard.LEFT && this.x > this.world.level.level_start_x) {
                 this.moveLeft();
                 this.otherDirection = true;
-                // this.walking_sound.play();
+                movingLeft = true;
             }
 
             if (this.world.keyboard.UP && this.y > 0 - this.offset.top) {
                 this.moveUp();
-                // this.walking_sound.play();
             }
 
             if (this.world.keyboard.DOWN && this.y + this.height < canvas.height + this.offset.bottom) {
                 this.moveDown();
-                // this.walking_sound.play();
             }
 
+            // Attacken
             if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot && !this.isHurt()) {
                 this.finSlap();
                 this.canShoot = false;
@@ -198,7 +263,33 @@ class Character extends MovableObject {
                 this.canShoot = true;
             }
 
-            this.world.camera_x = -this.x + 100;
+            // ✅ Kamera-Logik (KEIN sofortiger Sprung mehr)
+            if (movingRight && this.lastDirection !== 'RIGHT') {
+                this.targetOffset = 100;
+                this.lastDirection = 'RIGHT';
+            }
+
+            if (movingLeft && this.lastDirection !== 'LEFT') {
+                this.targetOffset = 450;
+                this.lastDirection = 'LEFT';
+            }
+
+            // Smooth Movement
+            let diff = this.targetOffset - this.cameraOffset;
+            this.cameraOffset += diff * 0.03;
+
+            // this.world.camera_x = -this.x + this.cameraOffset;
+            let rawCameraX = -this.x + this.cameraOffset;
+
+            // Level-Breite = Ende des Levels
+            let maxScroll = 280; // ganz links
+            let rightPadding = 150;
+
+            let minScroll = -(this.world.level.level_end_x - this.world.canvas.width + rightPadding);
+
+            // Kamera begrenzen
+            this.world.camera_x = Math.max(minScroll, Math.min(maxScroll, rawCameraX));
+
         }, 1000 / 60);
 
 
@@ -216,6 +307,7 @@ class Character extends MovableObject {
             }
         }, 150);
     }
+
 
     // Subfunctions for Intervall for Animation
     handleDeathAnimation() {

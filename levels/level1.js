@@ -19,7 +19,7 @@ function initLevel() {
 
     // Helper-Function for random y-Position
     function randomPositionY() {
-        return 20 + Math.random() * 400; // y between 20 and 420
+        return 20 + Math.random() * 400; // y between 20 and 40
     }
 
     // Pufferfishes
