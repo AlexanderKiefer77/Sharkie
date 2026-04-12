@@ -10,6 +10,8 @@ class Endboss extends MovableObject {
     triggered = false;
     animationFrameThrottle = 0;
     isHurtCooldown = false;
+    trapStartY = 0;
+    isFalling = false;
 
     offset = {
         top: 135,
@@ -81,7 +83,8 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-
+        this.bubbleImage = new Image();
+        this.bubbleImage.src = './assets/img/Sharkie/Attack/Bubble trap/Poisoned Bubble.png';
         this.animate();
     }
 
@@ -102,13 +105,17 @@ class Endboss extends MovableObject {
     }
 
     handleStateLogic() {
-        let cameraRight = -this.world.camera_x + this.world.canvas.width;
-
         if (this.state === 'DEAD') {
             this.y -= 3; // Endboss slowly floats to the surface
             return;
         }
 
+        if (this.state === 'TRAPPED') {
+            this.applyTrappedPhysics();
+            return;
+        }
+
+        let cameraRight = -this.world.camera_x + this.world.canvas.width;
         if (!this.triggered && this.x < cameraRight) {
             this.triggered = true;
             this.state = 'INTRODUCE';
@@ -209,9 +216,19 @@ class Endboss extends MovableObject {
         return false;
     }
 
+    beTrapped() {
+        this.state = 'TRAPPED';
+        this.currentImage = 0;
+        this.trapStartY = this.y;
+        this.isFalling = false;
+    }
+
     updateAnimationImages() {
         if (this.state === 'DEAD') {
             this.playDeadAnimation();
+            return;
+        } else if (this.state === 'TRAPPED') {
+            this.playAnimation(this.IMAGES_HURT);
         } else if (this.state === 'INTRODUCE') {
             this.playAnimation(this.IMAGES_INTRODUCE);
             if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
@@ -231,6 +248,49 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_DEAD);
         if (this.currentImage >= this.IMAGES_DEAD.length - 1) {
             this.currentImage = this.IMAGES_DEAD.length - 1;
+        }
+    }
+
+    applyTrappedPhysics() {
+        if (!this.isFalling) {
+            this.y -= 7; // Geschwindigkeit des Aufsteigens
+            if (this.y < -350) { // Wenn er oben aus dem Bild ist
+                this.isFalling = true;
+                // Sound-Effekt für bubble platzen abspielen:
+                // this.bubblePopSound.play();
+                if (this.state !== 'DEAD') {
+                    this.isFalling = true;
+                } else {
+                    // Er ist tot und oben angekommen -> hier kann er gelöscht werden
+                    // oder einfach außerhalb des Sichtfelds bleiben.
+                }
+            }
+        } else {
+            this.y += 12; // Er fällt schneller, als er aufsteigt
+            if (this.y >= this.trapStartY) {
+                this.y = this.trapStartY; // Zurück auf Startposition
+                this.state = 'FLOATING'; // Wieder normal schwimmen
+                this.isFalling = false;
+            }
+        }
+    }
+
+    draw(ctx) {
+        super.draw(ctx); // Zeichnet den Endboss selbst
+
+        if ((this.state === 'TRAPPED' || this.state === 'DEAD') && !this.isFalling) {
+            this.drawBubble(ctx);
+        }
+    }
+
+    drawBubble(ctx) {
+        // Nur zeichnen, wenn das Bild existiert und geladen ist
+        if (this.bubbleImage && this.bubbleImage.complete) {
+            let size = Math.max(this.width, this.height) * 1.2;
+            let x = this.x + (this.width / 2) - (size / 2);
+            let y = this.y + (this.height / 2) - (size / 2);
+
+            ctx.drawImage(this.bubbleImage, x, y, size, size);
         }
     }
 }

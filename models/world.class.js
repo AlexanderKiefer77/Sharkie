@@ -195,6 +195,28 @@ class World {
                     }, 2000);
                 }
             });
+
+            let bubbleStillExists = this.bubbles.includes(bubble);
+
+            if (bubbleStillExists && this.endboss && bubble.isColliding(this.endboss) &&
+                this.endboss.state !== 'DEAD') { // Auch prüfen, ob er nicht schon tot ist
+
+                this.healthEndboss -= 40;
+                let bIndex = this.bubbles.indexOf(bubble);
+                if (bIndex > -1) this.bubbles.splice(bIndex, 1);
+
+                if (this.healthEndboss <= 0) {
+                    this.healthEndboss = 0;
+                    this.endboss.state = 'DEAD';
+                    this.endboss.currentImage = 0;
+                    // Wir rufen beTrapped auf, damit die trapStartY und isFalling initialisiert werden!
+                    this.endboss.beTrapped();
+                    // Überschreiben den Status wieder auf DEAD, da beTrapped ihn auf TRAPPED setzt
+                    this.endboss.state = 'DEAD';
+                } else {
+                    this.endboss.beTrapped();
+                }
+            }
         });
     }
 
@@ -263,7 +285,7 @@ class World {
         this.ctx.fillStyle = 'rgba(54, 3, 3, 0.98)';
         this.ctx.font = 'bold 1.5rem Calibri';
         this.ctx.textAlign = 'center';
-        let energy = this.healthEndboss;
+        let energy = Math.max(0, this.healthEndboss);
         this.ctx.fillText(`Endboss ${energy} %`, x, y);
     }
 
