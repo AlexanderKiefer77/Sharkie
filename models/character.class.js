@@ -21,7 +21,7 @@ class Character extends MovableObject {
     isAttacking = false;
     canAttack = true;
 
-    attackType = null; // Speichert 'FINSLAP' oder 'BUBBLE'
+    attackType = null; // save 'FINSLAP' oder 'BUBBLE'
 
     IMAGES_IDLE = [
         './assets/img/Sharkie/IDLE/1.png',
@@ -157,9 +157,8 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => { // Intervall für Bewegungen
+        setInterval(() => { // Intervall for movements
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                // "&& this.x < this.world.level.level_end_x" verhindert, das der Character nach rechts aus dem Bild laufen kann
                 this.moveRight();
                 this.otherDirection = false;
                 // this.walking_sound.play();
@@ -198,7 +197,7 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {// Intervall für Animationen
+        setInterval(() => {// Intervall for Animation
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT_POISONEND);
                 return;
@@ -314,18 +313,18 @@ class Character extends MovableObject {
             let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
             let bubbleY = this.y + this.height / 2;
 
-            // Standardmäßig eine normale Bubble
+            // Standard normal Bubble
             let type = 'normal';
 
-            // Prüfen, ob der Endboss existiert und nah genug ist (z.B. 500 Pixel)
+            // if Endboss close enough
             if (this.world.endboss) {
                 let distance = Math.abs(this.x - this.world.endboss.x);
-                if (distance < 300) { // Du kannst den Wert 600 anpassen
+                if (distance < 300) { // set distance between endboss and character
                     type = 'poison';
                 }
             }
 
-            // Wir übergeben den Typ an den Constructor der Bubble-Klasse
+            // We pass the type to the constructor of the Bubble class
             this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
         }
     }

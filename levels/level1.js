@@ -7,19 +7,19 @@ function initLevel() {
 
     const numberOfBottles = 8;
     const startX = 400;
-    const maxX = 3500;
+    const maxX = 3300;
 
     let coins = [];
     const coinRadius = 80;
 
     // Helper-Function for random x-Position
     function randomPositionX() {
-        return 300 + Math.random() * 3600; // x between 300 and 3900
+        return 300 + Math.random() * 3200; // x between 300 and 3500
     }
 
     // Helper-Function for random y-Position
     function randomPositionY() {
-        return 20 + Math.random() * 400; // y between 50 and 450
+        return 20 + Math.random() * 400; // y between 20 and 420
     }
 
     // Pufferfishes

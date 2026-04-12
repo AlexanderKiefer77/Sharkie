@@ -21,7 +21,7 @@ class World {
     pointsCollectBottle = 10; // points per bottle
     pointsHitPufferFish = 100; // points when hitting a puffer fish with finslap
     pointsHitJellyFish = 150; // points when hitting a jelly fish with bubble
-
+    pointsHitEndboss = 300; // points when hitting the endboss with finslap
 
     statusHealth = new StatusHealth();
     statusCoin = new StatusCoin();
@@ -157,8 +157,25 @@ class World {
             }
         });
 
+        // Collision with the endboss
         if (this.endboss && this.character.isColliding(this.endboss)) {
-            this.character.hit();
+            if (this.endboss.state === 'DEAD') return;
+
+            if (this.character.isAttacking && this.character.attackType === 'FINSLAP') {
+                let tookDamage = this.endboss.hit();
+
+                if (tookDamage) {
+                    this.healthEndboss -= 20; // 20% deduction per shot
+
+                    if (this.healthEndboss <= 0) {
+                        this.healthEndboss = 0;
+                        this.endboss.state = 'DEAD';
+                        this.endboss.currentImage = 0;
+                    }
+                }
+            } else {
+                this.character.hit();
+            }
         }
     }
 

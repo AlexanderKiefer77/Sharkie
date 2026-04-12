@@ -3,12 +3,13 @@ class Endboss extends MovableObject {
     width = 300;
     y = 0;
     x = 3900;
-    speed = 7; // Harmonisierte Geschwindigkeit (nicht zu schnell)
+    speed = 7;
 
     state = 'WAITING';
     currentImage = 0;
     triggered = false;
-    animationFrameThrottle = 0; // Zähler für harmonische Animation
+    animationFrameThrottle = 0;
+    isHurtCooldown = false;
 
     offset = {
         top: 135,
@@ -88,11 +89,11 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (!this.world || !this.world.character) return;
 
-            // 1. Logik & Bewegung (immer ausführen für flüssige Bewegung)
+            // Logic & Movement (always execute for fluid movement)
             this.handleStateLogic();
 
-            // 2. Animation drosseln (Bilder wechseln nur jeden 2. Durchlauf = alle 140ms)
-            // Das macht die Flossenbewegungen und das Beißen harmonischer
+            // 2. Throttle animation (images only change every 2nd run = every 140ms)
+            // This makes the fin movements and biting more harmonious
             this.animationFrameThrottle++;
             if (this.animationFrameThrottle % 2 === 0) {
                 this.updateAnimationImages();
@@ -103,12 +104,17 @@ class Endboss extends MovableObject {
     handleStateLogic() {
         let cameraRight = -this.world.camera_x + this.world.canvas.width;
 
+        if (this.state === 'DEAD') {
+            this.y -= 3; // Endboss slowly floats to the surface
+            return;
+        }
+
         if (!this.triggered && this.x < cameraRight) {
             this.triggered = true;
             this.state = 'INTRODUCE';
             this.currentImage = 0;
         }
-        
+
         if (this.state === 'FLOATING' || this.state === 'ATTACK') {
             this.checkAttackDistance();
             if (this.state === 'ATTACK') {
@@ -118,6 +124,14 @@ class Endboss extends MovableObject {
     }
 
     updateAnimationImages() {
+        if (this.state === 'DEAD') {
+            this.playAnimation(this.IMAGES_DEAD);
+            if (this.currentImage >= this.IMAGES_DEAD.length - 1) {
+                this.currentImage = this.IMAGES_DEAD.length - 1;
+            }
+            return;
+        }
+
         if (this.state === 'INTRODUCE') {
             this.playAnimation(this.IMAGES_INTRODUCE);
             if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
@@ -154,7 +168,7 @@ class Endboss extends MovableObject {
                 this.otherDirection = true;
             }
         }
-  
+
         if (Math.abs(this.y - targetY) > 10) {
             if (this.y > targetY) {
                 this.y -= this.speed;
@@ -174,6 +188,49 @@ class Endboss extends MovableObject {
         // move lower limit
         if (this.y > 200) {
             this.y = 200;
+        }
+    }
+
+    hit() {
+        if (!this.isHurtCooldown) {
+            this.isHurtCooldown = true;
+            this.state = 'HURT';
+            this.currentImage = 0;
+
+            setTimeout(() => {
+                this.isHurtCooldown = false;
+                if (this.state === 'HURT') {
+                    this.state = 'FLOATING';
+                }
+            }, 1000);
+
+            return true;
+        }
+        return false;
+    }
+
+    updateAnimationImages() {
+        if (this.state === 'DEAD') {
+            this.playDeadAnimation();
+        } else if (this.state === 'INTRODUCE') {
+            this.playAnimation(this.IMAGES_INTRODUCE);
+            if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
+                this.state = 'FLOATING';
+                this.currentImage = 0;
+            }
+        } else if (this.state === 'HURT') {
+            this.playAnimation(this.IMAGES_HURT);
+        } else if (this.state === 'ATTACK') {
+            this.playAnimation(this.IMAGES_ATTACK);
+        } else if (this.state === 'FLOATING') {
+            this.playAnimation(this.IMAGES_FLOATING);
+        }
+    }
+
+    playDeadAnimation() {
+        this.playAnimation(this.IMAGES_DEAD);
+        if (this.currentImage >= this.IMAGES_DEAD.length - 1) {
+            this.currentImage = this.IMAGES_DEAD.length - 1;
         }
     }
 }
