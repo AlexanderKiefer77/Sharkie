@@ -39,12 +39,12 @@ class MovableObject extends DrawableObject {
 
         if (this.world) {
             this.world.healthCharacter -= 10;
-            this.world.addPoints(-this.world.pointsHurtsCharacter);
 
             if (this.world.healthCharacter < 0) {
                 this.world.healthCharacter = 0;
             }
 
+            this.world.addPoints(-this.world.pointsHurtsCharacter);
             this.lastHit = new Date().getTime();
         }
     }
@@ -61,7 +61,7 @@ class MovableObject extends DrawableObject {
     //     return timepassed < 1; // Gibt true zurück, wenn der Treffer weniger als 1 Sekunde her ist
     // }
 
-    isDead() {        
+    isDead() {
         return this.energy === 0;
     }
 

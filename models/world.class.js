@@ -155,10 +155,8 @@ class World {
                 }
                 else {
                     if (fish instanceof JellyFish) {
-                        // Sharkie erleidet elektrischen Schock
                         this.character.hitByJellyfish();
                     } else {
-                        // Normaler Schaden durch andere Fische (z.B. PufferFish ohne Angriff berührt)
                         this.character.hit();
                     }
                 }
@@ -183,7 +181,6 @@ class World {
                 }
             } else {
                 this.character.hit();
-                this.healthCharacter = this.character.energy;
             }
         }
     }
@@ -194,17 +191,17 @@ class World {
             let bubble = this.bubbles[bIndex];
             let bubbleWasRemoved = false;
 
-            // Kollision mit Fischen (JellyFish)
+            // Collision with fishes
             for (let fish of this.level.fishes) {
                 if (!bubbleWasRemoved && bubble.isColliding(fish) && fish instanceof JellyFish && !fish.isDead) {
                     fish.beTrapped();
                     this.addPoints(this.pointsHitJellyFish);
 
-                    // Bubble entfernen
+                    // Bubble remove
                     this.bubbles.splice(bIndex, 1);
                     bubbleWasRemoved = true;
 
-                    // JellyFish nach 2 Sekunden entfernen
+                    // JellyFish delete after 2 Sek
                     setTimeout(() => {
                         let eIndex = this.level.fishes.indexOf(fish);
                         if (eIndex > -1) {
@@ -212,17 +209,17 @@ class World {
                         }
                     }, 2000);
 
-                    break; // Wichtig: keine weiteren Checks für diese Bubble
+                    break;
                 }
             }
 
-            // Kollision mit Endboss nur prüfen, wenn Bubble noch existiert
+            // Collision with Endboss
             if (!bubbleWasRemoved && this.endboss && bubble.isColliding(this.endboss) &&
-                this.endboss.state !== 'DEAD') {
+                this.endboss.state !== 'DEAD' && !this.endboss.isCaptured) {
 
                 this.healthEndboss -= 30;
 
-                // Bubble entfernen
+                // Bubble remove
                 this.bubbles.splice(bIndex, 1);
 
                 if (this.healthEndboss <= 0) {
@@ -230,10 +227,9 @@ class World {
                     this.endboss.state = 'DEAD';
                     this.endboss.currentImage = 0;
 
-                    // Initialisiert Fallbewegung
+                    // Initializes falling movement
                     this.endboss.beTrapped();
 
-                    // Status wieder korrekt setzen
                     this.endboss.state = 'DEAD';
                 } else {
                     this.endboss.beTrapped();

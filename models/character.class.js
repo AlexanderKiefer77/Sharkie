@@ -160,6 +160,8 @@ class Character extends MovableObject {
 
     animate() {
         setInterval(() => { // Intervall for movements
+            if (this.isDead()) return;
+
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
@@ -217,8 +219,18 @@ class Character extends MovableObject {
 
     // Subfunctions for Intervall for Animation
     handleDeathAnimation() {
-        // Hier kannst du später auch nach hurtType entscheiden
-        this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
+        if (this.hurtType === 'ELECTRIC') {
+            this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
+        } else {
+            this.playAnimation(this.IMAGES_DEAD_POISONEND);
+        }
+
+        let deadImages = this.hurtType === 'ELECTRIC' ? this.IMAGES_DEAD_ELECTRIC : this.IMAGES_DEAD_POISONEND;
+        if (this.currentImage >= deadImages.length) {
+            this.currentImage = deadImages.length - 1;
+        }
+
+        this.y -= 5;
     }
 
     handleHurtAnimation() {
@@ -274,81 +286,6 @@ class Character extends MovableObject {
         this.currentImage = 0;
     }
     // end of Subfunctions for Intervall for Animation
-
-    //################
-    // setInterval(() => {// Intervall for Animation
-    //     if (this.isDead()) {
-    //         this.playAnimation(this.IMAGES_DEAD_ELECTRIC); // Oder DEAD_POISONEND
-    //         return;
-    //     }
-
-    //     if (this.isShocked) {
-    //         this.playAnimation(this.IMAGES_HURT_ELECTRIC);
-    //         return;
-    //     }
-
-    //     if (this.isHurt()) {
-    //         if (this.hurtType === 'ELECTRIC') {
-    //             this.playAnimation(this.IMAGES_HURT_ELECTRIC);
-    //         } else {
-    //             this.playAnimation(this.IMAGES_HURT_POISONEND);
-    //         }
-    //         return;
-    //     }
-
-    //     if (this.isAttacking) {
-    //         return;
-    //     }
-
-    //     const isMoving =
-    //         this.world.keyboard.RIGHT ||
-    //         this.world.keyboard.LEFT ||
-    //         this.world.keyboard.UP ||
-    //         this.world.keyboard.DOWN;
-
-    //     this.animationFrameCount++;
-
-    //     if (isMoving) {
-    //         this.playAnimation(this.IMAGES_SWIMM);
-    //         this.idleStartTime = null;
-    //         return;
-    //     }
-
-    //     if (!this.idleStartTime) {
-    //         this.idleStartTime = Date.now();
-    //         this.state = 'IDLE';
-    //         this.currentImage = 0;
-    //     }
-
-    //     let elapsed = Date.now() - this.idleStartTime;
-
-    //     if (this.state === 'IDLE') {
-    //         this.playAnimation(this.IMAGES_IDLE);
-
-    //         if (elapsed > 3000) {
-    //             this.state = 'IDLE_LONG';
-    //             this.currentImage = 0;
-    //         }
-    //     }
-
-    //     else if (this.state === 'IDLE_LONG') {
-    //         this.playAnimation(this.IMAGES_IDLE_LONG);
-    //         if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
-    //             this.state = 'SLEEP';
-    //             this.currentImage = 0;
-    //         }
-    //     }
-
-    //     else if (this.state === 'SLEEP') {
-    //         this.playAnimation(this.IMAGES_SLEEP);
-    //     }
-
-    // }, 150);
-
-
-
-
-
 
     finSlap() {
         if (this.isAttacking) return;
@@ -431,6 +368,9 @@ class Character extends MovableObject {
             this.isShocked = true;
             this.hurtType = 'ELECTRIC';
             this.world.healthCharacter -= 10;
+            if (this.world.healthCharacter < 0) {
+                this.world.healthCharacter = 0;
+            }
             this.lastHit = new Date().getTime();
 
             setTimeout(() => {
@@ -448,6 +388,17 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_HURT);
         }
         // ... restliche Animationen (Idle, Swim, etc.)
+    }
+
+    isDead() {
+        return this.world && this.world.healthCharacter <= 0;
+    }
+
+    hit() {
+        if (!this.isHurt()) {
+            super.hit(); // Ruft die Logik aus MovableObject auf (Leben abziehen, lastHit setzen)
+            this.hurtType = 'POISON'; // Hier erzwingen wir die Gift-Animation
+        }
     }
 
 }

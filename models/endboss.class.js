@@ -200,6 +200,8 @@ class Endboss extends MovableObject {
     }
 
     hit() {
+        if (this.isCaptured) return false;
+
         if (!this.isHurtCooldown) {
             this.isHurtCooldown = true;
             this.state = 'HURT';
@@ -217,13 +219,13 @@ class Endboss extends MovableObject {
         return false;
     }
 
-   beTrapped() {
-    this.state = 'TRAPPED';
-    this.isCaptured = true; // Merken, dass er in einer Blase ist
-    this.currentImage = 0;
-    this.trapStartY = this.y;
-    this.isFalling = false;
-}
+    beTrapped() {
+        this.state = 'TRAPPED';
+        this.isCaptured = true;
+        this.currentImage = 0;
+        this.trapStartY = this.y;
+        this.isFalling = false;
+    }
 
     updateAnimationImages() {
         if (this.state === 'DEAD') {
@@ -263,6 +265,7 @@ class Endboss extends MovableObject {
                 if (this.state !== 'DEAD') {
                     this.isFalling = true;
                 } else {
+                    // ############# end overlay ################
                     // Er ist tot und oben angekommen -> hier kann er gelöscht werden
                     // oder einfach außerhalb des Sichtfelds bleiben.
                 }
@@ -273,17 +276,17 @@ class Endboss extends MovableObject {
                 this.y = this.trapStartY; // back to position before hit with bubble
                 this.state = 'FLOATING';
                 this.isFalling = false;
+                this.isCaptured = false;
             }
         }
     }
 
     draw(ctx) {
-    super.draw(ctx);
-    // Zeichne Blase nur, wenn er wirklich eingefangen wurde
-    if (this.isCaptured && !this.isFalling) {
-        this.drawBubble(ctx);
+        super.draw(ctx);
+        if (this.isCaptured && !this.isFalling) {
+            this.drawBubble(ctx);
+        }
     }
-}
 
     drawBubble(ctx) {
         if (this.bubbleImage && this.bubbleImage.complete) {
