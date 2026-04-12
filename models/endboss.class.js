@@ -253,8 +253,8 @@ class Endboss extends MovableObject {
 
     applyTrappedPhysics() {
         if (!this.isFalling) {
-            this.y -= 7; // Geschwindigkeit des Aufsteigens
-            if (this.y < -350) { // Wenn er oben aus dem Bild ist
+            this.y -= 7; // speed to rise
+            if (this.y < -350) { // at this position the endboss fall back to position before hit with bubble
                 this.isFalling = true;
                 // Sound-Effekt für bubble platzen abspielen:
                 // this.bubblePopSound.play();
@@ -266,25 +266,23 @@ class Endboss extends MovableObject {
                 }
             }
         } else {
-            this.y += 12; // Er fällt schneller, als er aufsteigt
+            this.y += 12; // speed to fall
             if (this.y >= this.trapStartY) {
-                this.y = this.trapStartY; // Zurück auf Startposition
-                this.state = 'FLOATING'; // Wieder normal schwimmen
+                this.y = this.trapStartY; // back to position before hit with bubble
+                this.state = 'FLOATING';
                 this.isFalling = false;
             }
         }
     }
 
     draw(ctx) {
-        super.draw(ctx); // Zeichnet den Endboss selbst
-
+        super.draw(ctx); // Draw the final boss yourself
         if ((this.state === 'TRAPPED' || this.state === 'DEAD') && !this.isFalling) {
             this.drawBubble(ctx);
         }
     }
 
     drawBubble(ctx) {
-        // Nur zeichnen, wenn das Bild existiert und geladen ist
         if (this.bubbleImage && this.bubbleImage.complete) {
             let size = Math.max(this.width, this.height) * 1.2;
             let x = this.x + (this.width / 2) - (size / 2);

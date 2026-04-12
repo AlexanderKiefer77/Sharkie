@@ -315,17 +315,40 @@ class Character extends MovableObject {
 
             // Standard normal Bubble
             let type = 'normal';
+            let canShoot = true;
 
             // if Endboss close enough
             if (this.world.endboss) {
                 let distance = Math.abs(this.x - this.world.endboss.x);
-                if (distance < 300) { // set distance between endboss and character
-                    type = 'poison';
+
+                if (distance < 300) {
+                    if (this.world.collectBottles > 0) {
+                        this.world.collectBottles--;
+                        type = 'poison';
+                    } else {
+                        canShoot = false;
+                    }
                 }
             }
 
-            // We pass the type to the constructor of the Bubble class
-            this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
+            if (canShoot) {
+                this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
+            } if (this.world.endboss) {
+                let distance = Math.abs(this.x - this.world.endboss.x);
+
+                if (distance < 300) {
+                    if (this.world.collectBottles > 0) {
+                        this.world.collectBottles--;
+                        type = 'poison';
+                    } else {
+                        canShoot = false;
+                    }
+                }
+            }
+
+            if (canShoot) {
+                this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
+            }
         }
     }
 
