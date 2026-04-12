@@ -199,75 +199,152 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {// Intervall for Animation
+
+        setInterval(() => { // Intervall for Animation
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD_ELECTRIC); // Oder DEAD_POISONEND
+                this.handleDeathAnimation();
+            } else if (this.isShocked || this.isHurt()) {
+                this.handleHurtAnimation();
+            } else if (this.isAttacking) {
                 return;
+            } else if (this.isMoving()) {
+                this.handleSwimAnimation();
+            } else {
+                this.handleIdleAnimation();
             }
-
-            if (this.isShocked) {
-                this.playAnimation(this.IMAGES_HURT_ELECTRIC);
-                return;
-            }
-
-            if (this.isHurt()) {
-                if (this.hurtType === 'ELECTRIC') {
-                    this.playAnimation(this.IMAGES_HURT_ELECTRIC);
-                } else {
-                    this.playAnimation(this.IMAGES_HURT_POISONEND);
-                }
-                return;
-            }
-
-            if (this.isAttacking) {
-                return;
-            }
-
-            const isMoving =
-                this.world.keyboard.RIGHT ||
-                this.world.keyboard.LEFT ||
-                this.world.keyboard.UP ||
-                this.world.keyboard.DOWN;
-
-            this.animationFrameCount++;
-
-            if (isMoving) {
-                this.playAnimation(this.IMAGES_SWIMM);
-                this.idleStartTime = null;
-                return;
-            }
-
-            if (!this.idleStartTime) {
-                this.idleStartTime = Date.now();
-                this.state = 'IDLE';
-                this.currentImage = 0;
-            }
-
-            let elapsed = Date.now() - this.idleStartTime;
-
-            if (this.state === 'IDLE') {
-                this.playAnimation(this.IMAGES_IDLE);
-
-                if (elapsed > 3000) {
-                    this.state = 'IDLE_LONG';
-                    this.currentImage = 0;
-                }
-            }
-
-            else if (this.state === 'IDLE_LONG') {
-                this.playAnimation(this.IMAGES_IDLE_LONG);
-                if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
-                    this.state = 'SLEEP';
-                    this.currentImage = 0;
-                }
-            }
-
-            else if (this.state === 'SLEEP') {
-                this.playAnimation(this.IMAGES_SLEEP);
-            }
-
         }, 150);
     }
+
+    // Subfunctions for Intervall for Animation
+    handleDeathAnimation() {
+        // Hier kannst du später auch nach hurtType entscheiden
+        this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
+    }
+
+    handleHurtAnimation() {
+        if (this.isShocked || this.hurtType === 'ELECTRIC') {
+            this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+        } else {
+            this.playAnimation(this.IMAGES_HURT_POISONEND);
+        }
+    }
+
+    isMoving() {
+        return this.world.keyboard.RIGHT ||
+            this.world.keyboard.LEFT ||
+            this.world.keyboard.UP ||
+            this.world.keyboard.DOWN;
+    }
+
+    handleSwimAnimation() {
+        this.playAnimation(this.IMAGES_SWIMM);
+        this.idleStartTime = null;
+    }
+
+    handleIdleAnimation() {
+        if (!this.idleStartTime) {
+            this.setInitialIdleState();
+        }
+
+        let elapsed = Date.now() - this.idleStartTime;
+
+        if (this.state === 'IDLE') {
+            this.playAnimation(this.IMAGES_IDLE);
+            if (elapsed > 3000) this.changeState('IDLE_LONG');
+        }
+        else if (this.state === 'IDLE_LONG') {
+            this.playAnimation(this.IMAGES_IDLE_LONG);
+            if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
+                this.changeState('SLEEP');
+            }
+        }
+        else if (this.state === 'SLEEP') {
+            this.playAnimation(this.IMAGES_SLEEP);
+        }
+    }
+
+    setInitialIdleState() {
+        this.idleStartTime = Date.now();
+        this.state = 'IDLE';
+        this.currentImage = 0;
+    }
+
+    changeState(newState) {
+        this.state = newState;
+        this.currentImage = 0;
+    }
+    // end of Subfunctions for Intervall for Animation
+
+    //################
+    // setInterval(() => {// Intervall for Animation
+    //     if (this.isDead()) {
+    //         this.playAnimation(this.IMAGES_DEAD_ELECTRIC); // Oder DEAD_POISONEND
+    //         return;
+    //     }
+
+    //     if (this.isShocked) {
+    //         this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+    //         return;
+    //     }
+
+    //     if (this.isHurt()) {
+    //         if (this.hurtType === 'ELECTRIC') {
+    //             this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+    //         } else {
+    //             this.playAnimation(this.IMAGES_HURT_POISONEND);
+    //         }
+    //         return;
+    //     }
+
+    //     if (this.isAttacking) {
+    //         return;
+    //     }
+
+    //     const isMoving =
+    //         this.world.keyboard.RIGHT ||
+    //         this.world.keyboard.LEFT ||
+    //         this.world.keyboard.UP ||
+    //         this.world.keyboard.DOWN;
+
+    //     this.animationFrameCount++;
+
+    //     if (isMoving) {
+    //         this.playAnimation(this.IMAGES_SWIMM);
+    //         this.idleStartTime = null;
+    //         return;
+    //     }
+
+    //     if (!this.idleStartTime) {
+    //         this.idleStartTime = Date.now();
+    //         this.state = 'IDLE';
+    //         this.currentImage = 0;
+    //     }
+
+    //     let elapsed = Date.now() - this.idleStartTime;
+
+    //     if (this.state === 'IDLE') {
+    //         this.playAnimation(this.IMAGES_IDLE);
+
+    //         if (elapsed > 3000) {
+    //             this.state = 'IDLE_LONG';
+    //             this.currentImage = 0;
+    //         }
+    //     }
+
+    //     else if (this.state === 'IDLE_LONG') {
+    //         this.playAnimation(this.IMAGES_IDLE_LONG);
+    //         if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
+    //             this.state = 'SLEEP';
+    //             this.currentImage = 0;
+    //         }
+    //     }
+
+    //     else if (this.state === 'SLEEP') {
+    //         this.playAnimation(this.IMAGES_SLEEP);
+    //     }
+
+    // }, 150);
+
 
 
 
