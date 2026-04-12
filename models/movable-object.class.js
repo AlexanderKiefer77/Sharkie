@@ -55,7 +55,15 @@ class MovableObject extends DrawableObject {
         return timepassed < 4000;
     }
 
- 
+    // isHurt() {
+    //     let timepassed = Date.now() - this.lastHit; // Zeit seit letztem Treffer
+    //     timepassed = timepassed / 1000; // Umrechnung in Sekunden
+    //     return timepassed < 1; // Gibt true zurück, wenn der Treffer weniger als 1 Sekunde her ist
+    // }
+
+    isDead() {        
+        return this.energy === 0;
+    }
 
     playAnimation(images, loop = true) {
         let i = this.currentImage;

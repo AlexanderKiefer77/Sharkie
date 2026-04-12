@@ -22,6 +22,8 @@ class Character extends MovableObject {
     canAttack = true;
 
     attackType = null; // save 'FINSLAP' oder 'BUBBLE'
+    hurtType = 'POISON';
+    isShocked = false;
 
     IMAGES_IDLE = [
         './assets/img/Sharkie/IDLE/1.png',
@@ -198,8 +200,22 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {// Intervall for Animation
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD_ELECTRIC); // Oder DEAD_POISONEND
+                return;
+            }
+
+            if (this.isShocked) {
+                this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+                return;
+            }
+
             if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT_POISONEND);
+                if (this.hurtType === 'ELECTRIC') {
+                    this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+                } else {
+                    this.playAnimation(this.IMAGES_HURT_POISONEND);
+                }
                 return;
             }
 
@@ -312,30 +328,11 @@ class Character extends MovableObject {
         if (this.world && this.world.bubbles) {
             let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
             let bubbleY = this.y + this.height / 2;
-
-            // Standard normal Bubble
             let type = 'normal';
             let canShoot = true;
 
-            // if Endboss close enough
             if (this.world.endboss) {
                 let distance = Math.abs(this.x - this.world.endboss.x);
-
-                if (distance < 300) {
-                    if (this.world.collectBottles > 0) {
-                        this.world.collectBottles--;
-                        type = 'poison';
-                    } else {
-                        canShoot = false;
-                    }
-                }
-            }
-
-            if (canShoot) {
-                this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
-            } if (this.world.endboss) {
-                let distance = Math.abs(this.x - this.world.endboss.x);
-
                 if (distance < 300) {
                     if (this.world.collectBottles > 0) {
                         this.world.collectBottles--;
@@ -350,6 +347,30 @@ class Character extends MovableObject {
                 this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
             }
         }
+    }
+
+    hitByJellyfish() {
+        if (!this.isHurt()) {
+            this.isShocked = true;
+            this.hurtType = 'ELECTRIC';
+            this.world.healthCharacter -= 10;
+            this.lastHit = new Date().getTime();
+
+            setTimeout(() => {
+                this.isShocked = false;
+            }, 1000);
+        }
+    }
+
+    updateAnimation() {
+        if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
+        } else if (this.isShocked) {
+            this.playAnimation(this.IMAGES_HURT_ELECTRIC);
+        } else if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+        }
+        // ... restliche Animationen (Idle, Swim, etc.)
     }
 
 }

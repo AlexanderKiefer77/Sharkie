@@ -142,6 +142,7 @@ class World {
     checkCollisions() {
         this.level.fishes.forEach((fish) => {
             if (this.character.isColliding(fish) && !fish.isDead) {
+
                 if (this.character.isAttacking && this.character.attackType === 'FINSLAP' && fish instanceof PufferFish) {
                     fish.die(!this.character.otherDirection);
                     this.addPoints(this.pointsHitPufferFish);
@@ -151,8 +152,15 @@ class World {
                             this.level.fishes.splice(index, 1);
                         }
                     }, 2000);
-                } else if (!fish.isDead) {
-                    this.character.hit();
+                }
+                else {
+                    if (fish instanceof JellyFish) {
+                        // Sharkie erleidet elektrischen Schock
+                        this.character.hitByJellyfish();
+                    } else {
+                        // Normaler Schaden durch andere Fische (z.B. PufferFish ohne Angriff berührt)
+                        this.character.hit();
+                    }
                 }
             }
         });
@@ -175,49 +183,63 @@ class World {
                 }
             } else {
                 this.character.hit();
+                this.healthCharacter = this.character.energy;
             }
         }
     }
 
+
     checkBubbleCollisions() {
-        this.bubbles.forEach((bubble) => {
-            this.level.fishes.forEach((fish) => {
-                if (bubble.isColliding(fish) && fish instanceof JellyFish && !fish.isDead) {
+        for (let bIndex = this.bubbles.length - 1; bIndex >= 0; bIndex--) {
+            let bubble = this.bubbles[bIndex];
+            let bubbleWasRemoved = false;
+
+            // Kollision mit Fischen (JellyFish)
+            for (let fish of this.level.fishes) {
+                if (!bubbleWasRemoved && bubble.isColliding(fish) && fish instanceof JellyFish && !fish.isDead) {
                     fish.beTrapped();
                     this.addPoints(this.pointsHitJellyFish);
-                    let bIndex = this.bubbles.indexOf(bubble);
+
+                    // Bubble entfernen
                     this.bubbles.splice(bIndex, 1);
+                    bubbleWasRemoved = true;
+
+                    // JellyFish nach 2 Sekunden entfernen
                     setTimeout(() => {
                         let eIndex = this.level.fishes.indexOf(fish);
                         if (eIndex > -1) {
                             this.level.fishes.splice(eIndex, 1);
                         }
                     }, 2000);
+
+                    break; // Wichtig: keine weiteren Checks für diese Bubble
                 }
-            });
+            }
 
-            let bubbleStillExists = this.bubbles.includes(bubble);
+            // Kollision mit Endboss nur prüfen, wenn Bubble noch existiert
+            if (!bubbleWasRemoved && this.endboss && bubble.isColliding(this.endboss) &&
+                this.endboss.state !== 'DEAD') {
 
-            if (bubbleStillExists && this.endboss && bubble.isColliding(this.endboss) &&
-                this.endboss.state !== 'DEAD') { // Auch prüfen, ob er nicht schon tot ist
+                this.healthEndboss -= 30;
 
-                this.healthEndboss -= 40;
-                let bIndex = this.bubbles.indexOf(bubble);
-                if (bIndex > -1) this.bubbles.splice(bIndex, 1);
+                // Bubble entfernen
+                this.bubbles.splice(bIndex, 1);
 
                 if (this.healthEndboss <= 0) {
                     this.healthEndboss = 0;
                     this.endboss.state = 'DEAD';
                     this.endboss.currentImage = 0;
-                    // Wir rufen beTrapped auf, damit die trapStartY und isFalling initialisiert werden!
+
+                    // Initialisiert Fallbewegung
                     this.endboss.beTrapped();
-                    // Überschreiben den Status wieder auf DEAD, da beTrapped ihn auf TRAPPED setzt
+
+                    // Status wieder korrekt setzen
                     this.endboss.state = 'DEAD';
                 } else {
                     this.endboss.beTrapped();
                 }
             }
-        });
+        }
     }
 
     checkCoinCollisions() {
@@ -312,5 +334,6 @@ class World {
     //     });
     // }
 
+    // Deklaration der Funktion, die Kollisionen zwischen Blasen und anderen Objekten prüft
 
 }

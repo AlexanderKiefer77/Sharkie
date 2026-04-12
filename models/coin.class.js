@@ -3,10 +3,10 @@ class Coin extends MovableObject {
     width = 25;
 
     offset = {
-        top: 25,
-        bottom: 25,
-        left: 25,
-        right: 25
+        top: -10,
+        bottom: -10,
+        left: -10,
+        right: -10
     };
 
     IMAGES_COIN = [

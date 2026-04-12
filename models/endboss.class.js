@@ -12,6 +12,7 @@ class Endboss extends MovableObject {
     isHurtCooldown = false;
     trapStartY = 0;
     isFalling = false;
+    isCaptured = false;
 
     offset = {
         top: 135,
@@ -216,12 +217,13 @@ class Endboss extends MovableObject {
         return false;
     }
 
-    beTrapped() {
-        this.state = 'TRAPPED';
-        this.currentImage = 0;
-        this.trapStartY = this.y;
-        this.isFalling = false;
-    }
+   beTrapped() {
+    this.state = 'TRAPPED';
+    this.isCaptured = true; // Merken, dass er in einer Blase ist
+    this.currentImage = 0;
+    this.trapStartY = this.y;
+    this.isFalling = false;
+}
 
     updateAnimationImages() {
         if (this.state === 'DEAD') {
@@ -276,11 +278,12 @@ class Endboss extends MovableObject {
     }
 
     draw(ctx) {
-        super.draw(ctx); // Draw the final boss yourself
-        if ((this.state === 'TRAPPED' || this.state === 'DEAD') && !this.isFalling) {
-            this.drawBubble(ctx);
-        }
+    super.draw(ctx);
+    // Zeichne Blase nur, wenn er wirklich eingefangen wurde
+    if (this.isCaptured && !this.isFalling) {
+        this.drawBubble(ctx);
     }
+}
 
     drawBubble(ctx) {
         if (this.bubbleImage && this.bubbleImage.complete) {
