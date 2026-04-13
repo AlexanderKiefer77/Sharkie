@@ -206,6 +206,7 @@ class Endboss extends MovableObject {
             this.isHurtCooldown = true;
             this.state = 'HURT';
             this.currentImage = 0;
+            finSlapHitSound();
 
             setTimeout(() => {
                 this.isHurtCooldown = false;
@@ -229,6 +230,7 @@ class Endboss extends MovableObject {
 
     updateAnimationImages() {
         if (this.state === 'DEAD') {
+            
             this.playDeadAnimation();
             return;
         } else if (this.state === 'TRAPPED') {

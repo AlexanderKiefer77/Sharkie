@@ -39,7 +39,7 @@ class MovableObject extends DrawableObject {
 
         if (this.world) {
             this.world.healthCharacter -= 10;
-
+            playHurtSound();
             if (this.world.healthCharacter < 0) {
                 this.world.healthCharacter = 0;
             }

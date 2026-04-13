@@ -87,7 +87,7 @@ class JellyFish extends MovableObject {
 
         clearInterval(this.movementInterval);
         clearInterval(this.animationInterval);
-
+        whooshSound();
         this.currentImage = 0;
         let trappedInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);

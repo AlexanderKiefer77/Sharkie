@@ -119,8 +119,8 @@ class World {
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 
-    flipImage(mo) { // mo steht für MovableObject
-        this.ctx.save(); // Nutze 'this.ctx', nicht nur 'ctx'
+    flipImage(mo) { // mo = MovableObject
+        this.ctx.save();
         this.ctx.translate(mo.width, 0);
         this.ctx.scale(-1, 1);
         mo.x = mo.x * -1;
@@ -192,7 +192,14 @@ class World {
                     }
                 }
             } else {
-                this.character.hit();
+                if (!this.character.isHurt()) {
+                    this.healthCharacter -= 20;
+                    this.character.hit();
+
+                    if (this.healthCharacter < 0) {
+                        this.healthCharacter = 0;
+                    }
+                }
             }
         }
     }
@@ -254,7 +261,7 @@ class World {
         this.level.coins = this.level.coins.filter(coin => {
             if (this.character.isColliding(coin)) {
                 this.collectCoins++;
-                // this.playCoinSound();
+                playCoinSound();
                 this.addPoints(this.pointsCollectCoins);
                 return false;
             }
@@ -267,7 +274,7 @@ class World {
         this.level.bottles = this.level.bottles.filter(bottle => {
             if (this.character.isColliding(bottle)) {
                 this.collectBottles++;
-                // this.playBottleSound();
+                playBottleSound();
                 this.addPoints(this.pointsCollectBottle);
                 return false;
             }

@@ -27,6 +27,7 @@ class Character extends MovableObject {
     attackType = null; // save 'FINSLAP' oder 'BUBBLE'
     hurtType = 'POISON';
     isShocked = false;
+    isLostSoundPlayed = false;
 
     IMAGES_IDLE = [
         './assets/img/Sharkie/IDLE/1.png',
@@ -161,63 +162,6 @@ class Character extends MovableObject {
         this.animate();
     }
 
-    // animate() {
-    //     setInterval(() => { // Intervall for movements
-    //         if (this.isDead()) return;
-
-    //         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-    //             this.moveRight();
-    //             this.otherDirection = false;
-    //             // this.walking_sound.play();
-    //         }
-
-    //         if (this.world.keyboard.LEFT && this.x > this.world.level.level_start_x) {
-    //             this.moveLeft();
-    //             this.otherDirection = true;
-    //             // this.walking_sound.play();
-    //         }
-
-    //         if (this.world.keyboard.UP && this.y > 0 - this.offset.top) {
-    //             this.moveUp();
-    //             // this.walking_sound.play();
-    //         }
-
-    //         if (this.world.keyboard.DOWN && this.y + this.height < canvas.height + this.offset.bottom) {
-    //             this.moveDown();
-    //             // this.walking_sound.play();
-    //         }
-
-    //         if (this.world.keyboard.SPACE && !this.isAttacking && this.canShoot && !this.isHurt()) {
-    //             this.finSlap();
-    //             this.canShoot = false;
-    //         }
-
-    //         if (this.world.keyboard.D && !this.isAttacking && this.canShoot && !this.isHurt()) {
-    //             this.bubbleTrap();
-    //             this.canShoot = false;
-    //         }
-
-    //         if (!this.world.keyboard.D && !this.world.keyboard.SPACE) {
-    //             this.canShoot = true;
-    //         }
-
-    //         if (this.isMoving()) {
-    //             if (this.world.keyboard.RIGHT) {
-    //                 this.targetOffset = 100;   // Charakter links im Bild
-    //             }
-
-    //             if (this.world.keyboard.LEFT) {
-    //                 this.targetOffset = 450;   // Charakter rechts im Bild
-    //             }
-    //         }
-
-    //         // Smooth interpolation
-    //         let diff = this.targetOffset - this.cameraOffset;
-    //         this.cameraOffset += diff * 0.05;
-
-
-    //         this.world.camera_x = -this.x + this.cameraOffset;
-    //     }, 1000 / 60);
 
     animate() {
         this.lastDirection = null; // merkt sich letzte Richtung
@@ -263,7 +207,7 @@ class Character extends MovableObject {
                 this.canShoot = true;
             }
 
-            // ✅ Kamera-Logik (KEIN sofortiger Sprung mehr)
+            // camera-Logic
             if (movingRight && this.lastDirection !== 'RIGHT') {
                 this.targetOffset = 100;
                 this.lastDirection = 'RIGHT';
@@ -274,20 +218,16 @@ class Character extends MovableObject {
                 this.lastDirection = 'LEFT';
             }
 
-            // Smooth Movement
             let diff = this.targetOffset - this.cameraOffset;
-            this.cameraOffset += diff * 0.03;
+            this.cameraOffset += diff * 0.02;
 
-            // this.world.camera_x = -this.x + this.cameraOffset;
             let rawCameraX = -this.x + this.cameraOffset;
-
-            // Level-Breite = Ende des Levels
-            let maxScroll = 280; // ganz links
+            let maxScroll = 280; // left side
             let rightPadding = 150;
 
             let minScroll = -(this.world.level.level_end_x - this.world.canvas.width + rightPadding);
 
-            // Kamera begrenzen
+            // camera range
             this.world.camera_x = Math.max(minScroll, Math.min(maxScroll, rawCameraX));
 
         }, 1000 / 60);
@@ -320,6 +260,11 @@ class Character extends MovableObject {
         let deadImages = this.hurtType === 'ELECTRIC' ? this.IMAGES_DEAD_ELECTRIC : this.IMAGES_DEAD_POISONEND;
         if (this.currentImage >= deadImages.length) {
             this.currentImage = deadImages.length - 1;
+
+            if (!this.isLostSoundPlayed) {
+                gameOverSound();
+                this.isLostSoundPlayed = true;
+            }
         }
 
         this.y -= 5;
@@ -385,7 +330,7 @@ class Character extends MovableObject {
         this.isAttacking = true;
         this.attackType = 'FINSLAP';
         let slapFrame = 0;
-
+        finSlapSound();
         this.offset = { top: 70, bottom: 40, left: 30, right: 10 };
 
         let interval = setInterval(() => {
@@ -435,6 +380,7 @@ class Character extends MovableObject {
             let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
             let bubbleY = this.y + this.height / 2;
             let type = 'normal';
+            bubbleSound();
             let canShoot = true;
 
             if (this.world.endboss) {
@@ -443,6 +389,7 @@ class Character extends MovableObject {
                     if (this.world.collectBottles > 0) {
                         this.world.collectBottles--;
                         type = 'poison';
+                        bubbleEndbossSound();
                     } else {
                         canShoot = false;
                     }
@@ -460,6 +407,7 @@ class Character extends MovableObject {
             this.isShocked = true;
             this.hurtType = 'ELECTRIC';
             this.world.healthCharacter -= 10;
+            playElectrikShockSound();
             if (this.world.healthCharacter < 0) {
                 this.world.healthCharacter = 0;
             }
@@ -488,8 +436,8 @@ class Character extends MovableObject {
 
     hit() {
         if (!this.isHurt()) {
-            super.hit(); // Ruft die Logik aus MovableObject auf (Leben abziehen, lastHit setzen)
-            this.hurtType = 'POISON'; // Hier erzwingen wir die Gift-Animation
+            super.hit();
+            this.hurtType = 'POISON';
         }
     }
 

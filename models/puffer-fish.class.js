@@ -81,6 +81,8 @@ class PufferFish extends MovableObject {
         clearInterval(this.movementInterval);
         clearInterval(this.animationInterval);
 
+        finSlapHitSound();
+        whooshSound();
         this.currentImage = 0;
         let loopCount = 0;
 
