@@ -1,0 +1,24 @@
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px clamp(8px, 1vw, 16px);
+    font-weight: bold;
+}
+
+.volume-control label {
+    font-size: clamp(16px, 3vw, 24px);
+    white-space: nowrap;
+}
+
+.volume-control input[type="range"] {
+    width: 150px;
+    cursor: pointer;
+}
+
+.volume-control span {
+    font-size: clamp(16px, 3vw, 24px);
+    min-width: 40px;
+    text-align: right;
+}

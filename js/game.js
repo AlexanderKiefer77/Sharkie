@@ -2,6 +2,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+window.masterVolume = 0.5;
+let masterVolume = window.masterVolume;
+
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -17,6 +20,16 @@ function showStartScreen() {
     img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+}
+
+function setMasterVolume(value) {
+    window.masterVolume = value / 100;
+    masterVolume = window.masterVolume;
+
+    const volumeValue = document.getElementById('volumeValue');
+    if (volumeValue) {
+        volumeValue.textContent = value + '%';
+    }
 }
 
 

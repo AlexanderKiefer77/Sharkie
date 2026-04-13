@@ -38,6 +38,12 @@
 
     <h1 id="title">Sharkie</h1>
 
+    <div id="volumeControl" class="volume-control">
+        <label for="volumeSlider">Lautstärke:</label>
+        <input type="range" id="volumeSlider" min="0" max="100" value="75" onchange="setMasterVolume(this.value)">
+        <span id="volumeValue">75%</span>
+    </div>
+
     <div id="gameWrapper" class="gameWrapper">
         <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
 

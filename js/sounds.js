@@ -15,7 +15,7 @@ const win_sound = new Audio('/assets/audio/win.mp3');
 function playHurtSound() {
     character_hurt_sound.currentTime = 0;
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
-    character_hurt_sound.volume = 0.9 * vol;
+    character_hurt_sound.volume = 0.7 * vol;
     character_hurt_sound.play();
 }
 
@@ -92,3 +92,4 @@ function winSound() {
     win_sound.volume = 0.8 * vol;
     win_sound.play();
 };
+
