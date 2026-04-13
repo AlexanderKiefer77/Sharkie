@@ -8,9 +8,9 @@ let masterVolume = window.masterVolume;
 
 function init() {
     canvas = document.getElementById('canvas');
-    // showStartScreen();
-    let currentLevel = initLevel();
-    world = new World(canvas, keyboard, currentLevel);
+    showStartScreen();
+    // let currentLevel = initLevel();
+    // world = new World(canvas, keyboard, currentLevel);
 }
 
 function showStartScreen() {
@@ -20,6 +20,28 @@ function showStartScreen() {
     img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+}
+
+function startGame() {
+    let currentLevel = initLevel();
+
+    gameStarted = true;
+    canvas = document.getElementById('canvas');
+
+    // Create the world
+    world = new World(canvas, keyboard, currentLevel);
+
+    hideOverlays();
+    // showMobileSteering();
+    // playBackgroundMusic();
+}
+
+function hideOverlays() {
+    const overlays = ['startOverlay']; // , 'description', 'gameOverOverlay', 'winOverlay'
+    overlays.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
 }
 
 function setMasterVolume(value) {

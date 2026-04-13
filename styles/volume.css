@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin: 20px clamp(8px, 1vw, 16px);
+    margin: 10px clamp(8px, 1vw, 16px);
     font-weight: bold;
 }
 

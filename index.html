@@ -8,6 +8,8 @@
     <link rel="shortcut icon" href="./assets/img/Sharkie/IDLE/1.png" type="image/x-icon">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/volume.css">
+    <link rel="stylesheet" href="./styles/overlay-start.css">
 
 
     <script src="./js/sounds.js"></script>
@@ -46,6 +48,11 @@
 
     <div id="gameWrapper" class="gameWrapper">
         <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
+
+        <div id="startOverlay" class="start-overlay">
+            <button class="btn" onclick="startGame()">Start</button>
+        </div>
+
 
         <!-- <div id="description" class="description">
             <span>How To Play: </span>
