@@ -207,7 +207,7 @@ class Endboss extends MovableObject {
             this.state = 'HURT';
             this.currentImage = 0;
             finSlapHitSound();
-
+            this.world.addPoints(this.world.pointsHitEndbossFinslap);
             setTimeout(() => {
                 this.isHurtCooldown = false;
                 if (this.state === 'HURT') {
@@ -222,6 +222,7 @@ class Endboss extends MovableObject {
 
     beTrapped() {
         this.state = 'TRAPPED';
+        this.world.addPoints(this.world.pointsHitEndbossBubble);
         this.isCaptured = true;
         this.currentImage = 0;
         this.trapStartY = this.y;

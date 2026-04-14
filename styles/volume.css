@@ -10,6 +10,8 @@
 .volume-control label {
     font-size: clamp(16px, 3vw, 24px);
     white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
 }
 
 .volume-control input[type="range"] {
@@ -21,4 +23,6 @@
     font-size: clamp(16px, 3vw, 24px);
     min-width: 40px;
     text-align: right;
+    pointer-events: none;
+    user-select: none;
 }

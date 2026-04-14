@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./styles/volume.css">
     <link rel="stylesheet" href="./styles/overlay-start.css">
+    <link rel="stylesheet" href="./styles/description.css">
+    <link rel="stylesheet" href="./styles/overlay-break.css">
 
 
     <script src="./js/sounds.js"></script>
@@ -51,22 +53,83 @@
 
         <div id="startOverlay" class="start-overlay">
             <button class="btn" onclick="startGame()">Start</button>
+            <button class="btn" onclick="openHowToPlay()">How to Play</button>
         </div>
 
-
-        <!-- <div id="description" class="description">
-            <span>How To Play: </span>
-            <div class="descriptionLine">
-                <div class="singleDescription"><img src="./assets/icons/arrow_left.png" alt="Arrow Left">Walk Left</div>
-                <div class="singleDescription"><img src="./assets/icons/arrow_right.png" alt="Arrow Right">Walk Right
+        <div id="howToPlayOverlay" class="start-overlay hidden">
+            <div class="how-to-play-content">
+                <h2>CONTROLS</h2>
+                <div class="description">
+                    <img src="./assets/img/Buttons/Key/arrow keys.png" alt="Arrows" class="arrows-img">
+                    <span>MOVE SHARK</span>
                 </div>
-                <div class="singleDescription"><img src="./assets/icons/arrow_drop_up.png" alt="Arrow Up">Jump</div>
-                <div class="singleDescription"><img src="./assets/img/6_salsa_bottle/salsa_bottle.png"
-                        alt="Bottle">Throw Bottle
-                    (space)</div>
-                <div class="singleDescription"><img src="./assets/icons/break.png" alt="Break">Break (ESC)</div>
+
+                <div class="description">
+                    <img src="./assets/img/Buttons/Key/D key.png" alt="d-Key" class="img">
+                    <span>ATTACK WITH BUBBLE (Jelly Fishes and Endboss)</span>
+                </div>
+
+                <div class="description">
+                    <img src="./assets/img/Buttons/Key/Space Bar key.png" alt="Space Bar" class="img">
+                    <span>ATTACK WITH FINSLAP (Puffer Fishes and Endboss)</span>
+                </div>
+
+                <div class="description">
+                    <!-- <img src="./assets/img/Buttons/pause.svg" alt="Break" class="img break"> -->
+                    <svg width="52" height="32" viewBox="0 0 52 32" xmlns="http://www.w3.org/2000/svg">
+
+                        <rect x="1.5" y="1.5" width="49" height="29" rx="8" ry="8" fill="#7FFFE0" stroke="white"
+                            stroke-width="2" />
+
+                        <text x="26" y="21" text-anchor="middle" font-family="Calibri, sans-serif" font-weight="bold"
+                            font-size="14" fill="#531A82">
+                            ESC
+                        </text>
+                    </svg>
+                    <span>Break (and points info)</span>
+                </div>
+
+                <button class="btn-back" onclick="closeHowToPlay()">BACK</button>
             </div>
-        </div> -->
+        </div>
+
+        <div id="pauseOverlay" class="pause-overlay hidden">
+            <div class="pause-box">
+                <h2>PAUSE</h2>
+                <table>
+                    <tr>
+                        <th colspan="4">Points :</th>
+                    </tr>
+                    <tr>
+                        <td>Collect Bottle:</td>
+                        <td id="bottle-value">0</td>
+                        <td>Collect Coins:</td>
+                        <td id="coin-value">0</td>
+                    </tr>
+                    <tr>
+                        <td>Hit Pufferfish with Finslap:</td>
+                        <td id="puffer-fish-value">0</td>
+                        <td>Hit Jellyfish with Bubble:</td>
+                        <td id="jelly-fish-value">0</td>
+                    </tr>
+                    <tr>
+                        <td>Hit Endboss with Finslap:</td>
+                        <td id="endboss-finslap-value">0</td>
+                        <td>Hit Endboss with Bubble:</td>
+                        <td id="endboss-bubble-value">0</td>
+                    </tr>
+                    <tr>
+                        <td>Sharkie injured from Pufferfish:</td>
+                        <td id="injured-pufferfish-value">0</td>
+                        <td>Sharkie injured from Jellyfish:</td>
+                        <td id="injured-jellyfish-value">0</td>
+                    </tr>
+                </table>
+                <br><br>
+                <button class="btn" onclick="togglePause()">Resume (ESC)</button>
+            </div>
+        </div>
+
     </div>
 
 </body>

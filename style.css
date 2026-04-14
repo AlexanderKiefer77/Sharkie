@@ -30,6 +30,8 @@ body {
 h1 {
     font-size: clamp(60px, 10vw, 100px);
     margin: clamp(10px, 1vw, 20px) 0 clamp(10px, 1vw, 20px) 0;
+    pointer-events: none;
+    user-select: none;
 }
 
 /* Wrapper centered Canvas */
@@ -58,7 +60,7 @@ h1 {
 /* ########################### */
 .btn {
     color: white;
-    margin-top: clamp(6px, 2vw, 20px);
+    /* margin-top: clamp(6px, 2vw, 20px); */
     padding: clamp(6px, 1vw, 16px) clamp(24px, 2vw, 32px);
     font-family: 'cookie', Calibri;
     font-size: clamp(16px, 2vw, 24px);

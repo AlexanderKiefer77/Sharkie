@@ -1,6 +1,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let gameStarted = false;
+let isPaused = false;
 
 window.masterVolume = 0.5;
 let masterVolume = window.masterVolume;
@@ -9,8 +11,6 @@ let masterVolume = window.masterVolume;
 function init() {
     canvas = document.getElementById('canvas');
     showStartScreen();
-    // let currentLevel = initLevel();
-    // world = new World(canvas, keyboard, currentLevel);
 }
 
 function showStartScreen() {
@@ -36,8 +36,18 @@ function startGame() {
     // playBackgroundMusic();
 }
 
+function openHowToPlay() {
+    document.getElementById('startOverlay').classList.add('hidden');
+    document.getElementById('howToPlayOverlay').classList.remove('hidden');
+}
+
+function closeHowToPlay() {
+    document.getElementById('howToPlayOverlay').classList.add('hidden');
+    document.getElementById('startOverlay').classList.remove('hidden');
+}
+
 function hideOverlays() {
-    const overlays = ['startOverlay']; // , 'description', 'gameOverOverlay', 'winOverlay'
+    const overlays = ['startOverlay', 'overlayContent']; // , 'description', 'gameOverOverlay', 'winOverlay'
     overlays.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
@@ -54,14 +64,45 @@ function setMasterVolume(value) {
     }
 }
 
+function togglePause() {
+    if (!gameStarted || !world) return;
+
+    isPaused = !isPaused;
+    const pauseOverlay = document.getElementById('pauseOverlay');
+
+    if (isPaused) {
+        world.pauseGame();
+        pauseOverlay.classList.remove('hidden');
+        updateScoreboard();
+        // background_music.pause();
+    } else {
+        world.resumeGame();
+        pauseOverlay.classList.add('hidden');
+        // background_music.play().catch(e => {
+        // console.log("Musik-Resume verhindert:", e);
+        // });
+    }
+}
+
+function updateScoreboard() {
+    document.getElementById('bottle-value').textContent = world.pointsCollectBottle;
+    document.getElementById('coin-value').textContent = world.pointsCollectCoins;
+    document.getElementById('puffer-fish-value').textContent = world.pointsHitPufferFish;
+    document.getElementById('jelly-fish-value').textContent = world.pointsHitJellyFish;
+    document.getElementById('endboss-finslap-value').textContent = world.pointsHitEndbossFinslap;
+    document.getElementById('endboss-bubble-value').textContent = world.pointsHitEndbossBubble;
+    document.getElementById('injured-pufferfish-value').textContent = '-' + world.pointsHurtsCharacter;
+    document.getElementById('injured-jellyfish-value').textContent = '-' + world.pointsHurtsCharacter;
+}
+
 
 // Keyboard Events
 window.addEventListener('keydown', (e) => {
-    // if (!gameStarted) return;
-    // if (e.code === 'Escape') {
-    //     togglePause();
-    //     return;
-    // }
+    if (!gameStarted) return;
+    if (e.code === 'Escape') {
+        togglePause();
+        return;
+    }
     if (e.code === 'ArrowLeft') keyboard.LEFT = true;
     if (e.code === 'ArrowRight') keyboard.RIGHT = true;
     if (e.code === 'ArrowUp') keyboard.UP = true;
