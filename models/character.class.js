@@ -262,8 +262,14 @@ class Character extends MovableObject {
             this.currentImage = deadImages.length - 1;
 
             if (!this.isLostSoundPlayed) {
-                gameOverSound();
+                // clearAllIntervals();
                 this.isLostSoundPlayed = true;
+                stopAllSounds();
+
+                playSharkieDeadSound();
+                setTimeout(() => {
+                    gameOverSound();
+                }, 3000);
             }
         }
 

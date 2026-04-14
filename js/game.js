@@ -28,36 +28,26 @@ function startGame() {
     gameStarted = true;
     canvas = document.getElementById('canvas');
 
-    // Create the world
     world = new World(canvas, keyboard, currentLevel);
     hideOverlays();
     // showMobileSteering();
-    // playBackgroundMusic();
 }
 
 function restartGame() {
-    // Stop all
     if (world) {
-          world.stopGame();
+        world.stopGame();
     }
 
     clearAllIntervals();
-    
-    // Reset status
+
     gameStarted = false;
     world = null;
 
-    // Stop/Reset Music
-    // background_music.pause();
-    // background_music.currentTime = 0;
-
-    // Back to startscreen
-    document.getElementById('gameOverOverlay').classList.add('hidden');    
-    document.getElementById('winOverlay').classList.add('hidden');
+    hideOverlays();
     document.getElementById('startOverlay').classList.remove('hidden');
     // hideMobileSteering();
 
-    init();
+    showStartScreen();
 }
 
 function clearAllIntervals() {
@@ -90,7 +80,7 @@ function showGameOverOverlay() {
 }
 
 function hideOverlays() {
-    const overlays = ['startOverlay', 'overlayContent']; // , 'description', 'gameOverOverlay', 'winOverlay'
+    const overlays = ['startOverlay', 'overlayContent', 'gameOverOverlay', 'winOverlay'];
     overlays.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
@@ -117,13 +107,9 @@ function togglePause() {
         world.pauseGame();
         pauseOverlay.classList.remove('hidden');
         updateScoreboard();
-        // background_music.pause();
     } else {
         world.resumeGame();
         pauseOverlay.classList.add('hidden');
-        // background_music.play().catch(e => {
-        // console.log("Musik-Resume verhindert:", e);
-        // });
     }
 }
 

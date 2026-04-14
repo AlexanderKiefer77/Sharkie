@@ -13,6 +13,7 @@ class Endboss extends MovableObject {
     trapStartY = 0;
     isFalling = false;
     isCaptured = false;
+    winSoundPlayed = false;
 
     offset = {
         top: 135,
@@ -93,10 +94,9 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (!this.world || !this.world.character) return;
 
-            // Logic & Movement (always execute for fluid movement)
             this.handleStateLogic();
 
-            // 2. Throttle animation (images only change every 2nd run = every 140ms)
+            // Throttle animation (images only change every 2nd run = every 140ms)
             // This makes the fin movements and biting more harmonious
             this.animationFrameThrottle++;
             if (this.animationFrameThrottle % 2 === 0) {
@@ -132,27 +132,31 @@ class Endboss extends MovableObject {
         }
     }
 
-    updateAnimationImages() {
-        if (this.state === 'DEAD') {
-            this.playAnimation(this.IMAGES_DEAD);
-            if (this.currentImage >= this.IMAGES_DEAD.length - 1) {
-                this.currentImage = this.IMAGES_DEAD.length - 1;
-            }
-            return;
-        }
+    // updateAnimationImages() {
+    //     if (this.state === 'DEAD') {
+    //         console.log('Boss ist im DEAD State!');
+    //         if (!this.winSoundPlayed) {
+    //             console.log('Spiele Sound ab...');
+    //             this.winsound();
+    //             this.winSoundPlayed = true;
+    //         }
 
-        if (this.state === 'INTRODUCE') {
-            this.playAnimation(this.IMAGES_INTRODUCE);
-            if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
-                this.state = 'FLOATING';
-                this.currentImage = 0;
-            }
-        } else if (this.state === 'ATTACK') {
-            this.playAnimation(this.IMAGES_ATTACK);
-        } else if (this.state === 'FLOATING') {
-            this.playAnimation(this.IMAGES_FLOATING);
-        }
-    }
+    //         this.playDeadAnimation();
+    //         return;
+    //     }
+
+    //     if (this.state === 'INTRODUCE') {
+    //         this.playAnimation(this.IMAGES_INTRODUCE);
+    //         if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
+    //             this.state = 'FLOATING';
+    //             this.currentImage = 0;
+    //         }
+    //     } else if (this.state === 'ATTACK') {
+    //         this.playAnimation(this.IMAGES_ATTACK);
+    //     } else if (this.state === 'FLOATING') {
+    //         this.playAnimation(this.IMAGES_FLOATING);
+    //     }
+    // }
 
     checkAttackDistance() {
         let distance = Math.abs(this.x - this.world.character.x);
@@ -238,7 +242,10 @@ class Endboss extends MovableObject {
 
     updateAnimationImages() {
         if (this.state === 'DEAD') {
-
+            if (!this.winSoundPlayed) {
+                winSound();
+                this.winSoundPlayed = true;
+            }
             this.playDeadAnimation();
             return;
         } else if (this.state === 'TRAPPED') {

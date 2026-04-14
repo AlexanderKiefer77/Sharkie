@@ -80,7 +80,7 @@ class World {
 
     draw() {
         if (this.gameStopped) return;
-        
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Dynamic
@@ -305,7 +305,8 @@ class World {
             let visibleBottom = this.endboss.y + this.endboss.height - this.endboss.offset.bottom;
             if (visibleBottom < 0) {
                 if (!this.gameStopped) {
-                    // this.stopGame(); // Stoppt Charakter-Animationen etc.
+                    this.stopGame(); // Stoppt Charakter-Animationen etc.
+                    // winSound();
                     showWinOverlay();
                 }
             }
