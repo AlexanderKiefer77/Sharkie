@@ -35,6 +35,12 @@
     user-select: none;
 }
 
+.caution {
+    color: red;
+    font-size: larger;
+    font-weight: bold;
+}
+
 .arrows-img {
     width: 100px;
 }

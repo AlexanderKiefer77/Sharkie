@@ -109,11 +109,24 @@ function gameOverSound() {
 };
 
 function winSound() {
-    win_sound.currentTime = 0;
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
     win_sound.volume = 0.8 * vol;
+    win_sound.currentTime = 0;
+    
+    let playCount = 1;
+
     win_sound.play();
-};
+
+    win_sound.onended = function() {
+        if (playCount < 2) {
+            win_sound.currentTime = 0;
+            win_sound.play();
+            playCount++;
+        } else {
+            win_sound.onended = null;
+        }
+    };
+}
 
 function isAnyHurtSoundPlaying() {
     return (character_hurt_sound && !character_hurt_sound.paused && !character_hurt_sound.ended) ||
