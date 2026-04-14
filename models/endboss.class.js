@@ -127,6 +127,7 @@ class Endboss extends MovableObject {
             this.checkAttackDistance();
             if (this.state === 'ATTACK') {
                 this.moveTowardsCharacter();
+                // this.applyBoundaries(); //##########################
             }
         }
     }
@@ -189,14 +190,20 @@ class Endboss extends MovableObject {
     }
 
     applyBoundaries() {
-        // move upper limit
-        if (this.y < -200) {
-            this.y = -200;
+        if (this.state !== 'DEAD') {
+            // move upper limit
+            if (this.y < -200) {
+                this.y = -200;
+            }
+            // move lower limit
+            if (this.y > 200) {
+                this.y = 200;
+            }
         }
-        // move lower limit
-        if (this.y > 200) {
-            this.y = 200;
-        }
+    }
+
+    isOutOfScreen() {
+        return this.y + this.height < 0;
     }
 
     hit() {
@@ -231,7 +238,7 @@ class Endboss extends MovableObject {
 
     updateAnimationImages() {
         if (this.state === 'DEAD') {
-            
+
             this.playDeadAnimation();
             return;
         } else if (this.state === 'TRAPPED') {

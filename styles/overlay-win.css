@@ -1,0 +1,33 @@
+.win-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.win-overlay img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    /* Bild liegt als Basis ganz unten */
+    top: 0;
+    left: 0;
+    /* max-width: 500px;
+    margin-bottom: clamp(10px, 1vw, 20px); */
+}
+
+.win-overlay .btn {
+    position: relative;
+    z-index: 11;
+    margin-bottom: 180px;
+}

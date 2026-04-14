@@ -30,10 +30,33 @@ function startGame() {
 
     // Create the world
     world = new World(canvas, keyboard, currentLevel);
-
     hideOverlays();
     // showMobileSteering();
     // playBackgroundMusic();
+}
+
+function restartGame() {
+    // Stop all
+    // if (world && world.character) {
+    //     world.character.stopGame();
+    // }
+
+    // Reset status
+    gameStarted = false;
+    world = null;
+
+    // Stop/Reset Music
+    // background_music.pause();
+    // background_music.currentTime = 0;
+
+    // Back to startscreen
+    document.getElementById('gameOverOverlay').classList.add('hidden');
+    document.getElementById('winOverlay').classList.add('hidden');
+    document.getElementById('startOverlay').classList.remove('hidden');
+    document.getElementById('description').classList.remove('hidden');
+    hideMobileSteering();
+
+    showStartScreen();
 }
 
 function openHowToPlay() {
@@ -44,6 +67,19 @@ function openHowToPlay() {
 function closeHowToPlay() {
     document.getElementById('howToPlayOverlay').classList.add('hidden');
     document.getElementById('startOverlay').classList.remove('hidden');
+}
+
+
+function showWinOverlay() {
+    const overlay = document.getElementById('winOverlay');
+    if (overlay) overlay.classList.remove('hidden');
+    // hideMobileSteering();
+}
+
+function showGameOverOverlay() {
+    const overlay = document.getElementById('gameOverOverlay');
+    if (overlay) overlay.classList.remove('hidden');
+    // hideMobileSteering();
 }
 
 function hideOverlays() {

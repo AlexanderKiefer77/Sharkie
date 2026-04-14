@@ -149,6 +149,7 @@ class World {
             this.checkBubbleCollisions();
             this.checkCoinCollisions();
             this.checkBottleCollisions();
+            this.checkEndbossExit(); // for win-Overlay
         }, 50);
     }
 
@@ -283,6 +284,19 @@ class World {
         });
     }
 
+    checkEndbossExit() {
+        if (this.endboss && this.endboss.state === 'DEAD') {
+            let visibleBottom = this.endboss.y + this.endboss.height - this.endboss.offset.bottom;
+            if (visibleBottom < 0) {
+                if (!this.gameStopped) {
+                    // this.stopGame(); // Stoppt Charakter-Animationen etc.
+                    showWinOverlay();
+                }
+            }
+        }
+    }
+
+
     drawHealth(x, y) {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.2rem Calibri';
@@ -327,25 +341,25 @@ class World {
         this.ctx.fillText(`Endboss ${energy} %`, x, y);
     }
 
-     stopGame() {
+    stopGame() {
         this.gameStopped = true;
-        this.character.stopGame();
+        // this.character.stopGame();
     }
 
     pauseGame() {
         this.isPaused = true;
-        
+
         // this.character.pauseAllAnimations();
         // this.level.enemies.forEach(enemy => {
-            // if (enemy && enemy.pauseAllAnimations) {
-                // enemy.pauseAllAnimations();
-            // }
+        // if (enemy && enemy.pauseAllAnimations) {
+        // enemy.pauseAllAnimations();
+        // }
         // });
     }
 
     resumeGame() {
         this.isPaused = false;
-        
+
         // this.character.resumeAllAnimations();
         // this.level.enemies.forEach(enemy => {
         //     if (enemy && enemy.resumeAllAnimations) {
