@@ -16,6 +16,9 @@ let active_shocks = [];
 let shock_timeouts = [];
 
 function playHurtSound() {
+    // Prüfen, ob Sharkie existiert und bereits tot ist
+    if (world && world.character && world.character.isDead()) return;
+
     character_hurt_sound.currentTime = 0;
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
     character_hurt_sound.volume = 0.7 * vol;
@@ -23,14 +26,16 @@ function playHurtSound() {
 }
 
 function playElectrikShockSound() {
-    const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
+    if (world && world.character && world.character.isDead()) return;
 
-    // Wir leeren die Arrays sicherheitshalber vor dem Start
+    const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
     shock_timeouts = [];
 
     for (let i = 0; i < 5; i++) {
         // Wir speichern die ID jedes Timeouts
         let timeoutId = setTimeout(() => {
+            if (world && world.character && world.character.isDead()) return;
+            
             let s = character_eletric_shock_sound.cloneNode();
             s.volume = 0.8 * vol;
             s.play();

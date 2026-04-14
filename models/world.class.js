@@ -122,7 +122,7 @@ class World {
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 
-    flipImage(mo) { // mo = MovableObject
+    flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
         this.ctx.scale(-1, 1);
@@ -133,17 +133,6 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
-
-    // flipImage(mo) {
-    //     this.ctx.save();
-    //     this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
-    //     this.ctx.scale(-1, 1);
-    //     this.ctx.translate(-(mo.x + mo.width / 2), -(mo.y + mo.height / 2));
-    // }
-
-    // flipImageBack() {
-    //     this.ctx.restore();
-    // }
 
     run() {
         setInterval(() => {
@@ -157,14 +146,6 @@ class World {
             if (this.character.isDead() && !this.bossDefeated && !this.gameOverScheduled) {
                 this.gameOverScheduled = true;
                 showGameOverOverlay();
-                // Start a separate interval for the dead animation before calling stopGame()
-                // let deadAnimInterval = setInterval(() => {
-                //     if (this.character.deadAnimationPlayed) {
-                //         // clearInterval(deadAnimInterval);
-                //         this.stopGame();
-                //         setTimeout(() => showGameOverOverlay(), 700);
-                //     }
-                // }, 500);
             }
         }, 50);
     }
@@ -305,8 +286,7 @@ class World {
             let visibleBottom = this.endboss.y + this.endboss.height - this.endboss.offset.bottom;
             if (visibleBottom < 0) {
                 if (!this.gameStopped) {
-                    this.stopGame(); // Stoppt Charakter-Animationen etc.
-                    // winSound();
+                    this.stopGame();
                     showWinOverlay();
                 }
             }
@@ -360,53 +340,15 @@ class World {
 
     stopGame() {
         this.gameStopped = true;
-        // this.character.stopGame();
     }
 
     pauseGame() {
         this.isPaused = true;
-
-        // this.character.pauseAllAnimations();
-        // this.level.enemies.forEach(enemy => {
-        // if (enemy && enemy.pauseAllAnimations) {
-        // enemy.pauseAllAnimations();
-        // }
-        // });
     }
 
     resumeGame() {
         this.isPaused = false;
-
-        // this.character.resumeAllAnimations();
-        // this.level.enemies.forEach(enemy => {
-        //     if (enemy && enemy.resumeAllAnimations) {
-        //         enemy.resumeAllAnimations();
-        //     }
-        // });
     }
 
-    // ############## für Zwischenabfrage ###########
-    // checkCollisions() {
-    //     this.level.fishes.forEach((fish) => {
-    //         // Wir prüfen, ob der Charakter den Fisch berührt
-    //         if (this.character.isColliding(fish)) {
-    //             // console.log('Kollision mit:', fish);
-
-    //             // Hier kannst du entscheiden:
-    //             // 1. Schlägt Sharkie gerade? (Fin Slap)
-    //             if (this.character.isAttacking) {
-    //                 // console.log('Fisch besiegt!');
-    //                 // fish.hit(); // Falls Fische Leben haben
-    //             } else {
-    //                 this.character.hit();
-    //                 // 2. Sharkie wird getroffen
-    //                 // console.log('Sharkie verletzt!');
-    //                 // this.character.hit(); 
-    //             }
-    //         }
-    //     });
-    // }
-
-    // Deklaration der Funktion, die Kollisionen zwischen Blasen und anderen Objekten prüft
 
 }
