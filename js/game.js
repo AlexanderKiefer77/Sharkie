@@ -37,10 +37,12 @@ function startGame() {
 
 function restartGame() {
     // Stop all
-    // if (world && world.character) {
-    //     world.character.stopGame();
-    // }
+    if (world) {
+          world.stopGame();
+    }
 
+    clearAllIntervals();
+    
     // Reset status
     gameStarted = false;
     world = null;
@@ -50,13 +52,18 @@ function restartGame() {
     // background_music.currentTime = 0;
 
     // Back to startscreen
-    document.getElementById('gameOverOverlay').classList.add('hidden');
+    document.getElementById('gameOverOverlay').classList.add('hidden');    
     document.getElementById('winOverlay').classList.add('hidden');
     document.getElementById('startOverlay').classList.remove('hidden');
-    document.getElementById('description').classList.remove('hidden');
-    hideMobileSteering();
+    // hideMobileSteering();
 
-    showStartScreen();
+    init();
+}
+
+function clearAllIntervals() {
+    for (let i = 1; i < 10000; i++) {
+        window.clearInterval(i);
+    }
 }
 
 function openHowToPlay() {

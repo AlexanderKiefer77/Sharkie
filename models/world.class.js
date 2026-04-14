@@ -79,6 +79,8 @@ class World {
     }
 
     draw() {
+        if (this.gameStopped) return;
+        
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Dynamic
@@ -150,6 +152,20 @@ class World {
             this.checkCoinCollisions();
             this.checkBottleCollisions();
             this.checkEndbossExit(); // for win-Overlay
+
+            // Game Over Check
+            if (this.character.isDead() && !this.bossDefeated && !this.gameOverScheduled) {
+                this.gameOverScheduled = true;
+                showGameOverOverlay();
+                // Start a separate interval for the dead animation before calling stopGame()
+                // let deadAnimInterval = setInterval(() => {
+                //     if (this.character.deadAnimationPlayed) {
+                //         // clearInterval(deadAnimInterval);
+                //         this.stopGame();
+                //         setTimeout(() => showGameOverOverlay(), 700);
+                //     }
+                // }, 500);
+            }
         }, 50);
     }
 

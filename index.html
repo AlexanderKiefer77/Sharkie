@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./styles/description.css">
     <link rel="stylesheet" href="./styles/overlay-break.css">
     <link rel="stylesheet" href="./styles/overlay-win.css">
+    <link rel="stylesheet" href="./styles/overlay-gameover.css">
 
 
     <script src="./js/sounds.js"></script>
@@ -60,6 +61,11 @@
         <div id="winOverlay" class="win-overlay hidden">
             <img src="./assets/img/Sonstiges/win.png" alt="You Win">
             <button class="btn" onclick="restartGame()">Play &nbsp; Again</button>
+        </div>
+
+        <div id="gameOverOverlay" class="game-over-overlay hidden">
+            <img src="./assets/img/Sonstiges/gameover.png" alt="Game Over">
+            <button class="btn" onclick="restartGame()">Restart</button>
         </div>
 
         <div id="howToPlayOverlay" class="start-overlay hidden">
