@@ -32,6 +32,7 @@ function startGame() {
 
     world = new World(canvas, keyboard, currentLevel);
     hideOverlays();
+    initMobileControls();
     // showMobileSteering();
 }
 
@@ -167,16 +168,110 @@ window.addEventListener('keyup', (e) => {
     if (e.code === 'KeyD') keyboard.D = false;
 });
 
-// --- Mobile Steering Visibility Control ---
-// function showMobileSteering() {
-//     const mobileSteering = document.querySelector('.mobile-steering');
-//     if (mobileSteering) mobileSteering.classList.remove('hidden');
-// }
+// --- Mobile Steering Visibility Control-- -
+function showMobileSteering() {
+    const mobileSteering = document.querySelector('.mobile-steering');
+    if (mobileSteering) mobileSteering.classList.remove('hidden');
+}
 
-// function hideMobileSteering() {
-//     const mobileSteering = document.querySelector('.mobile-steering');
-//     if (mobileSteering) mobileSteering.classList.add('hidden');
-// }
+function hideMobileSteering() {
+    const mobileSteering = document.querySelector('.mobile-steering');
+    if (mobileSteering) mobileSteering.classList.add('hidden');
+}
+
+
+function initMobileControls() {
+    const mobileSteering = document.querySelector('.mobile-steering');
+    if (!mobileSteering) return;
+
+    const controls = mobileSteering.querySelectorAll('[data-action]');
+
+    controls.forEach(control => {
+
+        const startAction = (e) => {
+            e.preventDefault();
+
+            const action = control.dataset.action;
+            if (!action || !gameStarted) return;
+
+            handleActionStart(action);
+        };
+
+        const endAction = (e) => {
+            e.preventDefault();
+
+            const action = control.dataset.action;
+            if (!action) return;
+
+            handleActionEnd(action);
+        };
+
+        control.addEventListener('touchstart', startAction, { passive: false });
+        control.addEventListener('touchend', endAction, { passive: false });
+
+    });
+}
+
+function handleActionStart(action) {
+    switch (action) {
+        case 'LEFT':
+            keyboard.LEFT = true;
+            break;
+
+        case 'RIGHT':
+            keyboard.RIGHT = true;
+            break;
+
+        case 'UP':
+            keyboard.UP = true;
+            break;
+
+        case 'DOWN':
+            keyboard.DOWN = true;
+            break;
+
+        case 'F':
+            keyboard.SPACE = true;
+            break;
+
+        case 'D':
+            keyboard.D = true;
+            break;
+
+        case 'PAUSE':
+            togglePause();
+            break;
+    }
+}
+
+function handleActionEnd(action) {
+    switch (action) {
+        case 'LEFT':
+            keyboard.LEFT = false;
+            break;
+
+        case 'RIGHT':
+            keyboard.RIGHT = false;
+            break;
+
+        case 'UP':
+            keyboard.UP = false;
+            break;
+
+        case 'DOWN':
+            keyboard.DOWN = false;
+            break;
+
+        case 'F':
+            keyboard.SPACE = false;
+            break;
+
+        case 'D':
+            keyboard.D = false;
+            break;
+    }
+}
+
 
 // Mobile Touch Events
 // function initMobileControls() {
@@ -201,10 +296,14 @@ window.addEventListener('keyup', (e) => {
 //                 keyboard.LEFT = true;
 //             } else if (src.includes('arrow_right.png')) {
 //                 keyboard.RIGHT = true;
-//             } else if (src.includes('arrow_drop_up.png')) {
+//             } else if (src.includes('arrow_up.png')) {
 //                 keyboard.UP = true;
-//             } else if (src.includes('salsa_bottle.png')) {
+//             } else if (src.includes('arrow_down.png')) {
+//                 keyboard.DOWN = true;
+//             } else if (src.includes('F')) {
 //                 keyboard.SPACE = true;
+//             } else if (src.includes('D')) {
+//                 keyboard.KeyD = true;
 //             }
 //         });
 
@@ -215,10 +314,14 @@ window.addEventListener('keyup', (e) => {
 //                 keyboard.LEFT = false;
 //             } else if (src.includes('arrow_right.png')) {
 //                 keyboard.RIGHT = false;
-//             } else if (src.includes('arrow_drop_up.png')) {
+//             } else if (src.includes('arrow_up.png')) {
 //                 keyboard.UP = false;
-//             } else if (src.includes('salsa_bottle.png')) {
+//             } else if (src.includes('arrow_down.png')) {
+//                 keyboard.DOWN = false;
+//             } else if (src.includes('D')) {
 //                 keyboard.SPACE = false;
+//             } else if (src.includes('F')) {
+//                 keyboard.KeyD = false;
 //             }
 //         });
 //     });

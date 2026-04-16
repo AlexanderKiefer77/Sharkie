@@ -1,0 +1,59 @@
+
+.mobile-steering {
+    display: flex;
+    width: 100%;
+    display: none;
+}
+
+.steering-bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 720px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.steering {
+    display: flex;
+    gap: 20px;
+}
+
+.steering-bar img {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+}
+
+.mobile-steering {
+    display: none;
+}
+
+.mobile-steering.hidden {
+    display: none !important;
+}
+
+#gameOverOverlay:not(.hidden)~.mobile-steering {
+    display: none !important;
+}
+
+#winOverlay:not(.hidden)~.mobile-steering {
+    display: none !important;
+}
+
+.key-button {
+    width: 40px;
+    height: 40px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Luckiest Guy', sans-serif;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+    border-radius: 50px;     
+}

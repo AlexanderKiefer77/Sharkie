@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./styles/overlay-break.css">
     <link rel="stylesheet" href="./styles/overlay-win.css">
     <link rel="stylesheet" href="./styles/overlay-gameover.css">
+    <link rel="stylesheet" href="./styles/mobileSteering.css">
     <link rel="stylesheet" href="./styles/media.css">
 
 
@@ -88,7 +89,6 @@
                 </div>
 
                 <div class="description">
-                    <!-- <img src="./assets/img/Buttons/pause.svg" alt="Break" class="img break"> -->
                     <svg width="52" height="32" viewBox="0 0 52 32" xmlns="http://www.w3.org/2000/svg">
 
                         <rect x="1.5" y="1.5" width="49" height="29" rx="8" ry="8" fill="#7FFFE0" stroke="white"
@@ -142,6 +142,22 @@
                 <br><br>
                 <button class="btn" onclick="togglePause()">Resume (ESC)</button>
             </div>
+        </div>
+
+        <div class="mobile-steering">
+            <nav class="steering-bar">
+                <div class="steering">
+                    <img data-action="LEFT" src="./assets/icons/arrow_left.png" alt="Steuerungspfeil nach links">
+                    <img data-action="DOWN" src="./assets/icons/arrow_down.png" alt="Steuerungspfeil nach unten">
+                    <button data-action="D" class="key-button">D</button>
+                </div>
+                <img data-action="PAUSE" src="./assets/icons/break.png" alt="Break">
+                <div class="steering">
+                    <button data-action="F" class="key-button">F</button>
+                    <img data-action="UP" src="./assets/icons/arrow_up.png" alt="Steuerungspfeil nach oben">
+                    <img data-action="RIGHT" src="./assets/icons/arrow_right.png" alt="Steuerungspfeil nach rechts">
+                </div>
+            </nav>
         </div>
 
     </div>
