@@ -1,0 +1,68 @@
+
+@media (max-width: 720px) {
+    .gameWrapper {
+        width: 97vw;
+        max-width: 720px;
+    }
+
+    .volume-control {
+        display: none;
+    }
+
+    .mobile-steering {
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+    }
+}
+
+@media (max-width: 480px) {
+    .start-overlay {
+        transform: translate(-50%, -51%);
+    }
+
+    .steering-bar img {
+        height: 30px;
+        width: 30px;
+    }
+}
+
+@media (max-width: 380px) {
+    .start-overlay {
+        transform: translate(-50%, -53%);
+    }
+}
+
+@media (max-height: 850px) {
+    .volume-control {
+        display: none;
+    }
+
+    .mobile-steering {
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+    }
+}
+
+@media (max-height: 720px) {
+    body {
+        justify-content: center;
+    }
+
+    h1 {
+        display: none;
+    }
+}
+
+@media (max-height: 480px) {
+    .btn {
+        padding: 6px;
+    }
+}

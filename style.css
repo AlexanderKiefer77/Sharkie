@@ -1,3 +1,4 @@
+
 :root {
     --font-color-description: blue;
     --btn-color: #531A82;
@@ -13,7 +14,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,13 +23,13 @@ body {
             #5CADBD 40%,
             #2F318D 80%,
             #1B1464 100%);
-    font-family: Calibri; /*'luckiestGuy', */
+    font-family: 'luckiestGuy', Calibri;
     font-size: 16px;
 
 }
 
 h1 {
-    font-size: clamp(60px, 10vw, 100px);
+    font-size: clamp(60px, 12vw, 100px);
     margin: clamp(10px, 1vw, 20px) 0 clamp(10px, 1vw, 20px) 0;
     pointer-events: none;
     user-select: none;
@@ -39,8 +40,6 @@ h1 {
     position: relative;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
     max-width: 720px;
     width: min(100vw, calc(100vh * (720 / 480)));
     max-height: 480px;
@@ -57,14 +56,11 @@ h1 {
     display: none !important;
 }
 
-/* ########################### */
 .btn {
     color: white;
-    /* margin-top: clamp(6px, 2vw, 20px); */
     padding: clamp(6px, 1vw, 16px) clamp(24px, 2vw, 32px);
-    font-family: 'cookie', Calibri;
+    font-family: 'luckiestGuy', Calibri;
     font-size: clamp(16px, 2vw, 24px);
-    font-weight: bold;
     cursor: pointer;
     background-color: var(--btn-color); 
     border: 3px solid white; 

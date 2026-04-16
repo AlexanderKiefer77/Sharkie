@@ -12,7 +12,7 @@
     flex-direction: column;
     align-items: center;
     color: white;
-    padding: 20px;
+    padding: clamp(6px, 1vw, 20px);
     border: 2px solid white;
     border-radius: 15px;
     background: #1B1464;
@@ -20,8 +20,8 @@
 
 .how-to-play-content h2 {
     margin: 0;
-    font-size: 32px;
-    padding-bottom: 24px;
+    font-size: clamp(16px, 2vw, 32px);
+    padding-bottom: clamp(16px, 2vw, 24px);
     pointer-events: none;
     user-select: none;
 }
@@ -42,18 +42,18 @@
 }
 
 .arrows-img {
-    width: 100px;
+    width: clamp(60px, 8vw, 100px);
 }
 
 .img {
-    height: 32px;
+    height: clamp(20px, 2.5vw,32px);
 }
 
 .btn-back {
     color: #531A82;
     margin-top: clamp(6px, 2vw, 20px);
     padding: clamp(6px, 1vw, 10px) clamp(24px, 2vw, 32px);
-    font-family: 'cookie', Calibri;
+    font-family: 'luckiestGuy', Calibri;
     font-size: clamp(16px, 2vw, 24px);
     font-weight: bold;
     cursor: pointer;

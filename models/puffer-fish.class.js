@@ -74,35 +74,6 @@ class PufferFish extends MovableObject {
         }, 250);
     }
 
-    // die(hitFromLeft) {
-    //     if (this.isDead) return;
-    //     this.isDead = true;
-
-    //     clearInterval(this.movementInterval);
-    //     clearInterval(this.animationInterval);
-
-    //     finSlapHitSound();
-    //     whooshSound();
-    //     this.currentImage = 0;
-    //     this.loopCount = 0;
-
-    //     this.deathAnimationInterval = setStoppableInterval(() => {
-    //         this.deadImagesTransitions(this.deathAnimationInterval);
-    //     }, 60);
-
-    //     let horizontalFlight = hitFromLeft ? 2 : -2;
-    //     this.deathMovementInterval = setStoppableInterval(() => {
-    //         this.y -= 3;
-    //         this.x += horizontalFlight;
-    //         horizontalFlight *= 0.98;
-    //     }, 1000 / 60);
-
-    //     setTimeout(() => {
-    //         if (!this.world || this.world.isPaused) return;
-    //         clearInterval(this.deathMovementInterval);
-    //     }, 7000);
-    // }
-
     die(hitFromLeft) {
         if (this.isDead) return;
         this.isDead = true;
