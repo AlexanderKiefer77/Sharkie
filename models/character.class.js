@@ -166,7 +166,7 @@ class Character extends MovableObject {
     animate() {
         this.lastDirection = null; // merkt sich letzte Richtung
 
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (this.isDead()) return;
 
             let movingRight = false;
@@ -233,7 +233,7 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
 
-        setInterval(() => { // Intervall for Animation
+        setStoppableInterval(() => { // Intervall for Animation
             if (this.isDead()) {
                 this.handleDeathAnimation();
             } else if (this.isShocked || this.isHurt()) {
@@ -339,7 +339,7 @@ class Character extends MovableObject {
         finSlapSound();
         this.offset = { top: 70, bottom: 40, left: 30, right: 10 };
 
-        let interval = setInterval(() => {
+        let interval = setStoppableInterval(() => {
             let path = this.IMAGES_ATTACK_FINSLAP[slapFrame];
             this.img = this.imageCache[path];
 
@@ -365,7 +365,7 @@ class Character extends MovableObject {
         this.attackType = 'BUBBLE';
         this.currentImage = 0;
 
-        let interval = setInterval(() => {
+        let interval = setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_ATTACK_BUBBLETRAP);
 
             if (this.currentImage >= this.IMAGES_ATTACK_BUBBLETRAP.length) {

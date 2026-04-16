@@ -61,13 +61,13 @@ class PufferFish extends MovableObject {
     }
 
     animate() {
-        this.movementInterval = setInterval(() => {
+        this.movementInterval = setStoppableInterval(() => {
             if (!this.isDead) {
                 this.moveLeft();
             }
         }, 1000 / 60);
 
-        this.animationInterval = setInterval(() => {
+        this.animationInterval = setStoppableInterval(() => {
             if (!this.isDead) {
                 this.playAnimation(this.IMAGES_SWIMMING);
             }
@@ -86,7 +86,7 @@ class PufferFish extends MovableObject {
         this.currentImage = 0;
         let loopCount = 0;
 
-        let deathAnimationInterval = setInterval(() => {
+        let deathAnimationInterval = setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_TRANSITION);
 
             if (this.currentImage >= this.IMAGES_TRANSITION.length) {
@@ -103,7 +103,7 @@ class PufferFish extends MovableObject {
         }, 60);
 
         let horizontalFlight = hitFromLeft ? 2 : -2;
-        this.deathMovementInterval = setInterval(() => {
+        this.deathMovementInterval = setStoppableInterval(() => {
             this.y -= 3;
             this.x += horizontalFlight;
             horizontalFlight *= 0.98;

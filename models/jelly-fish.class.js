@@ -68,13 +68,13 @@ class JellyFish extends MovableObject {
     }
 
     animate() {
-        this.movementInterval = setInterval(() => {
+        this.movementInterval = setStoppableInterval(() => {
             if (!this.isDead) {
                 this.moveUp();
             }
         }, 1000 / 60);
 
-        this.animationInterval = setInterval(() => {
+        this.animationInterval = setStoppableInterval(() => {
             if (!this.isDead) {
                 this.playAnimation(this.IMAGES_SWIMMING);
             }
@@ -89,11 +89,11 @@ class JellyFish extends MovableObject {
         clearInterval(this.animationInterval);
         whooshSound();
         this.currentImage = 0;
-        let trappedInterval = setInterval(() => {
+        let trappedInterval = setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);
         }, 100);
 
-        this.deathMovement = setInterval(() => {
+        this.deathMovement = setStoppableInterval(() => {
             this.y -= 2;
         }, 1000 / 60);
 

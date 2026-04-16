@@ -3,6 +3,8 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 let isPaused = false;
+let stoppableIntervals = [];
+
 
 window.masterVolume = 0.5;
 let masterVolume = window.masterVolume;
@@ -48,6 +50,22 @@ function restartGame() {
     // hideMobileSteering();
 
     showStartScreen();
+}
+
+function setStoppableInterval(fn, time) {
+    let id = setInterval(() => {
+        if (!world || !world.isPaused) {
+            fn();
+        }
+    }, time);
+
+    stoppableIntervals.push(id);
+    return id;
+}
+
+function clearAllStoppableIntervals() {
+    stoppableIntervals.forEach(id => clearInterval(id));
+    stoppableIntervals = [];
 }
 
 function clearAllIntervals() {

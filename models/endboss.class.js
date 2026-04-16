@@ -91,7 +91,7 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (!this.world || !this.world.character) return;
 
             this.handleStateLogic();
