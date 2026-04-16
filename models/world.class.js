@@ -47,13 +47,10 @@ class World {
 
     initWorldStats() {
         this.totalCoins = this.level.coins.length;
-        // this.totalBottles = this.level.bottles ? this.level.bottles.length : 0;
-        // this.maxBottleCount = this.availableBottles + this.totalBottles;
     }
 
     setWorld() {
         this.character.world = this;
-        // this.endboss.world = this;
 
         // Set world for coins
         if (this.level.coins) {
