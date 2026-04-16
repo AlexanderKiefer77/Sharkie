@@ -74,43 +74,95 @@ class PufferFish extends MovableObject {
         }, 250);
     }
 
+    // die(hitFromLeft) {
+    //     if (this.isDead) return;
+    //     this.isDead = true;
+
+    //     clearInterval(this.movementInterval);
+    //     clearInterval(this.animationInterval);
+
+    //     finSlapHitSound();
+    //     whooshSound();
+    //     this.currentImage = 0;
+    //     this.loopCount = 0;
+
+    //     this.deathAnimationInterval = setStoppableInterval(() => {
+    //         this.deadImagesTransitions(this.deathAnimationInterval);
+    //     }, 60);
+
+    //     let horizontalFlight = hitFromLeft ? 2 : -2;
+    //     this.deathMovementInterval = setStoppableInterval(() => {
+    //         this.y -= 3;
+    //         this.x += horizontalFlight;
+    //         horizontalFlight *= 0.98;
+    //     }, 1000 / 60);
+
+    //     setTimeout(() => {
+    //         if (!this.world || this.world.isPaused) return;
+    //         clearInterval(this.deathMovementInterval);
+    //     }, 7000);
+    // }
+
     die(hitFromLeft) {
         if (this.isDead) return;
         this.isDead = true;
 
+        this.resetDeathState();
+        this.playDeathSounds();
+        this.startDeathAnimation();
+        this.startDeathMovement(hitFromLeft);
+        this.scheduleDeathCleanup();
+    }
+
+    resetDeathState() {// Subfunction for die(hitFromLeft)
         clearInterval(this.movementInterval);
         clearInterval(this.animationInterval);
 
+        this.currentImage = 0;
+        this.loopCount = 0;
+    }
+
+    playDeathSounds() {// Subfunction for die(hitFromLeft)
         finSlapHitSound();
         whooshSound();
-        this.currentImage = 0;
-        let loopCount = 0;
+    }
 
-        let deathAnimationInterval = setStoppableInterval(() => {
-            this.playAnimation(this.IMAGES_TRANSITION);
-
-            if (this.currentImage >= this.IMAGES_TRANSITION.length) {
-                loopCount++;
-
-                if (loopCount < 4) {
-                    this.currentImage = 0;
-                } else {
-                    clearInterval(deathAnimationInterval);
-                    this.playAnimation(this.IMAGES_DEAD);
-                    this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-                }
-            }
+    startDeathAnimation() {// Subfunction for die(hitFromLeft)
+        this.deathAnimationInterval = setStoppableInterval(() => {
+            this.deadImagesTransitions(this.deathAnimationInterval);
         }, 60);
+    }
 
+    startDeathMovement(hitFromLeft) {// Subfunction for die(hitFromLeft)
         let horizontalFlight = hitFromLeft ? 2 : -2;
+
         this.deathMovementInterval = setStoppableInterval(() => {
             this.y -= 3;
             this.x += horizontalFlight;
             horizontalFlight *= 0.98;
         }, 1000 / 60);
+    }
 
+    scheduleDeathCleanup() {// Subfunction for die(hitFromLeft)
         setTimeout(() => {
+            if (!this.world || this.world.isPaused) return;
             clearInterval(this.deathMovementInterval);
         }, 7000);
+    }
+
+    deadImagesTransitions(deathAnimationInterval) {// Subfunction for startDeathAnimation()
+        this.playAnimation(this.IMAGES_TRANSITION);
+
+        if (this.currentImage >= this.IMAGES_TRANSITION.length) {
+            this.loopCount++;
+
+            if (this.loopCount < 4) {
+                this.currentImage = 0;
+            } else {
+                clearInterval(deathAnimationInterval);
+                this.playAnimation(this.IMAGES_DEAD);
+                this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+            }
+        }
     }
 }
