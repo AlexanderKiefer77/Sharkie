@@ -90,6 +90,7 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
+
     animate() {
         setStoppableInterval(() => {
             if (!this.world || !this.world.character) return;
@@ -97,7 +98,6 @@ class Endboss extends MovableObject {
             this.handleStateLogic();
 
             // Throttle animation (images only change every 2nd run = every 140ms)
-            // This makes the fin movements and biting more harmonious
             this.animationFrameThrottle++;
             if (this.animationFrameThrottle % 2 === 0) {
                 this.updateAnimationImages();
@@ -105,7 +105,7 @@ class Endboss extends MovableObject {
         }, 70);
     }
 
-    handleStateLogic() {
+    handleStateLogic() {// Subfunction for animate()
         if (this.state === 'DEAD') {
             this.y -= 3; // Endboss slowly floats to the surface
             return;
@@ -118,47 +118,56 @@ class Endboss extends MovableObject {
 
         let cameraRight = -this.world.camera_x + this.world.canvas.width;
         if (!this.triggered && this.x < cameraRight) {
-            this.triggered = true;
-            this.state = 'INTRODUCE';
-            this.currentImage = 0;
+            this.handleStateLogicINTRODUCE();
         }
 
         if (this.state === 'FLOATING' || this.state === 'ATTACK') {
-            this.checkAttackDistance();
-            if (this.state === 'ATTACK') {
-                this.moveTowardsCharacter();
-                // this.applyBoundaries(); //##########################
+            this.handleStateLogicATTACK();
+        }
+    }
+
+    applyTrappedPhysics() {// Subfunction for handleStateLogic()
+        if (!this.isFalling) {
+            this.applyTrappedPhysicsRise();
+        } else {
+            this.applyTrappedPhysicsFall();
+        }
+    }
+
+    applyTrappedPhysicsRise() {// Subfunction for applyTrappedPhysics()
+        this.y -= 7; // speed to rise
+        if (this.y < -350) { // at this position the endboss fall back to position before hit with bubble
+            this.isFalling = true;
+            if (this.state !== 'DEAD') {
+                this.isFalling = true;
             }
         }
     }
 
-    // updateAnimationImages() {
-    //     if (this.state === 'DEAD') {
-    //         console.log('Boss ist im DEAD State!');
-    //         if (!this.winSoundPlayed) {
-    //             console.log('Spiele Sound ab...');
-    //             this.winsound();
-    //             this.winSoundPlayed = true;
-    //         }
+    applyTrappedPhysicsFall() {// Subfunction for applyTrappedPhysics()
+        this.y += 12; // speed to fall
+        if (this.y >= this.trapStartY) {
+            this.y = this.trapStartY; // back to position before hit with bubble
+            this.state = 'FLOATING';
+            this.isFalling = false;
+            this.isCaptured = false;
+        }
+    }
 
-    //         this.playDeadAnimation();
-    //         return;
-    //     }
+    handleStateLogicINTRODUCE() {// Subfunction for handleStateLogic()
+        this.triggered = true;
+        this.state = 'INTRODUCE';
+        this.currentImage = 0;
+    }
 
-    //     if (this.state === 'INTRODUCE') {
-    //         this.playAnimation(this.IMAGES_INTRODUCE);
-    //         if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
-    //             this.state = 'FLOATING';
-    //             this.currentImage = 0;
-    //         }
-    //     } else if (this.state === 'ATTACK') {
-    //         this.playAnimation(this.IMAGES_ATTACK);
-    //     } else if (this.state === 'FLOATING') {
-    //         this.playAnimation(this.IMAGES_FLOATING);
-    //     }
-    // }
+    handleStateLogicATTACK() {// Subfunction for handleStateLogic()
+        this.checkAttackDistance();
+        if (this.state === 'ATTACK') {
+            this.moveTowardsCharacter();
+        }
+    }
 
-    checkAttackDistance() {
+    checkAttackDistance() {// Subfunction for handleStateLogic()
         let distance = Math.abs(this.x - this.world.character.x);
         if (distance < 450) {
             this.state = 'ATTACK';
@@ -167,31 +176,40 @@ class Endboss extends MovableObject {
         }
     }
 
-    moveTowardsCharacter() {
+    moveTowardsCharacter() {// Subfunction for checkAttackDistance()
         let character = this.world.character;
         let diffX = Math.abs(this.x - character.x);
         let targetY = character.y - 150;
 
         if (diffX > 10) {
-            if (this.x > character.x) {
-                this.moveLeft();
-                this.otherDirection = false;
-            } else if (this.x < character.x) {
-                this.x += this.speed;
-                this.otherDirection = true;
-            }
+            this.moveTowardsCharacterX(character);
         }
 
         if (Math.abs(this.y - targetY) > 10) {
-            if (this.y > targetY) {
-                this.y -= this.speed;
-            } else {
-                this.y += this.speed;
-            }
+            this.moveTowardsCharacterY(targetY);
         }
 
         this.applyBoundaries();
     }
+
+    moveTowardsCharacterX(character) {// Subfunction for moveTowardsCharacter()
+        if (this.x > character.x) {
+            this.moveLeft();
+            this.otherDirection = false;
+        } else if (this.x < character.x) {
+            this.x += this.speed;
+            this.otherDirection = true;
+        }
+    }
+
+    moveTowardsCharacterY(targetY) {// Subfunction for moveTowardsCharacter()
+        if (this.y > targetY) {
+            this.y -= this.speed;
+        } else {
+            this.y += this.speed;
+        }
+    }
+
 
     applyBoundaries() {
         if (this.state !== 'DEAD') {
@@ -210,26 +228,31 @@ class Endboss extends MovableObject {
         return this.y + this.height < 0;
     }
 
+
     hit() {
         if (this.isCaptured) return false;
 
         if (!this.isHurtCooldown) {
-            this.isHurtCooldown = true;
-            this.state = 'HURT';
-            this.currentImage = 0;
-            finSlapHitSound();
-            this.world.addPoints(this.world.pointsHitEndbossFinslap);
-            setTimeout(() => {
-                this.isHurtCooldown = false;
-                if (this.state === 'HURT') {
-                    this.state = 'FLOATING';
-                }
-            }, 1000);
-
+            this.hitHURT();
             return true;
         }
         return false;
     }
+
+    hitHURT() {// Subfunction for hit()
+        this.isHurtCooldown = true;
+        this.state = 'HURT';
+        this.currentImage = 0;
+        finSlapHitSound();
+        this.world.addPoints(this.world.pointsHitEndbossFinslap);
+        setTimeout(() => {
+            this.isHurtCooldown = false;
+            if (this.state === 'HURT') {
+                this.state = 'FLOATING';
+            }
+        }, 1000);
+    }
+
 
     beTrapped() {
         this.state = 'TRAPPED';
@@ -240,22 +263,14 @@ class Endboss extends MovableObject {
         this.isFalling = false;
     }
 
+
     updateAnimationImages() {
         if (this.state === 'DEAD') {
-            if (!this.winSoundPlayed) {
-                winSound();
-                this.winSoundPlayed = true;
-            }
-            this.playDeadAnimation();
-            return;
+            this.updateAnimationImagesDEAD();
         } else if (this.state === 'TRAPPED') {
             this.playAnimation(this.IMAGES_HURT);
         } else if (this.state === 'INTRODUCE') {
-            this.playAnimation(this.IMAGES_INTRODUCE);
-            if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
-                this.state = 'FLOATING';
-                this.currentImage = 0;
-            }
+            this.updateAnimationImagesINTRODUCE();
         } else if (this.state === 'HURT') {
             this.playAnimation(this.IMAGES_HURT);
         } else if (this.state === 'ATTACK') {
@@ -265,36 +280,27 @@ class Endboss extends MovableObject {
         }
     }
 
-    playDeadAnimation() {
+    updateAnimationImagesDEAD() {// Subfunction for updateAnimationImages()
+        if (!this.winSoundPlayed) {
+            winSound();
+            this.winSoundPlayed = true;
+        }
+        this.playDeadAnimation();
+        return;
+    }
+
+    playDeadAnimation() {// Subfunction for updateAnimationImagesDEAD()
         this.playAnimation(this.IMAGES_DEAD);
         if (this.currentImage >= this.IMAGES_DEAD.length - 1) {
             this.currentImage = this.IMAGES_DEAD.length - 1;
         }
     }
 
-    applyTrappedPhysics() {
-        if (!this.isFalling) {
-            this.y -= 7; // speed to rise
-            if (this.y < -350) { // at this position the endboss fall back to position before hit with bubble
-                this.isFalling = true;
-                // Sound-Effekt für bubble platzen abspielen:
-                // this.bubblePopSound.play();
-                if (this.state !== 'DEAD') {
-                    this.isFalling = true;
-                } else {
-                    // ############# end overlay ################
-                    // Er ist tot und oben angekommen -> hier kann er gelöscht werden
-                    // oder einfach außerhalb des Sichtfelds bleiben.
-                }
-            }
-        } else {
-            this.y += 12; // speed to fall
-            if (this.y >= this.trapStartY) {
-                this.y = this.trapStartY; // back to position before hit with bubble
-                this.state = 'FLOATING';
-                this.isFalling = false;
-                this.isCaptured = false;
-            }
+    updateAnimationImagesINTRODUCE() {// Subfunction for updateAnimationImages()
+        this.playAnimation(this.IMAGES_INTRODUCE);
+        if (this.currentImage >= this.IMAGES_INTRODUCE.length - 1) {
+            this.state = 'FLOATING';
+            this.currentImage = 0;
         }
     }
 
@@ -305,13 +311,13 @@ class Endboss extends MovableObject {
         }
     }
 
-    drawBubble(ctx) {
+    drawBubble(ctx) {// Subfunction for draw(ctx)
         if (this.bubbleImage && this.bubbleImage.complete) {
             let size = Math.max(this.width, this.height) * 1.2;
             let x = this.x + (this.width / 2) - (size / 2);
             let y = this.y + (this.height / 2) - (size / 2);
-
             ctx.drawImage(this.bubbleImage, x, y, size, size);
         }
     }
+
 }
