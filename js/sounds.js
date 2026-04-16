@@ -116,7 +116,7 @@ function gameOverSound() {
 function winSound() {
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
     win_sound.volume = 0.8 * vol;
-    win_sound.currentTime = 0;
+    win_sound.currentTime = 0.1;
     
     let playCount = 1;
 

@@ -7,6 +7,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    winPlay = false;
 
     // status display
     healthCharacter = 100;
@@ -76,28 +77,29 @@ class World {
     }
 
     draw() {
-        if (this.gameStopped) return;
+        // if (this.gameStopped) return;
+        if (!this.gameStopped && !this.isPaused) {
 
-        // if (!this.isPaused) {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            // if (!this.isPaused) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Dynamic
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.ctx.translate(-this.camera_x, 0);
+            // Dynamic
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.backgroundObjects);
+            this.ctx.translate(-this.camera_x, 0);
 
-        // fixed
-        this.addToMap(this.statusHealth);
-        this.drawHealth(55, 45);
-        this.addToMap(this.statusCoin);
-        this.drawCoins(140, 45);
-        this.addToMap(this.statusBottle);
-        this.drawBottles(225, 45);
-        this.drawPoints();
-        this.drawHealthEndboss(620, 45);
+            // fixed
+            this.addToMap(this.statusHealth);
+            this.drawHealth(55, 45);
+            this.addToMap(this.statusCoin);
+            this.drawCoins(140, 45);
+            this.addToMap(this.statusBottle);
+            this.drawBottles(225, 45);
+            this.drawPoints();
+            this.drawHealthEndboss(620, 45);
 
-        // Dynamic
-        if (!this.isPaused) {
+            // Dynamic
+
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToMap(this.level.bottles);
             this.addObjectsToMap(this.level.coins);
@@ -106,8 +108,8 @@ class World {
             this.addToMap(this.endboss);
             this.addObjectsToMap(this.bubbles);
             this.ctx.translate(-this.camera_x, 0);
-        }
 
+        }
         requestAnimationFrame(() => this.draw());
     }
 
@@ -118,7 +120,7 @@ class World {
     addToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx); // help-function to check collisions
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 
@@ -285,6 +287,8 @@ class World {
 
     checkEndbossExit() {
         if (this.endboss && this.endboss.state === 'DEAD') {
+            this.removeAllFishes();
+
             let visibleBottom = this.endboss.y + this.endboss.height - this.endboss.offset.bottom;
             if (visibleBottom < 0) {
                 if (!this.gameStopped) {
@@ -293,6 +297,18 @@ class World {
                 }
             }
         }
+    }
+
+    removeAllFishes() {
+        this.level.fishes.forEach(fish => {
+            if (fish.movementInterval) clearInterval(fish.movementInterval);
+
+            if (fish.animationInterval) clearInterval(fish.animationInterval);
+
+            if (fish.deathMovementInterval) clearInterval(fish.deathMovementInterval);
+        });
+
+        this.level.fishes = [];
     }
 
 

@@ -92,8 +92,12 @@ class Endboss extends MovableObject {
 
 
     animate() {
-        setStoppableInterval(() => {
+        this.endbossInterval = setStoppableInterval(() => {
             if (!this.world || !this.world.character) return;
+
+            if (this.world.character.isDead()) {
+                return;  
+            }
 
             this.handleStateLogic();
 
@@ -103,6 +107,10 @@ class Endboss extends MovableObject {
                 this.updateAnimationImages();
             }
         }, 70);
+    }
+
+    stopAnimation() {
+        clearInterval(this.endbossInterval);
     }
 
     handleStateLogic() {// Subfunction for animate()

@@ -164,10 +164,10 @@ class Character extends MovableObject {
 
 
     animate() {
-        this.lastDirection = null; // merkt sich letzte Richtung
+        this.lastDirection = null;
 
-        setStoppableInterval(() => {
-            if (this.isDead()) return;
+        this.movementInterval = setStoppableInterval(() => {
+            if (this.isDead()|| this.world.endboss.state === 'DEAD') return;
 
             let movingRight = false;
             let movingLeft = false;
@@ -233,9 +233,12 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
 
-        setStoppableInterval(() => { // Intervall for Animation
+        this.animationInterval = setStoppableInterval(() => { // Intervall for Animation
             if (this.isDead()) {
                 this.handleDeathAnimation();
+                if (this.world.endboss) {
+                    this.world.endboss.stopAnimation();
+                }
             } else if (this.isShocked || this.isHurt()) {
                 this.handleHurtAnimation();
             } else if (this.isAttacking) {
@@ -251,6 +254,7 @@ class Character extends MovableObject {
 
     // Subfunctions for Intervall for Animation
     handleDeathAnimation() {
+        this.world.removeAllFishes();
         if (this.hurtType === 'ELECTRIC') {
             this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
         } else {

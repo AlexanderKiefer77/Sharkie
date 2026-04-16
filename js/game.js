@@ -2,7 +2,6 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
-// let isPaused = false;
 let stoppableIntervals = [];
 let mobileControlsInitialized = false;
 
@@ -93,13 +92,11 @@ function closeHowToPlay() {
 function showWinOverlay() {
     const overlay = document.getElementById('winOverlay');
     if (overlay) overlay.classList.remove('hidden');
-    // hideMobileSteering();
 }
 
 function showGameOverOverlay() {
     const overlay = document.getElementById('gameOverOverlay');
     if (overlay) overlay.classList.remove('hidden');
-    // hideMobileSteering();
 }
 
 function hideOverlays() {
