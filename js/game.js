@@ -209,8 +209,13 @@ function initMobileControls() {
             handleActionEnd(action);
         };
 
-        control.addEventListener('touchstart', startAction, { passive: false });
-        control.addEventListener('touchend', endAction, { passive: false });
+        // control.addEventListener('touchstart', startAction, { passive: false });
+        // control.addEventListener('touchend', endAction, { passive: false });
+
+        control.addEventListener('pointerdown', startAction);
+        control.addEventListener('pointerup', endAction);
+        control.addEventListener('pointercancel', endAction);
+        control.addEventListener('pointerleave', endAction);
 
     });
 }

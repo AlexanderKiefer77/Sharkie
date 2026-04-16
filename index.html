@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sharkie</title>
     <link rel="shortcut icon" href="./assets/img/Sharkie/IDLE/1.png" type="image/x-icon">
 
@@ -200,19 +200,25 @@
             </div>
         </div>
 
-        <div class="mobile-steering">
+        <div class="mobile-steering hidden">
             <nav class="steering-bar">
-                <div class="steering">
-                    <img data-action="LEFT" src="./assets/icons/arrow_left.png" alt="Steuerungspfeil nach links">
-                    <img data-action="DOWN" src="./assets/icons/arrow_down.png" alt="Steuerungspfeil nach unten">
+
+                <div class="left-controls">
+                    <div class="steering">
+                        <img data-action="LEFT" src="./assets/icons/arrow_left.png" alt="links">
+                        <img data-action="DOWN" src="./assets/icons/arrow_down.png" alt="unten">
+                        <img data-action="UP" src="./assets/icons/arrow_up.png" alt="oben">
+                        <img data-action="RIGHT" src="./assets/icons/arrow_right.png" alt="rechts">
+                    </div>                    
+                </div>
+
+                <img data-action="PAUSE" src="./assets/icons/break.png" alt="Pause">
+
+                <div class="right-controls">                    
                     <button data-action="D" class="key-button">D</button>
-                </div>
-                <img data-action="PAUSE" src="./assets/icons/break.png" alt="Break">
-                <div class="steering">
                     <button data-action="F" class="key-button">F</button>
-                    <img data-action="UP" src="./assets/icons/arrow_up.png" alt="Steuerungspfeil nach oben">
-                    <img data-action="RIGHT" src="./assets/icons/arrow_right.png" alt="Steuerungspfeil nach rechts">
                 </div>
+
             </nav>
         </div>
 
@@ -221,4 +227,3 @@
 </body>
 
 </html>
-

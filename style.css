@@ -51,10 +51,6 @@ h1 {
     background-color: black;
 }
 
-.hidden {
-    display: none !important;
-}
-
 .btn {
     color: white;
     padding: clamp(6px, 1vw, 16px) clamp(24px, 2vw, 32px);
@@ -74,4 +70,6 @@ h1 {
         0 0 40px #9e64d5;
 }
 
-.mobile-only { display: none; }
+.mobile-only {
+    display: none;
+}

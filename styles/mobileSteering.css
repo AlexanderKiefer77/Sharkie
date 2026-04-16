@@ -1,25 +1,56 @@
-
 .mobile-steering {
-    display: flex;
-    width: 100%;
     display: none;
+    width: 100%;
 }
 
 .steering-bar {
     box-sizing: border-box;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-end;
     width: 100%;
     max-width: 720px;
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 10px;
+}
+
+.left-controls .steering {
+    display: grid;
+    grid-template-columns: 36px 36px 36px;
+    grid-template-rows: 36px 36px 36px;
+    gap: 1px;
+    place-items: center;
+}
+
+.left-controls .steering img[data-action="UP"] {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.left-controls .steering img[data-action="LEFT"] {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.left-controls .steering img[data-action="RIGHT"] {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.left-controls .steering img[data-action="DOWN"] {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .steering {
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 .steering-bar img {
@@ -29,6 +60,7 @@
     height: 40px;
     width: 40px;
 }
+
 .mobile-steering.hidden {
     display: none !important;
 }
@@ -50,14 +82,14 @@
     font-family: 'Luckiest Guy', sans-serif;
     background-color: rgba(255, 255, 255, 0.6);
     border: none;
-    border-radius: 50px;     
+    border-radius: 50px;
 }
 
 .mobile-arrows-img {
     height: 30px;
     width: 30px;
-    background-color: #7FFFE0; 
-    border: 3px solid white; 
+    background-color: #7FFFE0;
+    border: 3px solid white;
     border-radius: 10px;
 }
 
@@ -75,7 +107,8 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    background-color: #7FFFE0; 
-    border: 3px solid white; 
+    background-color: #7FFFE0;
+    border: 3px solid white;
     border-radius: 8px;
 }
+

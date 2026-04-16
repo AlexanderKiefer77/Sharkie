@@ -1,3 +1,8 @@
+
+.hidden {
+    display: none !important;
+}
+
 @media (max-width: 720px) {
     .gameWrapper {
         width: 97vw;
@@ -8,15 +13,6 @@
         display: none;
     }
 
-    .mobile-steering {
-        display: flex;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 12;
-    }
-
     .desktop-only {
         display: none;
     }
@@ -24,7 +20,17 @@
     .mobile-only {
         display: block;
     }
+
+    .mobile-steering {
+        display: flex !important;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+    }
 }
+
 
 @media (max-width: 480px) {
     .start-overlay {
@@ -48,21 +54,21 @@
         display: none;
     }
 
-    .mobile-steering {
-        display: flex;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 12;
-    }
-
     .desktop-only {
         display: none;
     }
 
     .mobile-only {
         display: block;
+    }
+
+    .mobile-steering {
+        display: flex !important;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
     }
 }
 
