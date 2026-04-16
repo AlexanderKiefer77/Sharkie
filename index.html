@@ -71,39 +71,95 @@
         </div>
 
         <div id="howToPlayOverlay" class="start-overlay hidden">
-            <div class="how-to-play-content">
-                <h2>CONTROLS</h2>
-                <div class="description">
-                    <img src="./assets/img/Buttons/Key/arrow keys.png" alt="Arrows" class="arrows-img">
-                    <span>MOVE SHARK</span>
+            <div class="desktop-only">
+                <div class="how-to-play-content">
+                    <h2>CONTROLS</h2>
+                    <div class="description">
+                        <img src="./assets/img/Buttons/Key/arrow keys.png" alt="Arrows" class="arrows-img">
+                        <span>MOVE SHARK</span>
+                    </div>
+
+                    <div class="description">
+                        <img src="./assets/img/Buttons/Key/D key.png" alt="d-Key" class="img">
+                        <span>ATTACK WITH BUBBLE (Jelly Fishes and Endboss)</span>
+                    </div>
+
+                    <div class="description">
+                        <img src="./assets/img/Buttons/Key/Space Bar key.png" alt="Space Bar" class="img">
+                        <span>ATTACK WITH FINSLAP (Puffer Fishes and Endboss)</span>
+                    </div>
+
+                    <div class="description">
+                        <svg width="52" height="32" viewBox="0 0 52 32" xmlns="http://www.w3.org/2000/svg">
+
+                            <rect x="1.5" y="1.5" width="49" height="29" rx="8" ry="8" fill="#7FFFE0" stroke="white"
+                                stroke-width="2" />
+
+                            <text x="26" y="21" text-anchor="middle" font-family="luckiestGuy, Calibri"
+                                font-weight="bold" font-size="14" fill="#531A82">
+                                ESC
+                            </text>
+                        </svg>
+                        <span>Break (and points info)</span>
+                    </div>
+                    <span class="caution">Caution: If hit, swim away. Multiple injuries possible.</span>
+
+                    <button class="btn-back" onclick="closeHowToPlay()">BACK</button>
                 </div>
+            </div>
 
-                <div class="description">
-                    <img src="./assets/img/Buttons/Key/D key.png" alt="d-Key" class="img">
-                    <span>ATTACK WITH BUBBLE (Jelly Fishes and Endboss)</span>
+            <div class="mobile-only">
+                <div class="how-to-play-content">
+                    <h2>CONTROLS</h2>
+                    <div class="description">
+                        <img src="./assets/icons/arrow_left.png" alt="Arrow left" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_right.png" alt="Arrow right" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_up.png" alt="Arrow up" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_down.png" alt="Arrow down" class="mobile-arrows-img">
+                        <span>MOVE SHARK</span>
+                    </div>
+
+                    <div class="description">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="36" height="36" rx="8" ry="8" fill="#7FFFE0" stroke="white"
+                                stroke-width="2" />
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
+                                font-family="luckiestGuy, Calibri" font-weight="bold" font-size="16" fill="#531A82">
+                                D
+                            </text>
+                        </svg>
+                        <span>ATTACK WITH BUBBLE (Jelly Fishes and Endboss)</span>
+                    </div>
+
+                    <div class="description">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="36" height="36" rx="8" ry="8" fill="#7FFFE0" stroke="white"
+                                stroke-width="2" />
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
+                                font-family="luckiestGuy, Calibri" font-weight="bold" font-size="16" fill="#531A82">
+                                F
+                            </text>
+                        </svg>
+                        <span>ATTACK WITH FINSLAP (Puffer Fishes and Endboss)</span>
+                    </div>
+
+                    <div class="description">
+                        <svg width="52" height="40" viewBox="0 0 52 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="48" height="36" rx="8" ry="8" fill="#7FFFE0" stroke="white"
+                                stroke-width="2" />
+
+                            <g fill="#531A82">
+                                <rect x="21" y="14" width="4" height="12" rx="1" />
+                                <rect x="27" y="14" width="4" height="12" rx="1" />
+                            </g>
+                        </svg>
+
+                        <span>Break (and points info)</span>
+                    </div>
+                    <span class="mobile-caution">Caution: If hit, swim away. Multiple injuries possible.</span>
+
+                    <button class="mobile-btn-back" onclick="closeHowToPlay()">BACK</button>
                 </div>
-
-                <div class="description">
-                    <img src="./assets/img/Buttons/Key/Space Bar key.png" alt="Space Bar" class="img">
-                    <span>ATTACK WITH FINSLAP (Puffer Fishes and Endboss)</span>
-                </div>
-
-                <div class="description">
-                    <svg width="52" height="32" viewBox="0 0 52 32" xmlns="http://www.w3.org/2000/svg">
-
-                        <rect x="1.5" y="1.5" width="49" height="29" rx="8" ry="8" fill="#7FFFE0" stroke="white"
-                            stroke-width="2" />
-
-                        <text x="26" y="21" text-anchor="middle" font-family="Calibri, sans-serif" font-weight="bold"
-                            font-size="14" fill="#531A82">
-                            ESC
-                        </text>
-                    </svg>
-                    <span>Break (and points info)</span>
-                </div>
-                <span class="caution">Caution: If hit, swim away. Multiple injuries possible.</span>
-
-                <button class="btn-back" onclick="closeHowToPlay()">BACK</button>
             </div>
         </div>
 
@@ -165,3 +221,4 @@
 </body>
 
 </html>
+

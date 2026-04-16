@@ -73,3 +73,5 @@ h1 {
         0 0 20px #ff8c42,
         0 0 40px #9e64d5;
 }
+
+.mobile-only { display: none; }

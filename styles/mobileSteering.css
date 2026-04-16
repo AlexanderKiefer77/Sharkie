@@ -52,3 +52,30 @@
     border: none;
     border-radius: 50px;     
 }
+
+.mobile-arrows-img {
+    height: 30px;
+    width: 30px;
+    background-color: #7FFFE0; 
+    border: 3px solid white; 
+    border-radius: 10px;
+}
+
+.mobile-caution {
+    color: red;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.mobile-btn-back {
+    color: #531A82;
+    margin-top: clamp(6px, 2vw, 20px);
+    padding: 6px 18px;
+    font-family: 'luckiestGuy', Calibri;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #7FFFE0; 
+    border: 3px solid white; 
+    border-radius: 8px;
+}
