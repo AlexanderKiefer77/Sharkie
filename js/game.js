@@ -2,9 +2,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
-let isPaused = false;
+// let isPaused = false;
 let stoppableIntervals = [];
-
+let mobileControlsInitialized = false;
 
 window.masterVolume = 0.5;
 let masterVolume = window.masterVolume;
@@ -12,6 +12,7 @@ let masterVolume = window.masterVolume;
 
 function init() {
     canvas = document.getElementById('canvas');
+    hideMobileSteering();
     showStartScreen();
 }
 
@@ -32,8 +33,11 @@ function startGame() {
 
     world = new World(canvas, keyboard, currentLevel);
     hideOverlays();
-    initMobileControls();
-    // showMobileSteering();
+    if (!mobileControlsInitialized) {
+        initMobileControls();
+        mobileControlsInitialized = true;
+    }
+    showMobileSteering();
 }
 
 function restartGame() {
@@ -45,11 +49,11 @@ function restartGame() {
 
     gameStarted = false;
     world = null;
+    isPaused = false;
 
     hideOverlays();
     document.getElementById('startOverlay').classList.remove('hidden');
-    // hideMobileSteering();
-
+    hideMobileSteering();
     showStartScreen();
 }
 
@@ -119,16 +123,18 @@ function setMasterVolume(value) {
 function togglePause() {
     if (!gameStarted || !world) return;
 
-    isPaused = !isPaused;
+    world.isPaused = !world.isPaused;
     const pauseOverlay = document.getElementById('pauseOverlay');
 
-    if (isPaused) {
-        world.pauseGame();
+    if (world.isPaused) {
+        // world.pauseGame();
         pauseOverlay.classList.remove('hidden');
         updateScoreboard();
+        hideMobileSteering();
     } else {
-        world.resumeGame();
+        // world.resumeGame();
         pauseOverlay.classList.add('hidden');
+        showMobileSteering();
     }
 }
 
@@ -271,58 +277,3 @@ function handleActionEnd(action) {
             break;
     }
 }
-
-
-// Mobile Touch Events
-// function initMobileControls() {
-//     const mobileSteering = document.querySelector('.mobile-steering');
-//     if (!mobileSteering) return;
-
-//     const icons = mobileSteering.querySelectorAll('img');
-
-//     icons.forEach(icon => {
-//         icon.addEventListener('touchstart', (e) => {
-//             e.preventDefault();
-
-//             const src = icon.src;
-//             if (src.includes('break.png')) {
-//                 if (world) togglePause();
-//                 return;
-//             }
-
-//             if (!gameStarted) return;
-
-//             if (src.includes('arrow_left.png')) {
-//                 keyboard.LEFT = true;
-//             } else if (src.includes('arrow_right.png')) {
-//                 keyboard.RIGHT = true;
-//             } else if (src.includes('arrow_up.png')) {
-//                 keyboard.UP = true;
-//             } else if (src.includes('arrow_down.png')) {
-//                 keyboard.DOWN = true;
-//             } else if (src.includes('F')) {
-//                 keyboard.SPACE = true;
-//             } else if (src.includes('D')) {
-//                 keyboard.KeyD = true;
-//             }
-//         });
-
-//         icon.addEventListener('touchend', (e) => {
-//             e.preventDefault();
-//             const src = icon.src;
-//             if (src.includes('arrow_left.png')) {
-//                 keyboard.LEFT = false;
-//             } else if (src.includes('arrow_right.png')) {
-//                 keyboard.RIGHT = false;
-//             } else if (src.includes('arrow_up.png')) {
-//                 keyboard.UP = false;
-//             } else if (src.includes('arrow_down.png')) {
-//                 keyboard.DOWN = false;
-//             } else if (src.includes('D')) {
-//                 keyboard.SPACE = false;
-//             } else if (src.includes('F')) {
-//                 keyboard.KeyD = false;
-//             }
-//         });
-//     });
-// }

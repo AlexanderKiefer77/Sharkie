@@ -78,25 +78,26 @@ class World {
     draw() {
         if (this.gameStopped) return;
 
+        // if (!this.isPaused) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Dynamic
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.ctx.translate(-this.camera_x, 0);
+
+        // fixed
+        this.addToMap(this.statusHealth);
+        this.drawHealth(55, 45);
+        this.addToMap(this.statusCoin);
+        this.drawCoins(140, 45);
+        this.addToMap(this.statusBottle);
+        this.drawBottles(225, 45);
+        this.drawPoints();
+        this.drawHealthEndboss(620, 45);
+
+        // Dynamic
         if (!this.isPaused) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            // Dynamic
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.backgroundObjects);
-            this.ctx.translate(-this.camera_x, 0);
-
-            // fixed
-            this.addToMap(this.statusHealth);
-            this.drawHealth(55, 45);
-            this.addToMap(this.statusCoin);
-            this.drawCoins(140, 45);
-            this.addToMap(this.statusBottle);
-            this.drawBottles(225, 45);
-            this.drawPoints();
-            this.drawHealthEndboss(620, 45);
-
-            // Dynamic
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToMap(this.level.bottles);
             this.addObjectsToMap(this.level.coins);
@@ -106,6 +107,7 @@ class World {
             this.addObjectsToMap(this.bubbles);
             this.ctx.translate(-this.camera_x, 0);
         }
+
         requestAnimationFrame(() => this.draw());
     }
 
@@ -134,6 +136,8 @@ class World {
 
     run() {
         setStoppableInterval(() => {
+            if (this.isPaused) return;
+
             this.checkCollisions();
             this.checkBubbleCollisions();
             this.checkCoinCollisions();
