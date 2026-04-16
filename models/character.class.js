@@ -258,11 +258,16 @@ class Character extends MovableObject {
         }
 
         let deadImages = this.hurtType === 'ELECTRIC' ? this.IMAGES_DEAD_ELECTRIC : this.IMAGES_DEAD_POISONEND;
+        this.handleDeathAnimationDEAD(deadImages);
+
+        this.y -= 5;
+    }
+
+    handleDeathAnimationDEAD(deadImages) {// Subfunction for handleDeathAnimation()
         if (this.currentImage >= deadImages.length) {
             this.currentImage = deadImages.length - 1;
 
             if (!this.isLostSoundPlayed) {
-                // clearAllIntervals();
                 this.isLostSoundPlayed = true;
                 stopAllSounds();
 
@@ -272,8 +277,6 @@ class Character extends MovableObject {
                 }, 3000);
             }
         }
-
-        this.y -= 5;
     }
 
     handleHurtAnimation() {
@@ -308,15 +311,20 @@ class Character extends MovableObject {
             if (elapsed > 3000) this.changeState('IDLE_LONG');
         }
         else if (this.state === 'IDLE_LONG') {
-            this.playAnimation(this.IMAGES_IDLE_LONG);
-            if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
-                this.changeState('SLEEP');
-            }
+            this.handleIdleAnimationIDDLELONG();
         }
         else if (this.state === 'SLEEP') {
             this.playAnimation(this.IMAGES_SLEEP);
         }
     }
+
+    handleIdleAnimationIDDLELONG() {// Subfunction for handleIdleAnimation()
+        this.playAnimation(this.IMAGES_IDLE_LONG);
+        if (this.currentImage >= this.IMAGES_IDLE_LONG.length - 1) {
+            this.changeState('SLEEP');
+        }
+    }
+
 
     setInitialIdleState() {
         this.idleStartTime = Date.now();
@@ -333,30 +341,38 @@ class Character extends MovableObject {
     finSlap() {
         if (this.isAttacking) return;
 
-        this.isAttacking = true;
-        this.attackType = 'FINSLAP';
         let slapFrame = 0;
-        finSlapSound();
-        this.offset = { top: 70, bottom: 40, left: 30, right: 10 };
+        this.finSlapFINSLAP();
 
         let interval = setStoppableInterval(() => {
             let path = this.IMAGES_ATTACK_FINSLAP[slapFrame];
             this.img = this.imageCache[path];
-
             slapFrame++;
 
             if (slapFrame >= this.IMAGES_ATTACK_FINSLAP.length) {
-                clearInterval(interval);
-
-                this.isAttacking = false;
-                this.idleStartTime = Date.now();
-                this.state = 'IDLE';
-                this.currentImage = 0;
-
-                this.offset = { top: 80, bottom: 40, left: 25, right: 25 };
+                this.finSlapIDLE(interval);
             }
         }, 50);
     }
+
+    finSlapFINSLAP() {// Subfunction for finSlap()
+        this.isAttacking = true;
+        this.attackType = 'FINSLAP';
+        finSlapSound();
+        this.offset = { top: 70, bottom: 40, left: 30, right: 10 };
+    }
+
+    finSlapIDLE(interval) {// Subfunction for finSlap()
+        clearInterval(interval);
+
+        this.isAttacking = false;
+        this.idleStartTime = Date.now();
+        this.state = 'IDLE';
+        this.currentImage = 0;
+
+        this.offset = { top: 80, bottom: 40, left: 25, right: 25 };
+    }
+
 
     bubbleTrap() {
         if (this.isAttacking) return;
@@ -369,17 +385,20 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_ATTACK_BUBBLETRAP);
 
             if (this.currentImage >= this.IMAGES_ATTACK_BUBBLETRAP.length) {
-                clearInterval(interval);
-
-                this.createBubble();
-
-                this.isAttacking = false;
-                this.state = 'IDLE';
-                this.idleStartTime = Date.now();
+                this.bubbleTrapIDLE(interval);
             };
 
         }, 40);
     }
+
+    bubbleTrapIDLE(interval) {// Subfunction for bubbleTrap()
+        clearInterval(interval);
+        this.createBubble();
+        this.isAttacking = false;
+        this.state = 'IDLE';
+        this.idleStartTime = Date.now();
+    }
+
 
     createBubble() {
         if (this.world && this.world.bubbles) {
@@ -390,20 +409,24 @@ class Character extends MovableObject {
             let canShoot = true;
 
             if (this.world.endboss) {
-                let distance = Math.abs(this.x - this.world.endboss.x);
-                if (distance < 300) {
-                    if (this.world.collectBottles > 0) {
-                        this.world.collectBottles--;
-                        type = 'poison';
-                        bubbleEndbossSound();
-                    } else {
-                        canShoot = false;
-                    }
-                }
+                this.createBubbleEndboss(type);
             }
 
             if (canShoot) {
                 this.world.bubbles.push(new Bubble(bubbleX, bubbleY, type));
+            }
+        }
+    }
+
+    createBubbleEndboss(type) {// Subfunction for createBubble()
+        let distance = Math.abs(this.x - this.world.endboss.x);
+        if (distance < 300) {
+            if (this.world.collectBottles > 0) {
+                this.world.collectBottles--;
+                type = 'poison';
+                bubbleEndbossSound();
+            } else {
+                canShoot = false;
             }
         }
     }
@@ -423,17 +446,6 @@ class Character extends MovableObject {
                 this.isShocked = false;
             }, 1000);
         }
-    }
-
-    updateAnimation() {
-        if (this.isDead()) {
-            this.playAnimation(this.IMAGES_DEAD_ELECTRIC);
-        } else if (this.isShocked) {
-            this.playAnimation(this.IMAGES_HURT_ELECTRIC);
-        } else if (this.isHurt()) {
-            this.playAnimation(this.IMAGES_HURT);
-        }
-        // ... restliche Animationen (Idle, Swim, etc.)
     }
 
     isDead() {

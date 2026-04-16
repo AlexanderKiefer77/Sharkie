@@ -345,6 +345,7 @@ class World {
 
     pauseGame() {
         this.isPaused = true;
+        stopAllSounds();
     }
 
     resumeGame() {
