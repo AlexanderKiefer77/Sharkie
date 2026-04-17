@@ -104,7 +104,10 @@
                     </div>
                     <span class="caution">Caution: If hit, swim away. Multiple injuries possible.</span>
 
-                    <button class="btn-back" onclick="closeHowToPlay()">BACK</button>
+                    <div class="btn-bar">
+                        <button class="btn-back" onclick="toggleFullscreen()">FULLSCREEN</button>
+                        <button class="btn-back" onclick="closeHowToPlay()">BACK</button>
+                    </div>
                 </div>
             </div>
 
@@ -112,10 +115,10 @@
                 <div class="how-to-play-content">
                     <h2>CONTROLS</h2>
                     <div class="description">
-                        <img src="./assets/icons/arrow_left.png" alt="Arrow left" class="mobile-arrows-img">
-                        <img src="./assets/icons/arrow_right.png" alt="Arrow right" class="mobile-arrows-img">
-                        <img src="./assets/icons/arrow_up.png" alt="Arrow up" class="mobile-arrows-img">
-                        <img src="./assets/icons/arrow_down.png" alt="Arrow down" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_left.svg" alt="Arrow left" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_right.svg" alt="Arrow right" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_up.svg" alt="Arrow up" class="mobile-arrows-img">
+                        <img src="./assets/icons/arrow_down.svg" alt="Arrow down" class="mobile-arrows-img">
                         <span>MOVE SHARK</span>
                     </div>
 
@@ -196,7 +199,10 @@
                     </tr>
                 </table>
                 <br><br>
-                <button class="btn" onclick="togglePause()">Resume (ESC)</button>
+                <div class="btn-bar">
+                    <button class="btn" onclick="toggleFullscreen()">FULLSCREEN</button>
+                    <button class="btn" onclick="togglePause()">Resume (ESC)</button>
+                </div>
             </div>
         </div>
 
@@ -209,12 +215,12 @@
                         <img data-action="DOWN" src="./assets/icons/arrow_down.png" alt="unten">
                         <img data-action="UP" src="./assets/icons/arrow_up.png" alt="oben">
                         <img data-action="RIGHT" src="./assets/icons/arrow_right.png" alt="rechts">
-                    </div>                    
+                    </div>
                 </div>
 
                 <img data-action="PAUSE" src="./assets/icons/break.png" alt="Pause">
 
-                <div class="right-controls">                    
+                <div class="right-controls">
                     <button data-action="D" class="key-button">D</button>
                     <button data-action="F" class="key-button">F</button>
                 </div>

@@ -49,6 +49,12 @@
     height: clamp(20px, 2.5vw,32px);
 }
 
+.btn-bar {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+}
+
 .btn-back {
     color: #531A82;
     margin-top: clamp(6px, 2vw, 20px);

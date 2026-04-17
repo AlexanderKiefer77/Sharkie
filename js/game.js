@@ -278,4 +278,16 @@ function handleActionEnd(action) {
             keyboard.D = false;
             break;
     }
+
+}
+
+
+function toggleFullscreen() {
+    let elem = document.getElementById("gameWrapper");
+
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
 }
