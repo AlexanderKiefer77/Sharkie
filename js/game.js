@@ -124,12 +124,10 @@ function togglePause() {
     const pauseOverlay = document.getElementById('pauseOverlay');
 
     if (world.isPaused) {
-        // world.pauseGame();
         pauseOverlay.classList.remove('hidden');
         updateScoreboard();
         hideMobileSteering();
     } else {
-        // world.resumeGame();
         pauseOverlay.classList.add('hidden');
         showMobileSteering();
     }
@@ -208,9 +206,6 @@ function initMobileControls() {
 
             handleActionEnd(action);
         };
-
-        // control.addEventListener('touchstart', startAction, { passive: false });
-        // control.addEventListener('touchend', endAction, { passive: false });
 
         control.addEventListener('pointerdown', startAction);
         control.addEventListener('pointerup', endAction);

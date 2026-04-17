@@ -53,7 +53,7 @@ function playElectrikShockSound() {
 function playSharkieDeadSound() {
     sharkis_dead_sound.currentTime = 0;
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
-    sharkis_dead_sound.volume = 0.7 * vol;
+    sharkis_dead_sound.volume = 0.5 * vol;
     sharkis_dead_sound.play();
 }
 
@@ -109,7 +109,7 @@ function whooshSound() {
 function gameOverSound() {
     game_over_sound.currentTime = 0;
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
-    game_over_sound.volume = 0.8 * vol;
+    game_over_sound.volume = 0.9 * vol;
     game_over_sound.play();
 };
 

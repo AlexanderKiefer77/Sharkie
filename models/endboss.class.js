@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
     height = 400;
     width = 300;
     y = 0;
-    x = 3900;
+    x = 2500; // 3900
     speed = 7;
 
     state = 'WAITING';

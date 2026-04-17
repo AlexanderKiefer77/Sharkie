@@ -1,20 +1,20 @@
 function initLevel() {
-    let numberOfGreenPufferFishes = 3;
-    let numberOfOrangePufferFishes = 3;
-    let numberOfRedPufferFishes = 3;
-    let numberOfYellowJellyFishes = 2;
-    let numberOfLilaJellyFishes = 2;
+    let numberOfGreenPufferFishes = 5;
+    let numberOfOrangePufferFishes = 5;
+    let numberOfRedPufferFishes = 5;
+    let numberOfYellowJellyFishes = 5;
+    let numberOfLilaJellyFishes = 5;
 
-    const numberOfBottles = 4;
+    const numberOfBottles = 8;
     const startX = 400;
-    const maxX = 2000;
+    const maxX = 3300;
 
     let coins = [];
-    const coinRadius = 60;
+    const coinRadius = 80;
 
     // Helper-Function for random x-Position
     function randomPositionX() {
-        return 300 + Math.random() * (maxX - 100);
+        return 300 + Math.random() * 3200; // x between 300 and 3500
     }
 
     // Helper-Function for random y-Position
@@ -90,12 +90,16 @@ function initLevel() {
 
     function createBackgroundObjects() {
         let backgroundObjects = [];
-        let layerOffsets = [-719, 0, 719, 719 * 2, 719 * 3];
+        let layerOffsets = [-719, 0, 719, 719 * 2, 719 * 3, 719 * 4, 719 * 5];
 
         layerOffsets.forEach((offset, index) => {
             let suffix = index % 2 === 0 ? '2' : '1'; // change between 2 and 1
             backgroundObjects.push(
-                new BackgroundObject(`./assets/img/Background/Floor/L${suffix}-komplett.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Water/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Light/${suffix === '2' ? '2' : '1'}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Fondo 2/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Fondo 1/L${suffix}.png`, offset),
+                new BackgroundObject(`./assets/img/Background/Floor/D${suffix}.png`, offset)
             );
         });
         return backgroundObjects;
