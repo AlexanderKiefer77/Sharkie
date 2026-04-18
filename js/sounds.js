@@ -10,6 +10,7 @@ const bubble_endboss_sound = new Audio('./assets/audio/bubble-endboss.mp3');
 const whoosh_sound = new Audio('./assets/audio/whoosh.mp3');
 const sharkis_dead_sound = new Audio('./assets/audio/sharkiedead.mp3');
 const game_over_sound = new Audio('/assets/audio/gameover.mp3');
+const level_finished = new Audio('./assets/audio/level-passed.mp3');
 const win_sound = new Audio('/assets/audio/win.mp3');
 
 let active_shocks = [];
@@ -113,6 +114,13 @@ function gameOverSound() {
     game_over_sound.play();
 };
 
+function levelFinishedSound() {
+    level_finished.currentTime = 0;
+    const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
+    level_finished.volume = 0.9 * vol;
+    level_finished.play();
+};
+
 function winSound() {
     const vol = (typeof window.masterVolume !== 'undefined') ? window.masterVolume : 1;
     win_sound.volume = 0.8 * vol;
@@ -146,7 +154,7 @@ function stopAllSounds() {
         get_coin_sound, get_bottle_sound, character_hurt_sound,
         character_eletric_shock_sound, finSlap_sound, finSlap_hit_sound,
         bubble_sound, bubble_endboss_sound, whoosh_sound,
-        sharkis_dead_sound, win_sound, game_over_sound
+        sharkis_dead_sound, level_finished, win_sound, game_over_sound
     ];
 
     allAudios.forEach(audio => {

@@ -1,4 +1,4 @@
-function initLevel() {
+function initLevel2() {
     let numberOfGreenPufferFishes = 5;
     let numberOfOrangePufferFishes = 5;
     let numberOfRedPufferFishes = 5;
@@ -7,19 +7,19 @@ function initLevel() {
 
     const numberOfBottles = 8;
     const startX = 400;
-    const maxX = 3300;
+    const maxX = 2800;
 
     let coins = [];
     const coinRadius = 80;
 
     // Helper-Function for random x-Position
     function randomPositionX() {
-        return 300 + Math.random() * 3200; // x between 300 and 3500
+        return 300 + Math.random() * (maxX - 100); 
     }
 
     // Helper-Function for random y-Position
     function randomPositionY() {
-        return 20 + Math.random() * 400; // y between 20 and 40
+        return 20 + Math.random() * 400;
     }
 
     // Pufferfishes

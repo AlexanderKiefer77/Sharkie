@@ -413,7 +413,9 @@ class Character extends MovableObject {
             let canShoot = true;
 
             if (this.world.endboss) {
-                this.createBubbleEndboss(type);
+                let result = this.createBubbleEndboss(type, canShoot);
+                type = result.type;
+                canShoot = result.canShoot;
             }
 
             if (canShoot) {
@@ -422,7 +424,7 @@ class Character extends MovableObject {
         }
     }
 
-    createBubbleEndboss(type) {// Subfunction for createBubble()
+    createBubbleEndboss(type, canShoot) {// Subfunction for createBubble()
         let distance = Math.abs(this.x - this.world.endboss.x);
         if (distance < 300) {
             if (this.world.collectBottles > 0) {
@@ -433,6 +435,7 @@ class Character extends MovableObject {
                 canShoot = false;
             }
         }
+        return {type, canShoot};
     }
 
     hitByJellyfish() {

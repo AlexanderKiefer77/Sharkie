@@ -1,4 +1,4 @@
-function initLevel() {
+function initLevel1() {
     let numberOfGreenPufferFishes = 3;
     let numberOfOrangePufferFishes = 3;
     let numberOfRedPufferFishes = 3;

@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let gameStarted = false;
 let stoppableIntervals = [];
 let mobileControlsInitialized = false;
+let currentLevelIndex = 1;
 
 window.masterVolume = 0.5;
 let masterVolume = window.masterVolume;
@@ -13,6 +14,12 @@ function init() {
     canvas = document.getElementById('canvas');
     hideMobileSteering();
     showStartScreen();
+}
+
+function createLevel(index) {
+    if (index === 1) return initLevel1();
+    if (index === 2) return initLevel2();
+    return null;
 }
 
 function showStartScreen() {
@@ -25,12 +32,13 @@ function showStartScreen() {
 }
 
 function startGame() {
-    let currentLevel = initLevel();
+    let currentLevel = createLevel(currentLevelIndex);
 
     gameStarted = true;
     canvas = document.getElementById('canvas');
 
     world = new World(canvas, keyboard, currentLevel);
+    world.currentLevelIndex = currentLevelIndex;
     hideOverlays();
     if (!mobileControlsInitialized) {
         initMobileControls();
@@ -49,12 +57,36 @@ function restartGame() {
     gameStarted = false;
     world = null;
     isPaused = false;
+    currentLevelIndex = 1;
 
     hideOverlays();
     document.getElementById('startOverlay').classList.remove('hidden');
     hideMobileSteering();
     showStartScreen();
 }
+
+function nextLevel() {
+    currentLevelIndex++;
+    if (currentLevelIndex > 2) {
+        showWinOverlay();
+        return;
+    }
+
+    let savedPoints = world ? world.points : 0;
+
+    if (world) {
+        world.stopGame();
+    }
+    clearAllIntervals();
+
+    let currentLevel = createLevel(currentLevelIndex);
+    world = new World(canvas, keyboard, currentLevel);
+    world.currentLevelIndex = currentLevelIndex;
+
+    world.points = savedPoints;
+}
+
+window.nextLevel = nextLevel;
 
 function setStoppableInterval(fn, time) {
     let id = setInterval(() => {

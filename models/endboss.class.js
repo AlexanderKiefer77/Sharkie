@@ -290,7 +290,11 @@ class Endboss extends MovableObject {
 
     updateAnimationImagesDEAD() {// Subfunction for updateAnimationImages()
         if (!this.winSoundPlayed) {
-            winSound();
+            if (this.world && this.world.currentLevelIndex === 1) {
+                levelFinishedSound();
+            } else {
+                winSound();
+            }
             this.winSoundPlayed = true;
         }
         this.playDeadAnimation();

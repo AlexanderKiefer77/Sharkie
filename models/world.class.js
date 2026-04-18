@@ -293,7 +293,7 @@ class World {
             if (visibleBottom < 0) {
                 if (!this.gameStopped) {
                     this.stopGame();
-                    showWinOverlay();
+                    window.nextLevel();
                 }
             }
         }
@@ -345,7 +345,7 @@ class World {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.ctx.font = 'bold 1.5rem Calibri';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(`${this.points} Punkte`, this.canvas.width / 2, 45);
+        this.ctx.fillText(`${this.points} Punkte`, (this.canvas.width / 2)+5, 45);
     }
 
     drawHealthEndboss(x, y) {
