@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    endboss = new Endboss(this);
+    endboss;
     bubbles = [];
     level;
     canvas;
@@ -34,6 +34,10 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.level = level;
+        this.endboss = this.level?.endboss ?? new Endboss(this);
+        if (this.endboss) {
+            this.endboss.world = this;
+        }
         this.initFishes();
         this.initWorldStats();
         this.gameStopped = false;
@@ -99,7 +103,6 @@ class World {
             this.drawHealthEndboss(620, 45);
 
             // Dynamic
-
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToMap(this.level.bottles);
             this.addObjectsToMap(this.level.coins);
@@ -264,7 +267,7 @@ class World {
         this.level.coins = this.level.coins.filter(coin => {
             if (this.character.isColliding(coin)) {
                 this.collectCoins++;
-                playCoinSound();
+                playSound('coin');
                 this.addPoints(this.pointsCollectCoins);
                 return false;
             }
@@ -277,7 +280,7 @@ class World {
         this.level.bottles = this.level.bottles.filter(bottle => {
             if (this.character.isColliding(bottle)) {
                 this.collectBottles++;
-                playBottleSound();
+                playSound('bottle');
                 this.addPoints(this.pointsCollectBottle);
                 return false;
             }

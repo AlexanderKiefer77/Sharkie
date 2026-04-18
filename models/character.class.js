@@ -173,6 +173,8 @@ class Character extends MovableObject {
             let movingLeft = false;
 
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                console.log(this.x);
+                
                 this.moveRight();
                 this.otherDirection = false;
                 movingRight = true;
@@ -274,10 +276,10 @@ class Character extends MovableObject {
             if (!this.isLostSoundPlayed) {
                 this.isLostSoundPlayed = true;
                 stopAllSounds();
+                playSound('dead');
 
-                playSharkieDeadSound();
                 setTimeout(() => {
-                    gameOverSound();
+                    playSound('gameOver');
                 }, 3000);
             }
         }
@@ -362,7 +364,7 @@ class Character extends MovableObject {
     finSlapFINSLAP() {// Subfunction for finSlap()
         this.isAttacking = true;
         this.attackType = 'FINSLAP';
-        finSlapSound();
+        playSound('finSlap');
         this.offset = { top: 70, bottom: 40, left: 30, right: 10 };
     }
 
@@ -409,7 +411,7 @@ class Character extends MovableObject {
             let bubbleX = this.otherDirection ? this.x : this.x + this.width - 20;
             let bubbleY = this.y + this.height / 2;
             let type = 'normal';
-            bubbleSound();
+            playSound('bubble');
             let canShoot = true;
 
             if (this.world.endboss) {
@@ -430,7 +432,7 @@ class Character extends MovableObject {
             if (this.world.collectBottles > 0) {
                 this.world.collectBottles--;
                 type = 'poison';
-                bubbleEndbossSound();
+                playSound('bubbleEndboss');
             } else {
                 canShoot = false;
             }

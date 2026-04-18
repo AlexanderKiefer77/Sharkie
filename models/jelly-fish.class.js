@@ -1,5 +1,4 @@
 
-
 class JellyFish extends MovableObject {
     height = 30;
     width = 40;
@@ -13,11 +12,6 @@ class JellyFish extends MovableObject {
 
     isDead = false;
 
-    /**
-     * @param {string} type - 'Lila' or 'Yellow'
-     * @param {number} x - Startposition X
-     * @param {number} y - Startposition Y
-     */
     constructor(type, x, y) {
         super();
         this.setImages(type);
@@ -33,7 +27,7 @@ class JellyFish extends MovableObject {
     }
 
     setImages(type) {
-        // Basic Paths for Swim
+
         this.IMAGES_SWIMMING = [
             `./assets/img/Fishes/jelly-fish/swim/${type} 1.png`,
             `./assets/img/Fishes/jelly-fish/swim/${type} 2.png`,
@@ -87,7 +81,7 @@ class JellyFish extends MovableObject {
 
         clearInterval(this.movementInterval);
         clearInterval(this.animationInterval);
-        whooshSound();
+        playSound('whoosh');
         this.currentImage = 0;
         let trappedInterval = setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);

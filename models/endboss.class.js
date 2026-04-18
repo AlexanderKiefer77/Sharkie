@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
     height = 400;
     width = 300;
     y = 0;
-    x = 2500; // 3900
+    x = 2500;
     speed = 7;
 
     state = 'WAITING';
@@ -75,9 +75,11 @@ class Endboss extends MovableObject {
         './assets/img/Fishes/final-fish/Dead/Mesa de trabajo 2 copia 10.png'
     ];
 
-    constructor(world) {
+    constructor(world, x = 2500, y = 0) {
         super();
         this.world = world;
+        this.x = x;
+        this.y = y;
 
         this.loadImage(this.IMAGES_INTRODUCE[0]);
         this.loadImages(this.IMAGES_INTRODUCE);
@@ -251,7 +253,7 @@ class Endboss extends MovableObject {
         this.isHurtCooldown = true;
         this.state = 'HURT';
         this.currentImage = 0;
-        finSlapHitSound();
+        playSound('finSlapHit');
         this.world.addPoints(this.world.pointsHitEndbossFinslap);
         setTimeout(() => {
             this.isHurtCooldown = false;
@@ -291,9 +293,9 @@ class Endboss extends MovableObject {
     updateAnimationImagesDEAD() {// Subfunction for updateAnimationImages()
         if (!this.winSoundPlayed) {
             if (this.world && this.world.currentLevelIndex === 1) {
-                levelFinishedSound();
+                playSound('levelFinished');
             } else {
-                winSound();
+                playWinSound();
             }
             this.winSoundPlayed = true;
         }

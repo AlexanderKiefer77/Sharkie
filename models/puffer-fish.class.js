@@ -12,11 +12,6 @@ class PufferFish extends MovableObject {
 
     isDead = false;
 
-    /**
-     * @param {string} color - 'Green', 'Orange' or 'Red'
-     * @param {number} x - Startposition X
-     * @param {number} y - Startposition Y
-     */
     constructor(color, x, y) {
         super();
         this.setImages(color);
@@ -94,8 +89,8 @@ class PufferFish extends MovableObject {
     }
 
     playDeathSounds() {// Subfunction for die(hitFromLeft)
-        finSlapHitSound();
-        whooshSound();
+        playSound('finSlapHit');
+        playSound('whoosh');
     }
 
     startDeathAnimation() {// Subfunction for die(hitFromLeft)

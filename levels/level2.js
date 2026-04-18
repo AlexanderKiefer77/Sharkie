@@ -7,7 +7,7 @@ function initLevel2() {
 
     const numberOfBottles = 8;
     const startX = 400;
-    const maxX = 2800;
+    const maxX = 3600;
 
     let coins = [];
     const coinRadius = 80;
@@ -80,13 +80,15 @@ function initLevel2() {
     });
 
     // Return of the level
-    return new Level(
+    const level = new Level(
         fishes,
         createBackgroundObjects(),
         bottles,
         coins,
-        new Endboss()
+        new Endboss(null, 3900, 0)
     );
+    level.level_end_x = 4150;
+    return level;
 
     function createBackgroundObjects() {
         let backgroundObjects = [];

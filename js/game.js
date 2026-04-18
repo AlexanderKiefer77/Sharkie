@@ -176,7 +176,6 @@ function updateScoreboard() {
     document.getElementById('injured-jellyfish-value').textContent = '-' + world.pointsHurtsCharacter;
 }
 
-
 // Keyboard Events
 window.addEventListener('keydown', (e) => {
     if (!gameStarted) return;
@@ -211,7 +210,6 @@ function hideMobileSteering() {
     const mobileSteering = document.querySelector('.mobile-steering');
     if (mobileSteering) mobileSteering.classList.add('hidden');
 }
-
 
 function initMobileControls() {
     const mobileSteering = document.querySelector('.mobile-steering');
@@ -305,9 +303,7 @@ function handleActionEnd(action) {
             keyboard.D = false;
             break;
     }
-
 }
-
 
 function toggleFullscreen() {
     let elem = document.getElementById("gameWrapper");
